@@ -6,4 +6,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/shared_code/get_inference_cluster.py -f controller/controller-config.yml
+        python templates/src/python-sdk/get_inference_cluster.py -f controller/controller-config.yml

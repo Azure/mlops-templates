@@ -10,7 +10,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/shared_code/register_dataset.py -n $(training_dataset_name) -d $(training_dataset_description) -l $(training_dataset_local_path) -p $(training_dataset_path_on_datastore) -t $(training_dataset_type) -s $(training_dataset_storage_url)
+        python templates/src/python-sdk/register_dataset.py -n $(training_dataset_name) -d $(training_dataset_description) -l $(training_dataset_local_path) -p $(training_dataset_path_on_datastore) -t $(training_dataset_type) -s $(training_dataset_storage_url)
     condition: and(succeeded(), eq('${{ parameters.data_type }}', 'training'))
 
   - task: AzureCLI@2
@@ -20,5 +20,5 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/shared_code/register_dataset.py -n $(scoring_dataset_name) -d $(scoring_dataset_description) -l $(scoring_dataset_local_path) -p $(scoring_dataset_path_on_datastore) -t $(scoring_dataset_type) -s $(scoring_dataset_storage_url)
+        python templates/src/python-sdk/register_dataset.py -n $(scoring_dataset_name) -d $(scoring_dataset_description) -l $(scoring_dataset_local_path) -p $(scoring_dataset_path_on_datastore) -t $(scoring_dataset_type) -s $(scoring_dataset_storage_url)
     condition: and(succeeded(), eq('${{ parameters.data_type }}', 'scoring'))

@@ -7,4 +7,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        python templates/shared_code/deploy_batch_scoring_pipeline.py -f controller/controller-config.yml
+        python templates/src/python-sdk/deploy_batch_scoring_pipeline.py -f controller/controller-config.yml

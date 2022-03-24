@@ -10,4 +10,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/shared_code/get_compute.py -f controller/controller-config.yml --compute_type ${{ parameters.compute_type }}
+        python templates/src/python-sdk/get_compute.py -f controller/controller-config.yml --compute_type ${{ parameters.compute_type }}

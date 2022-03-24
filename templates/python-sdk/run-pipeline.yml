@@ -6,4 +6,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/shared_code/run_pipeline.py -p $(pipeline_id)
+        python templates/src/python-sdk/run_pipeline.py -p $(pipeline_id)
