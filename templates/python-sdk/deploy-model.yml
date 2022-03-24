@@ -1,0 +1,9 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Deploy Model to AKS
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        python templates/shared_code/deploy_model_aks.py -f controller/controller-config.yml

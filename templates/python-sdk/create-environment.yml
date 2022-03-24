@@ -1,0 +1,23 @@
+parameters:
+- name: environment_name
+  type: string
+- name: environment_conda_yaml
+  type: string
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: 'Setting Python version'
+    inputs:
+      versionSpec: '3.6'
+  - task: Bash@3
+    displayName: 'Install Requirements'
+    inputs:
+      filePath: templates/shared_code/install_requirements.sh
+  - task: AzureCLI@2
+    displayName: Register environment
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        python templates/shared_code/register_environnment.py -n ${{ parameters.environment_name }} -f ${{ parameters.environment_conda_yaml }}

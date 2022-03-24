@@ -1,0 +1,11 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Install AZ CLI
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      workingDirectory: code/
+      inlineScript: |
+        set -e # fail on error
+        python -m pip install -U --force-reinstall pip pip install azure-cli==2.29

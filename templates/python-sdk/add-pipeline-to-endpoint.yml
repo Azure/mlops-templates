@@ -1,0 +1,9 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Add pipeline to pipeline endpoint
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        python templates/shared_code/add_pipeline_to_endpoint.py -p $(pipeline_id)

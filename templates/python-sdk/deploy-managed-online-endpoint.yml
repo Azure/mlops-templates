@@ -1,0 +1,33 @@
+parameters:
+- name: update_type
+  type: string
+- name: deployment_name
+  default: deployment_name
+  type: string
+- name: deployment_file
+  default: deployment_file
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Deploy managed online endpoint
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-endpoint create --name $ENDPOINT_NAME -f code/azureml/endpoint.yml
+        az ml online-deployment create --name ${{ parameters.deployment_name }} --endpoint $ENDPOINT_NAME -f code/azureml/${{ parameters.deployment_file }}
+        az ml online-deployment update --name ${{ parameters.deployment_name }} --endpoint $ENDPOINT_NAME -f code/azureml/${{ parameters.deployment_file }}
+    condition: and(succeeded(), eq('${{ parameters.update_type }}', 'deployment'))
+  - task: AzureCLI@2
+    displayName: Deploy managed online endpoint
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$(traffic_allocation)"
+    condition: and(succeeded(), eq('${{ parameters.update_type }}', 'traffic_allocation'))

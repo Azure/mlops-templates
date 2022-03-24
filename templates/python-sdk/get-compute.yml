@@ -1,0 +1,13 @@
+parameters:
+- name: compute_type
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Get compute
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        python templates/shared_code/get_compute.py -f controller/controller-config.yml --compute_type ${{ parameters.compute_type }}

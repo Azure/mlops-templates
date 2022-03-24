@@ -1,0 +1,10 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Deploy batch scoring pipeline to AML
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        python templates/shared_code/deploy_batch_scoring_pipeline.py -f controller/controller-config.yml

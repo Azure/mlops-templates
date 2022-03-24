@@ -1,0 +1,71 @@
+import os
+import re
+import argparse
+import yaml
+
+import azureml.core
+from azureml.core import Workspace, Experiment, Datastore, Dataset, RunConfiguration, Environment
+from azureml.core.compute import AmlCompute, ComputeTarget
+from azureml.pipeline.core import Pipeline, PipelineData, PipelineParameter
+from azureml.data.dataset_consumption_config import DatasetConsumptionConfig
+from azureml.pipeline.steps import ParallelRunStep, ParallelRunConfig
+from azureml.data import OutputFileDatasetConfig
+
+print("Azure ML SDK version:", azureml.core.VERSION)
+
+parser = argparse.ArgumentParser("Deploy Batch Scoring Pipeline")
+parser.add_argument("-f", type=str, help="Controller Config YAML file")
+args = parser.parse_args()
+
+with open(args.f, "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+    config = config['variables']
+print(config)
+
+ws = Workspace.from_config()
+env = Environment.get(workspace=ws, name=config['batch_environment_name'])
+runconfig = RunConfiguration()
+runconfig.environment = env
+
+# Dataset input and output
+batch_dataset = Dataset.get_by_name(ws, config['batch_input_dataset_name'])
+batch_dataset_parameter = PipelineParameter(name="batch_dataset", default_value=batch_dataset)
+batch_dataset_consumption = DatasetConsumptionConfig("batch_dataset", batch_dataset_parameter).as_download()
+
+datastore = ws.get_default_datastore()
+output_dataset = OutputFileDatasetConfig(name='batch_results',
+                                         destination=(datastore, config['batch_output_path_on_datastore'])).register_on_complete(name=config['batch_output_dataset_name'])
+
+parallel_run_config = ParallelRunConfig(
+    source_directory="code/src/",
+    entry_script="batch.py",
+    environment=env,
+    output_action="append_row",
+    append_row_file_name=config['batch_output_filename'],
+    mini_batch_size=config['batch_mini_batch_size'],
+    error_threshold=config['batch_error_threshold'],
+    compute_target=config['batch_pipeline_target'],
+    process_count_per_node=config['batch_process_count_per_node'],
+    node_count=config['batch_node_count']
+)
+
+batch_step = ParallelRunStep(
+    name="batch-step",
+    parallel_run_config=parallel_run_config,
+    arguments=['--model_name', config['model_name']],
+    inputs=[batch_dataset_consumption],
+    side_inputs=[],
+    output=output_dataset,
+    allow_reuse=False
+)
+
+steps = [batch_step]
+
+print('Creating, validating, and publishing pipeline')
+pipeline = Pipeline(workspace=ws, steps=steps)
+pipeline.validate()
+published_pipeline = pipeline.publish(config['batch_pipeline_name'])
+
+# Output pipeline_id in specified format which will convert it to a variable in Azure DevOps
+print(f'Exporting pipeline id {published_pipeline.id} as environment variable pipeline_id')
+print(f'##vso[task.setvariable variable=pipeline_id]{published_pipeline.id}')

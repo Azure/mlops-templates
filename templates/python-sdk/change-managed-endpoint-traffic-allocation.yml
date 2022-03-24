@@ -1,0 +1,10 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Deploy managed online endpoint
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$(traffic_allocation)"

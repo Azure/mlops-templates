@@ -1,0 +1,9 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Connect to AML Workspace
+    inputs:
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az ml folder attach -g $(ml_workspace_rg) -w $(ml_workspace_name)
