@@ -8,7 +8,7 @@ from azureml.core import Workspace
 from azureml.core.compute import AmlCompute, ComputeTarget
 
 parser = argparse.ArgumentParser("Get compute")
-parser.add_argument("-f", type=str, help="Controller Config YAML file")
+parser.add_argument("-f", type=str, help="AML Config YAML file")
 parser.add_argument('--compute_type', type=str, help='Type of compute i.e. training / batch etc.')
 args, _ = parser.parse_known_args()
 
