@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
 python --version
 pip install azureml-sdk==1.36.0
 pip install pytest
