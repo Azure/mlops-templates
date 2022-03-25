@@ -23,19 +23,22 @@ print(config)
 # choose a name for your cluster
 #config['training_pipeline_target']
 if args.compute_type == 'training':
-    compute_name = config['training_pipeline_target']
-    compute_min_nodes = config['training_pipeline_target_min_nodes']
-    compute_max_nodes = config['training_pipeline_target_max_nodes']
+    compute_name = config['training_target']
+    compute_min_nodes = config['training_target_min_nodes']
+    compute_max_nodes = config['training_target_max_nodes']
+    vm_size = os.environ.get("AML_COMPUTE_CLUSTER_SKU", config['training_target_sku'])
 elif args.compute_type == 'batch':
-    compute_name = config['batch_pipeline_target']
-    compute_min_nodes = config['batch_pipeline_target_min_nodes']
-    compute_max_nodes = config['batch_pipeline_target_max_nodes']
+    compute_name = config['batch_target']
+    compute_min_nodes = config['batch_target_min_nodes']
+    compute_max_nodes = config['batch_target_max_nodes']
+    vm_size = os.environ.get("AML_COMPUTE_CLUSTER_SKU", config['batch_target_sku'])
 else:
+    # This example spins up a cluster of 4 STANDARD_D2_V2 nodes when it does not detect either batch or training parameters
     compute_name = os.environ.get("AML_COMPUTE_CLUSTER_NAME", "cpu-cluster")
     compute_min_nodes = os.environ.get("AML_COMPUTE_CLUSTER_MIN_NODES", 0)
     compute_max_nodes = os.environ.get("AML_COMPUTE_CLUSTER_MAX_NODES", 4)
-# This example uses CPU VM. For using GPU VM, set SKU to STANDARD_NC6
-vm_size = os.environ.get("AML_COMPUTE_CLUSTER_SKU", "STANDARD_D2_V2")
+    vm_size = os.environ.get("AML_COMPUTE_CLUSTER_SKU", "STANDARD_D2_V2")
+
 
 ws = Workspace.from_config()
 

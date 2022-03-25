@@ -34,7 +34,7 @@ training_dataset_consumption = None
 arguments = []
 inputs = []
 
-for arg in shlex.split(config['training_command']):
+for arg in shlex.split(config['training_arguments']):
     print(f"Processing training argument: {arg}")
     result = re.search(r"azureml:(\S+):(\S+)", str(arg))
     if result:
@@ -62,8 +62,8 @@ train_step = PythonScriptStep(name="train-step",
                         runconfig=runconfig,
                         compute_target=config['training_pipeline_target'],
                         source_directory="data-science/src/",
-                        script_name=arguments[0],
-                        arguments=arguments[1:],
+                        script_name=config['training_script'],
+                        arguments=arguments,
                         inputs=inputs,
                         allow_reuse=False)
 
