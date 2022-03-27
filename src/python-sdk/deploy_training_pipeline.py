@@ -27,7 +27,7 @@ print(config)
 
 
 ws = Workspace.from_config()
-env = Environment.get(workspace=ws, name=config['training_environment_name'])
+env = Environment.get(workspace=ws, name=config['training_env_name'])
 runconfig = RunConfiguration()
 runconfig.environment = env
 training_dataset_consumption = None
