@@ -9,10 +9,12 @@ import shlex
 
 import azureml.core
 from azureml.core import Workspace, Experiment, Datastore, Dataset, RunConfiguration, Environment
+
 from azureml.core.compute import AmlCompute, ComputeTarget
 from azureml.pipeline.core import Pipeline, PipelineData, PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.data.dataset_consumption_config import DatasetConsumptionConfig
+from azureml.data.output_dataset_config import OutputFileDatasetConfig 
 
 print("Azure ML SDK version:", azureml.core.VERSION)
 
@@ -27,15 +29,15 @@ print(config)
 
 
 ws = Workspace.from_config()
-env = Environment.get(workspace=ws, name=config['training_environment_name'])
+env = Environment.get(workspace=ws, name=config['training_env_name'])
 runconfig = RunConfiguration()
 runconfig.environment = env
 training_dataset_consumption = None
 arguments = []
 inputs = []
 
-for arg in shlex.split(config['training_arguments']):
-    print(f"Processing training argument: {arg}")
+for arg in shlex.split(config['transform_arguments']):
+    print(f"Processing transform argument: {arg}")
     result = re.search(r"azureml:(\S+):(\S+)", str(arg))
     if result:
         print("in the if condition")
@@ -58,25 +60,56 @@ for arg in shlex.split(config['training_arguments']):
 print(f"Expanded arguments: {arguments}")
 print(training_dataset_consumption)
 
-train_step = PythonScriptStep(name="train-step",
+transformed_data_path = OutputFileDatasetConfig(name="transformed_data").as_upload()
+trained_model_path = OutputFileDatasetConfig(name="trained_model").as_upload()
+deploy_flag = PipelineData("deploy_flag")
+
+
+arguments = arguments + ['--transformed_data_path', transformed_data_path]
+
+transform_step = PythonScriptStep(name="transform-step",
                         runconfig=runconfig,
-                        compute_target=config['training_pipeline_target'],
+                        compute_target=config['training_target'],
                         source_directory="data-science/src/",
-                        script_name=config['training_script'],
+                        script_name=config['transform_script'],
                         arguments=arguments,
                         inputs=inputs,
-                        allow_reuse=False)
+                        allow_reuse=True)
+
+train_step = PythonScriptStep(name="train-step",
+                        runconfig=runconfig,
+                        compute_target=config['training_target'],
+                        source_directory="data-science/src/",
+                        script_name=config['training_script'],
+                        arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
+                                   '--model_path', trained_model_path],
+                        allow_reuse=True)
+
+evaluate_step = PythonScriptStep(name="evaluate-step",
+                        runconfig=runconfig,
+                        compute_target=config['training_target'],
+                        source_directory="data-science/src/",
+                        script_name="evaluate.py",
+                        arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
+                                   '--model_name', config['model_name'], 
+                                   '--model_path', trained_model_path.as_input("trained_model"),
+                                   '--deploy_flag', deploy_flag],
+                        outputs=[deploy_flag],
+                        allow_reuse=True)
 
 register_step = PythonScriptStep(name="register-step",
                         runconfig=runconfig,
-                        compute_target=config['training_pipeline_target'],
+                        compute_target=config['training_target'],
                         source_directory="templates/src/python-sdk/",
                         script_name="register_model.py",
-                        arguments=['--model_name', config['model_name'], '--model_path', 'outputs/'],
-                        allow_reuse=False)
+                        arguments=['--model_name', config['model_name'], 
+                                   '--model_path', trained_model_path.as_input("trained_model"),
+                                   '--deploy_flag', deploy_flag],
+                        inputs=[deploy_flag],
+                        allow_reuse=True)
 
-register_step.run_after(train_step)
-steps = [train_step, register_step]
+#register_step.run_after(evaluate_step)
+steps = [transform_step, train_step, register_step, evaluate_step]
 
 print('Creating, validating, and publishing pipeline')
 pipeline = Pipeline(workspace=ws, steps=steps)
