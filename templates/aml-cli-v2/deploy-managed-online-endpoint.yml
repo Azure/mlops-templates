@@ -1,36 +1,36 @@
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
-
 parameters:
-- name: update_type
-  type: string
-- name: deployment_name
-  default: deployment_name
-  type: string
-- name: deployment_file
-  default: deployment_file
+- name: job_type
   type: string
 
 steps:
   - task: AzureCLI@2
     displayName: Deploy managed online endpoint
-    inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
+    inputs: 
+      azureSubscription: $(ml_workspace_connection)
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        az ml online-endpoint create --name $ENDPOINT_NAME -f code/azureml/endpoint.yml
-        az ml online-deployment create --name ${{ parameters.deployment_name }} --endpoint $ENDPOINT_NAME -f code/azureml/${{ parameters.deployment_file }}
-        az ml online-deployment update --name ${{ parameters.deployment_name }} --endpoint $ENDPOINT_NAME -f code/azureml/${{ parameters.deployment_file }}
-    condition: and(succeeded(), eq('${{ parameters.update_type }}', 'deployment'))
+        az ml online-endpoint create --name $(moe_endpoint_name)
+        az ml online-deployment create --name $(moe_deployment_name) --endpoint $(moe_endpoint_name) -f $(moe_deployment_file)
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-deployment'))
+  - task: AzureCLI@2
+    displayName: Deploy managed online endpoint
+    inputs: 
+      azureSubscription: $(ml_workspace_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-deployment update--name $(moe_deployment_name) --endpoint $(moe_endpoint_name) -f $(moe_deployment_file)
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'update-deployment'))
   - task: AzureCLI@2
     displayName: Deploy managed online endpoint
     inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
+      azureSubscription: $(ml_workspace_connection)
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        az ml online-endpoint update --name $ENDPOINT_NAME --traffic "$(traffic_allocation)"
-    condition: and(succeeded(), eq('${{ parameters.update_type }}', 'traffic_allocation'))
+        az ml online-endpoint update --name $(moe_endpoint_name) --traffic "$(traffic_allocation)"
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'traffic_allocation'))
