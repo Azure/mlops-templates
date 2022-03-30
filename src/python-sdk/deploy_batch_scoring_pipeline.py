@@ -47,7 +47,7 @@ parallel_run_config = ParallelRunConfig(
     append_row_file_name=config['batch_output_filename'],
     mini_batch_size=config['batch_mini_batch_size'],
     error_threshold=config['batch_error_threshold'],
-    compute_target=config['batch_pipeline_target'],
+    compute_target=config['batch_target'],
     process_count_per_node=config['batch_process_count_per_node'],
     node_count=config['batch_node_count']
 )
