@@ -19,7 +19,6 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml online-endpoint create --name $(moe_endpoint_name)
         az ml online-deployment create --name $(moe_deployment_name) --endpoint $(moe_endpoint_name) -f $(moe_deployment_file)
     condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-deployment'))
   - task: AzureCLI@2
