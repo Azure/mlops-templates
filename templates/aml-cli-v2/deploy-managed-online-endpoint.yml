@@ -4,18 +4,26 @@ parameters:
 
 steps:
   - task: AzureCLI@2
-    displayName: Create and deploy managed online endpoint 
+    displayName: Create managed online endpoint 
     inputs: 
       azureSubscription: $(ado_service_connection_aml_ws)
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        set -e
+        az ml online-endpoint create --name $(moe_endpoint_name)
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-endpoint'))
+  - task: AzureCLI@2
+    displayName: Create deployment
+    inputs: 
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
         az ml online-endpoint create --name $(moe_endpoint_name)
         az ml online-deployment create --name $(moe_deployment_name) --endpoint $(moe_endpoint_name) -f $(moe_deployment_file)
     condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-deployment'))
   - task: AzureCLI@2
-    displayName: Update managed online endpoint deployment
+    displayName: Update deployment
     inputs: 
       azureSubscription: $(ado_service_connection_aml_ws)
       scriptType: bash
