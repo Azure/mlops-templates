@@ -67,15 +67,6 @@ train_step = PythonScriptStep(name="train-step",
                         inputs=inputs,
                         allow_reuse=False)
 
-evaluate_step = PythonScriptStep(name="evaluate-step",
-                        runconfig=runconfig,
-                        compute_target=config['training_target'],
-                        source_directory="data-science/src/",
-                        script_name=config['evaluate_script'],
-                        arguments=['--model_name', config['model_name'], '--model_path', 'outputs/'],
-                        inputs=inputs,
-                        allow_reuse=False)
-
 register_step = PythonScriptStep(name="register-step",
                         runconfig=runconfig,
                         compute_target=config['training_target'],
@@ -84,9 +75,8 @@ register_step = PythonScriptStep(name="register-step",
                         arguments=['--model_name', config['model_name'], '--model_path', 'outputs/'],
                         allow_reuse=False)
 
-evaluate_step.run_after(train_step)
-register_step.run_after(evaluate_step)
-steps = [train_step, evaluate_step, register_step]
+register_step.run_after(train_step)
+steps = [train_step, register_step]
 
 print('Creating, validating, and publishing pipeline')
 pipeline = Pipeline(workspace=ws, steps=steps)
