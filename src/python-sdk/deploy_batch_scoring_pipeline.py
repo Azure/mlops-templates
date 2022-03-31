@@ -26,7 +26,7 @@ with open(args.f, "r") as f:
 print(config)
 
 ws = Workspace.from_config()
-env = Environment.get(workspace=ws, name=config['batch_environment_name'])
+env = Environment.get(workspace=ws, name=config['batch_env_name'])
 runconfig = RunConfiguration()
 runconfig.environment = env
 
@@ -40,14 +40,14 @@ output_dataset = OutputFileDatasetConfig(name='batch_results',
                                          destination=(datastore, config['batch_output_path_on_datastore'])).register_on_complete(name=config['batch_output_dataset_name'])
 
 parallel_run_config = ParallelRunConfig(
-    source_directory="code/src/",
-    entry_script="batch.py",
+    source_directory="data-science/src/",
+    entry_script="score.py",
     environment=env,
     output_action="append_row",
     append_row_file_name=config['batch_output_filename'],
     mini_batch_size=config['batch_mini_batch_size'],
     error_threshold=config['batch_error_threshold'],
-    compute_target=config['batch_pipeline_target'],
+    compute_target=config['batch_target'],
     process_count_per_node=config['batch_process_count_per_node'],
     node_count=config['batch_node_count']
 )
