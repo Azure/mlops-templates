@@ -6,12 +6,12 @@ steps:
   - task: AzureCLI@2
     displayName: Update deployment
     inputs: 
-      azureSubscription: $(ado_service_connection_aml_ws)
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        az ml online-deployment update--name $(moe_deployment_name) --endpoint $(moe_endpoint_name) \
+        az ml online-deployment create --name $(moe_deployment_name) --endpoint $(moe_endpoint_name) \
           --set model.local_path=$(moe_model) \
                 code_configuration.scoring_script=$(moe_scoring_script) \
                 code_configuration.code.local_path=../../../data-science/src/ \
@@ -24,7 +24,7 @@ steps:
   - task: AzureCLI@2
     displayName: Update traffic allocation
     inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
