@@ -1,0 +1,34 @@
+parameters:
+- name: job_type
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Update deployment
+    inputs: 
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-deployment update--name $(moe_deployment_name) --endpoint $(moe_endpoint_name) \
+          --set model.local_path=$(moe_model) \
+            code_configuration.scoring_script=$(moe_scoring_script) \
+            code_configuration.code.local_path=$(moe_scoring_script_path) \
+            environment.conda_file=$(moe_env_conda_file) \
+            environment.image=$(moe_env_image) \
+            instance_type=$(moe_instance_type) \
+            instance_count=$(moe_instance_count) \
+          -f templates/src/aml-cli-v2/sample-deployment.yml
+
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'update-deployment'))
+  - task: AzureCLI@2
+    displayName: Update traffic allocation
+    inputs:
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-endpoint update --name $(moe_endpoint_name) --traffic "$(traffic_allocation)"
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'traffic_allocation'))
