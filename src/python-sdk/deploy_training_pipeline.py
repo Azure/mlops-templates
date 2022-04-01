@@ -36,8 +36,8 @@ training_dataset_consumption = None
 arguments = []
 inputs = []
 
-for arg in shlex.split(config['transform_arguments']):
-    print(f"Processing transform argument: {arg}")
+for arg in shlex.split(config['training_arguments']):
+    print(f"Processing training pipeline argument: {arg}")
     result = re.search(r"azureml:(\S+):(\S+)", str(arg))
     if result:
         print("in the if condition")
