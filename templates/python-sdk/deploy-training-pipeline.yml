@@ -9,5 +9,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        set -e
-        python templates/src/python-sdk/deploy_training_pipeline.py -f config-aml.yml
+        set -e python templates/src/python-sdk/deploy_training_pipeline.py -f config-aml.yml

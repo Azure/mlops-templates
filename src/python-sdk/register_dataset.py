@@ -10,7 +10,7 @@ def parse_args():
     parser.add_argument("-n", type=str, help="Name of the dataset you want to register")
     parser.add_argument("-d", type=str, help="Description of the dataset you want to register")
     parser.add_argument("-t", type=str, help="type of dataset", default='local')    
-    parser.add_argument("-l", type=str, help="local path of the dataset folder", default='code/data/')
+    parser.add_argument("-l", type=str, help="local path of the dataset folder", default='data/')
     parser.add_argument("-p", type=str, help="Path on data store", default='data/')
     parser.add_argument("-s", type=str, help="Storage url for cloud storage")
     return parser.parse_args()

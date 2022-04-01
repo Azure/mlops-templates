@@ -4,22 +4,13 @@ parameters:
 
 steps:
   - task: AzureCLI@2
-    displayName: Create managed online endpoint 
-    continueOnError: true
+    displayName: Update deployment
     inputs: 
       azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml online-endpoint create --name $(moe_endpoint_name)
-    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-endpoint'))
-  - task: AzureCLI@2
-    displayName: Create deployment
-    inputs: 
-      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
+        set -e
         az ml online-deployment create --name $(moe_deployment_name) --endpoint $(moe_endpoint_name) \
           --set model.local_path=$(moe_model) \
                 code_configuration.scoring_script=$(moe_scoring_script) \
@@ -29,4 +20,14 @@ steps:
                 instance_type=$(moe_instance_type) \
                 instance_count=$(moe_instance_count) \
           -f templates/src/aml-cli-v2/sample-deployment.yml
-    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-deployment'))
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'update-deployment'))
+  - task: AzureCLI@2
+    displayName: Update traffic allocation
+    inputs:
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-endpoint update --name $(moe_endpoint_name) --traffic "$(traffic_allocation)"
+    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'traffic_allocation'))
