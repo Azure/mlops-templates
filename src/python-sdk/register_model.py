@@ -20,20 +20,8 @@ with open(args.deploy_flag, 'r') as f:
     deploy_flag = int(f.read())
         
 # current run is the registration step
-current_run = Run.get_context()
-ws = current_run.experiment.workspace
-
-# parent run is the overall pipeline
-parent_run = current_run.parent
-print(f'Parent run id: {parent_run.id}')
-
-# find pipeline step named 'train-step'
-pipeline_run = PipelineRun(parent_run.experiment, parent_run.id)
-training_run = pipeline_run.find_step_run('train-step')[0]
-print(f'Training run: {training_run}')
-
-#model = training_run.register_model(model_name=args.model_name,
-#                                    model_path=args.model_path)
+run = Run.get_context()
+ws = run.experiment.workspace
 
 if deploy_flag==1:
     print("Registering ", args.model_name)
