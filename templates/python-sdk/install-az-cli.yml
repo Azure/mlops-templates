@@ -11,4 +11,5 @@ steps:
       workingDirectory: code/
       inlineScript: |
         set -e # fail on error
-        python -m pip install -U --force-reinstall pip pip install azure-cli==2.29
+        # python -m pip install -U --force-reinstall pip pip install azure-cli==2.29
+        python -m pip install -U --force-reinstall pip pip install azure-cli
