@@ -7,7 +7,6 @@ steps:
       scriptLocation: inlineScript
       workingDirectory: code/
       inlineScript: |
-        set -e # fail on error
         az version
         az extension remove -n azure-cli-ml
         az extension remove -n ml
