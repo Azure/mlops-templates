@@ -4,8 +4,7 @@ endpoint_name: my-endpoint
 model:
   path: path/
 code_configuration:
-  code: 
-    code: path/
+  code: path/
   scoring_script: file.py
 environment: 
   conda_file: file.yml
