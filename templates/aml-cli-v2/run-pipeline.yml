@@ -5,6 +5,7 @@ steps:
     inputs: 
       azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
-      scriptLocation: '$(System.DefaultWorkingDirectory)/data-science-regression'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/data-science-regression'
+      scriptLocation: inlineScript
       inlineScript: |
         az ml job create --file pipeline.yml
