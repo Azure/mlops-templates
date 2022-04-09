@@ -11,7 +11,12 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml online-endpoint create --name $(moe_endpoint_name)
+        ENDPOINT_EXISTS=$(az ml online-endpoint list -o tsv --query "[?name=='$(moe_endpoint_name)'][name]" | wc -l)
+        if [[ ENDPOINT_EXISTS -ne 1 ]]; then
+            az ml online-endpoint create --name $(moe_endpoint_name)
+        else
+            echo "Endpoint exists"
+        fi
     condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-endpoint'))
   - task: AzureCLI@2
     displayName: Create deployment

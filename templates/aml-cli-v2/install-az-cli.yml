@@ -2,6 +2,13 @@
 # Licensed under the MIT License.
 
 steps:
+  - task: Cache@2
+    displayName: Use cached azure cli
+    inputs:
+      key: 'az | pip'
+      path: $(System.DefaultWorkingDirectory)
+      cacheHitVar: AZ_CLI_CACHE_RESTORED
+
   - task: AzureCLI@2
     displayName: Install AZ CLI
     inputs:
@@ -12,3 +19,5 @@ steps:
       inlineScript: |
         set -e # fail on error
         python -m pip install -U --force-reinstall pip pip install azure-cli
+    condition: eq(variables.AZ_CLI_CACHE_RESTORED, 'false')
+    
