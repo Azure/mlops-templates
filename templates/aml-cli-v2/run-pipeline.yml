@@ -7,4 +7,6 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml  job create --file ../../../data-science-regression/pipeline.yml
+        az ml job create --file ../../data-science-regression/pipeline.yml
+
+        data-science-regression/pipeline.yml
