@@ -1,0 +1,14 @@
+parameters:
+- name: job_type
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Run a Azure ML Pipeline
+    continueOnError: true
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az ml  job create --file ../../../data-science-regression/pipeline.yml
