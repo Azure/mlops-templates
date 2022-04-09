@@ -1,0 +1,11 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Test deployment
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      workingDirectory: '$(System.DefaultWorkingDirectory)/data/managed-endpoints'
+      scriptLocation: inlineScript
+      inlineScript: |
+        RESPONSE=$(az ml online-endpoint invoke -n $(moe_endpoint_name) --deployment $(moe_deployment_name) --request-file sample-request.json)
+        echo $RESPONSE

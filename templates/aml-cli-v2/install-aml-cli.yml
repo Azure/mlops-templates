@@ -14,3 +14,4 @@ steps:
         az version
         az extension add -n ml -y
         az extension update -n ml
+    condition: eq(variables.AZ_ML_CLI_CACHE_RESTORED, 'false')
