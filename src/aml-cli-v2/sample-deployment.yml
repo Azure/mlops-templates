@@ -2,10 +2,10 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: blue
 endpoint_name: my-endpoint
 model:
-  local_path: path/
+  path: path/
 code_configuration:
   code: 
-    local_path: path/
+    code: path/
   scoring_script: file.py
 environment: 
   conda_file: file.yml

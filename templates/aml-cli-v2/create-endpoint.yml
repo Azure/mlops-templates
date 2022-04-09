@@ -15,8 +15,8 @@ steps:
         echo $ENDPOINT_NAME $ENDPOINT_EXISTS
 
         if [[ ENDPOINT_EXISTS -ne 1 ]]; then
-        if [[ ENDPOINT_EXISTS -ne 1 ]]; then
             az ml online-endpoint create --name $(moe_endpoint_name)
         else
             echo "Endpoint exists"
         fi
+  

@@ -8,9 +8,9 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az ml online-deployment create --name $(moe_deployment_name) --endpoint $(moe_endpoint_name) \
-          --set model.local_path=$(moe_model) \
+          --set model.path=$(moe_model) \
                 code_configuration.scoring_script=$(moe_scoring_script) \
-                code_configuration.code.local_path=../../../data-science/src/ \
+                code_configuration.code.code=../../../data-science/src/ \
                 environment.conda_file=../../../mlops/environments/online-endpoints/$(moe_env_conda_file) \
                 environment.image=$(moe_env_image) \
                 instance_type=$(moe_instance_type) \
