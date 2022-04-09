@@ -1,6 +1,7 @@
 steps:
   - task: AzureCLI@2
     displayName: Create managed online endpoint 
+    continueOnError: true
     inputs: 
       azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
@@ -8,9 +9,9 @@ steps:
       inlineScript: |
         ENDPOINT_NAME=$(moe_endpoint_name)
         ENDPOINT_EXISTS=$(az ml online-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
-        echo $ENDPOINT_NAME
-        echo $ENDPOINT_EXISTS
-        az ml online-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" --debug
+        echo $ENDPOINT_NAME $ENDPOINT_EXISTS
+        az ml online-endpoint list -o table
+
         if [[ ENDPOINT_EXISTS -ne 1 ]]; then
             az ml online-endpoint create --name $(moe_endpoint_name)
         else
