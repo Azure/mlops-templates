@@ -2,13 +2,6 @@
 # Licensed under the MIT License.
 
 steps:
-  - task: Cache@2
-    displayName: Use cached azure ml cli
-    inputs:
-      key: 'az | ml'
-      path: $(System.DefaultWorkingDirectory)
-      cacheHitVar: AZ_ML_CLI_CACHE_RESTORED
-
   - task: AzureCLI@2
     displayName: Install AML CLI v2
     inputs:
