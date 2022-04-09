@@ -1,3 +1,4 @@
+steps:
   - task: AzureCLI@2
     displayName: Create deployment
     inputs: 
@@ -15,4 +16,4 @@
                 instance_type=$(moe_instance_type) \
                 instance_count=$(moe_instance_count) \
           -f templates/src/aml-cli-v2/sample-deployment.yml
-    condition: and(succeeded(), eq('${{ parameters.job_type }}', 'create-deployment'))
+          
