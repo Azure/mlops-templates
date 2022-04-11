@@ -1,0 +1,11 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+steps:
+  - task: AzureCLI@2
+    displayName: 'Create Container'
+    inputs:
+      azureSubscription: '$(ado_service_connection_rg)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az storage container create --account-name $(terraform_st_storage_account) --name $(terraform_st_container_name)'
