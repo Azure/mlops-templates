@@ -3,8 +3,8 @@
 
 steps:
   - task: TerraformTaskV2@2
-   displayName: 'Terraform validate'
-   inputs:
-     provider: 'azurerm'
-     command: 'validate'
-     workingDirectory: $(System.DefaultWorkingDirectory)/$(terraform_workingdir)
+    displayName: 'Terraform validate'
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: $(System.DefaultWorkingDirectory)/$(terraform_workingdir)
