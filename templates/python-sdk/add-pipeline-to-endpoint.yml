@@ -9,7 +9,5 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        pwd
-        ls
-        echo $(pipeline_id)
+        set -e
         python templates/src/python-sdk/add_pipeline_to_endpoint.py -p $(pipeline_id)
