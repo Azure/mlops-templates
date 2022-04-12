@@ -15,5 +15,3 @@ steps:
         az extension add -n ml -y
         az extension update -n ml
         az extension list
-
-#--version 2.2.1 

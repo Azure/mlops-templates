@@ -1,6 +1,5 @@
-parameters:
-  name: endpoint_name
-  type: string
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
 
 steps:
   - task: AzureCLI@2
