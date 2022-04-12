@@ -1,0 +1,15 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+steps:
+  - task: TerraformTaskV2@2
+    displayName: 'Terraform init'
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
+      backendServiceArm: '$(ado_service_connection_rg)'
+      backendAzureRmResourceGroupName: '$(terraform_st_resource_group)'
+      backendAzureRmStorageAccountName: '$(terraform_st_storage_account)'
+      backendAzureRmContainerName: '$(terraform_st_container_name)'
+      backendAzureRmKey: '$(terraform_st_key)'
