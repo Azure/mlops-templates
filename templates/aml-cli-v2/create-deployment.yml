@@ -16,5 +16,7 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
       scriptLocation: inlineScript
       inlineScript: |
+        pwd
+        ls
         az ml online-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
           -f ../${{ parameters.deployment_file }}
