@@ -1,6 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+parameters:
+  - name: pipeline_file
+    type: string
+
 steps:
   - task: AzureCLI@2
     displayName: Deploy traininig pipeline to AML
@@ -9,4 +13,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml job create --file data-science-regression/pipeline.yml
+        az ml job create --file ${{ parameters.pipeline_file }}
