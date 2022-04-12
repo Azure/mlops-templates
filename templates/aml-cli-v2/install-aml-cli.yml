@@ -12,6 +12,4 @@ steps:
       inlineScript: |
         set -e # fail on error
         az version
-        az extension add -n ml -y
-
-#--version 2.2.1 
+        az extension add -n ml --version 2.2.1 -y
