@@ -15,7 +15,6 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        pwd
-        ls
+        cat ${{ parameters.deployment_file }}
         az ml online-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
           -f ${{ parameters.deployment_file }}
