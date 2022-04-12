@@ -20,4 +20,3 @@ steps:
         else
             echo "Endpoint exists"
         fi
-  
