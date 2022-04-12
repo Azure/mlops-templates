@@ -14,8 +14,6 @@ steps:
         ENDPOINT_EXISTS=$(az ml online-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
         echo $ENDPOINT_NAME $ENDPOINT_EXISTS
         az ml online-endpoint list -o tsv
-        ENDPOINT_EXISTS=$(az ml online-endpoint list -o tsv --query "[?name=='testendpoint1'][name]" | wc -l)
-        echo $ENDPOINT_NAME $ENDPOINT_EXISTS
 
         if [[ ENDPOINT_EXISTS -ne 1 ]]; then
             az ml online-endpoint create --name ${{ parameters.endpoint_name }}
