@@ -17,4 +17,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az ml online-deployment update --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
-          -f ../${{ parameters.deployment_file }}
+          -f ${{ parameters.deployment_file }}
