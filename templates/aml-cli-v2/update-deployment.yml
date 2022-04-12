@@ -9,12 +9,12 @@ parameters:
 
 steps:
   - task: AzureCLI@2
-    displayName: Create deployment
+    displayName: Update deployment
     inputs: 
       azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
       workingDirectory: '$(System.DefaultWorkingDirectory)'
       scriptLocation: inlineScript
       inlineScript: |
-        az ml online-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
+        az ml online-deployment update --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
           -f ../${{ parameters.deployment_file }}

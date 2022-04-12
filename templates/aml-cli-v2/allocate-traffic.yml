@@ -1,0 +1,16 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+parameters:
+- name: traffic_allocation
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Update traffic allocation
+    inputs:
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e
+        az ml online-endpoint update --name $(moe_endpoint_name) --traffic "${{ parameters.job_type }}"

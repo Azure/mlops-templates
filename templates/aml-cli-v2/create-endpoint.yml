@@ -7,7 +7,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        ENDPOINT_NAME=$(moe_endpoint_name)
+        ENDPOINT_NAME=$(endpoint_name)
         ENDPOINT_EXISTS=$(az ml online-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
         echo $ENDPOINT_NAME $ENDPOINT_EXISTS
         az ml online-endpoint list -o tsv
@@ -15,7 +15,7 @@ steps:
         echo $ENDPOINT_NAME $ENDPOINT_EXISTS
 
         if [[ ENDPOINT_EXISTS -ne 1 ]]; then
-            az ml online-endpoint create --name $(moe_endpoint_name)
+            az ml online-endpoint create --name $(endpoint_name)
         else
             echo "Endpoint exists"
         fi

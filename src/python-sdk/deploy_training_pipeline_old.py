@@ -27,7 +27,7 @@ print(config)
 
 
 ws = Workspace.from_config()
-env = Environment.get(workspace=ws, name=config['training_environment_name'])
+env = Environment.get(workspace=ws, name=config['training_env_name'])
 runconfig = RunConfiguration()
 runconfig.environment = env
 training_dataset_consumption = None
@@ -60,7 +60,7 @@ print(training_dataset_consumption)
 
 train_step = PythonScriptStep(name="train-step",
                         runconfig=runconfig,
-                        compute_target=config['training_pipeline_target'],
+                        compute_target=config['training_target'],
                         source_directory="data-science/src/",
                         script_name="train.py",
                         arguments=arguments,
@@ -69,7 +69,7 @@ train_step = PythonScriptStep(name="train-step",
 
 register_step = PythonScriptStep(name="register-step",
                         runconfig=runconfig,
-                        compute_target=config['training_pipeline_target'],
+                        compute_target=config['training_target'],
                         source_directory="templates/src/python-sdk/",
                         script_name="register_model.py",
                         arguments=['--model_name', config['model_name'], '--model_path', 'outputs/'],
