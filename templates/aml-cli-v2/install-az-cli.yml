@@ -20,5 +20,5 @@ steps:
         set -e # fail on error
         python -m pip install -U --force-reinstall pip pip install azure-cli==2.35
         az version
-    condition: eq(variables.AZ_CLI_CACHE_RESTORED, 'false')
+    # condition: eq(variables.AZ_CLI_CACHE_RESTORED, 'false')
     
