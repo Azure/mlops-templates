@@ -13,4 +13,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        az ml online-endpoint update --name $(moe_endpoint_name) --traffic "${{ parameters.traffic_allocation }}"
+        az ml online-endpoint update --name $(endpoint_name) --traffic "${{ parameters.traffic_allocation }}"
