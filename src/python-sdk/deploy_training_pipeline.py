@@ -19,7 +19,7 @@ from azureml.data.output_dataset_config import OutputFileDatasetConfig
 print("Azure ML SDK version:", azureml.core.VERSION)
 
 parser = argparse.ArgumentParser("Deploy Training Pipeline")
-parser.add_argument("-f", type=str, help="Controller Config YAML file")
+parser.add_argument("-f", type=str, help="config-aml.yml file")
 args = parser.parse_args()
 
 with open(args.f, "r") as f:
@@ -73,7 +73,7 @@ arguments = arguments + ['--transformed_data_path', transformed_data_path]
 transform_step = PythonScriptStep(name="transform-step",
                         runconfig=runconfig,
                         compute_target=config['training_target'],
-                        source_directory="data-science/src/",
+                        source_directory="data-science/python-sdk/src/",
                         script_name="transform.py",
                         arguments=arguments,
                         inputs=inputs,
@@ -82,7 +82,7 @@ transform_step = PythonScriptStep(name="transform-step",
 train_step = PythonScriptStep(name="train-step",
                         runconfig=runconfig,
                         compute_target=config['training_target'],
-                        source_directory="data-science/src/",
+                        source_directory="data-science/python-sdk/src/",
                         script_name="train.py",
                         arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
                                    '--model_path', trained_model_path],
@@ -91,7 +91,7 @@ train_step = PythonScriptStep(name="train-step",
 evaluate_step = PythonScriptStep(name="evaluate-step",
                         runconfig=runconfig,
                         compute_target=config['training_target'],
-                        source_directory="data-science/src/",
+                        source_directory="data-science/python-sdk/src/",
                         script_name="evaluate.py",
                         arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
                                    '--model_name', config['model_name'], 
