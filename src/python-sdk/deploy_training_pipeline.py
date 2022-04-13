@@ -63,6 +63,7 @@ print(training_dataset_consumption)
 
 transformed_data_path = OutputFileDatasetConfig(name="transformed_data", destination=(datastore, "pipeline_artifacts/transformed_data")).as_upload()
 trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
+explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
 evaluation_results_path = OutputFileDatasetConfig(name="evaluation_results", destination=(datastore, "pipeline_artifacts/evaluation_results")).as_upload()
 deploy_flag = PipelineData("deploy_flag")
 
@@ -95,6 +96,7 @@ evaluate_step = PythonScriptStep(name="evaluate-step",
                         arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
                                    '--model_name', config['model_name'], 
                                    '--model_path', trained_model_path.as_input("trained_model"),
+                                   '--explainer_path', explainer_path,
                                    '--evaluation_path', evaluation_results_path,
                                    '--deploy_flag', deploy_flag],
                         outputs=[deploy_flag],
@@ -112,7 +114,7 @@ register_step = PythonScriptStep(name="register-step",
                         allow_reuse=False)
 
 #register_step.run_after(evaluate_step)
-steps = [transform_step, train_step, register_step, evaluate_step]
+steps = [transform_step, train_step, evaluate_step, register_step]
 
 print('Creating, validating, and publishing pipeline')
 pipeline = Pipeline(workspace=ws, steps=steps)

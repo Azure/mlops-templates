@@ -6,6 +6,10 @@ import argparse
 from azureml.core import Run, Experiment, Model
 from azureml.pipeline.core import PipelineRun
 
+# current run is the registration step
+run = Run.get_context()
+ws = run.experiment.workspace
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_name', type=str, help='Name under which model will be registered')
 parser.add_argument('--model_path', type=str, help='Model directory')
@@ -14,19 +18,15 @@ args, _ = parser.parse_known_args()
 
 print(f'Arguments: {args}')
 model_name = args.model_name
-model_path = args.model_path
+model_path = os.path.join(args.model_path, run.parent.id)
 
 with open(args.deploy_flag, 'r') as f:
     deploy_flag = int(f.read())
-        
-# current run is the registration step
-run = Run.get_context()
-ws = run.experiment.workspace
 
 if deploy_flag==1:
     print("Registering ", args.model_name)
-    registered_model = Model.register(model_path=args.model_path,
-                                      model_name=args.model_name,
+    registered_model = Model.register(model_path=model_path,
+                                      model_name=model_name,
                                       workspace=ws)
     print("Registered ", registered_model.id)
 else:
