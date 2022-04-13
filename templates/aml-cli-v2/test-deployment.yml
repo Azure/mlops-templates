@@ -16,3 +16,32 @@ steps:
         set -e
         RESPONSE=$(az ml online-endpoint invoke -n $(endpoint_name) --deployment ${{ parameters.deployment_name }} --request-file ${{ parameters.sample_request }})
         echo $RESPONSE
+    condition: and(succeeded(), eq('$(endpoint_type', 'online'))
+  - task: AzureCLI@2
+    displayName: Test deployment
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      scriptLocation: inlineScript
+      inlineScript: |
+        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $ENDPOINT_NAME --deployment-name ${{ parameters.deployment_name }} --input-path ${{ parameters.sample_request }} --query name -o tsv)
+
+        az ml job show -n $JOB_NAME --web
+        az ml job stream -n $JOB_NAME
+
+        STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
+        echo $STATUS
+        if [[ $STATUS == "Completed" ]]
+        then
+          echo "Job completed"
+        elif [[ $STATUS ==  "Failed" ]]
+        then
+          echo "Job failed"
+          exit 1
+        else 
+          echo "Job status not failed or completed"
+          exit 2
+        fi
+    condition: and(succeeded(), eq('$(endpoint_type)', 'batch'))
+
