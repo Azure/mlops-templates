@@ -10,11 +10,9 @@ steps:
     inputs: 
       azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
       scriptType: bash
-      workingDirectory: '$(System.DefaultWorkingDirectory)/data/managed-endpoints'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        pwd
-        ls
         RESPONSE=$(az ml online-endpoint invoke -n $(endpoint_name) --deployment ${{ parameters.deployment_name }} --request-file ${{ parameters.sample_request }})
         echo $RESPONSE
