@@ -76,7 +76,7 @@ transform_step = PythonScriptStep(name="transform-step",
                         script_name="transform.py",
                         arguments=arguments,
                         inputs=inputs,
-                        allow_reuse=True)
+                        allow_reuse=False)
 
 train_step = PythonScriptStep(name="train-step",
                         runconfig=runconfig,
@@ -85,7 +85,7 @@ train_step = PythonScriptStep(name="train-step",
                         script_name="train.py",
                         arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
                                    '--model_path', trained_model_path],
-                        allow_reuse=True)
+                        allow_reuse=False)
 
 evaluate_step = PythonScriptStep(name="evaluate-step",
                         runconfig=runconfig,
@@ -98,7 +98,7 @@ evaluate_step = PythonScriptStep(name="evaluate-step",
                                    '--evaluation_path', evaluation_results_path,
                                    '--deploy_flag', deploy_flag],
                         outputs=[deploy_flag],
-                        allow_reuse=True)
+                        allow_reuse=False)
 
 register_step = PythonScriptStep(name="register-step",
                         runconfig=runconfig,
@@ -109,7 +109,7 @@ register_step = PythonScriptStep(name="register-step",
                                    '--model_path', trained_model_path.as_input("trained_model"),
                                    '--deploy_flag', deploy_flag],
                         inputs=[deploy_flag],
-                        allow_reuse=True)
+                        allow_reuse=False)
 
 #register_step.run_after(evaluate_step)
 steps = [transform_step, train_step, register_step, evaluate_step]
