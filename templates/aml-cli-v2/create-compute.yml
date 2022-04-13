@@ -5,9 +5,9 @@ parameters:
 - name: cluster_name
   type: string
 - name: min_instances
-  type: integer
+  type: number
 - name: max_instances
-  type: integer
+  type: number
 
 steps:
   - task: AzureCLI@2
