@@ -2,8 +2,6 @@
 # Licensed under the MIT License.
 
 parameters:
-- name: endpoint_type
-  type: string
 - name: deployment_name
   type: string
 - name: deployment_file
@@ -18,5 +16,5 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml ${{ parameters.endpoint_type }} create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
+        az ml $(endpoint_type) create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
           -f ${{ parameters.deployment_file }}
