@@ -40,7 +40,7 @@ output_dataset = OutputFileDatasetConfig(name='batch_results',
                                          destination=(datastore, config['batch_output_path_on_datastore'])).register_on_complete(name=config['batch_output_dataset_name'])
 
 parallel_run_config = ParallelRunConfig(
-    source_directory="data-science/python-sdk/src/",
+    source_directory="data-science/src/",
     entry_script="score.py",
     environment=env,
     output_action="append_row",
