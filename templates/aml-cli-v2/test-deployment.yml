@@ -16,7 +16,7 @@ steps:
         set -e
         RESPONSE=$(az ml online-endpoint invoke -n $(endpoint_name) --deployment ${{ parameters.deployment_name }} --request-file ${{ parameters.sample_request }})
         echo $RESPONSE
-    condition: and(succeeded(), eq($(endpoint_type), 'online'))
+    condition: and(succeeded(), eq(variables['endpoint_type'], 'online'))
   - task: AzureCLI@2
     displayName: Test deployment
     inputs: 
@@ -43,5 +43,5 @@ steps:
           echo "Job status not failed or completed"
           exit 2
         fi
-    condition: and(succeeded(), eq($(endpoint_type), 'batch'))
+    condition: and(succeeded(), eq(variables['endpoint_type'], 'batch'))
 
