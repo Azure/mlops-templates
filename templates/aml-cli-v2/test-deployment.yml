@@ -43,5 +43,5 @@ steps:
           echo "Job status not failed or completed"
           exit 2
         fi
-    condition: and(succeeded(), eq('$(endpoint_type)', 'batch'))
+    condition: and(succeeded(), eq($(endpoint_type), 'batch'))
 
