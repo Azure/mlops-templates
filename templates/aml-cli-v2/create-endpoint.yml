@@ -1,6 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+parameters:
+  - name: endpoint_type
+    type: string
+
 steps:
   - task: AzureCLI@2
     displayName: Create managed online endpoint 
@@ -11,12 +15,12 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         ENDPOINT_NAME=$(endpoint_name)
-        ENDPOINT_EXISTS=$(az ml online-endpoint list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
+        ENDPOINT_EXISTS=$(az ml ${{ parameters.endpoint_type }} list -o tsv --query "[?name=='$ENDPOINT_NAME'][name]" | wc -l)
         echo $ENDPOINT_NAME $ENDPOINT_EXISTS
-        az ml online-endpoint list -o tsv
+        az ml ${{ parameters.endpoint_type }} list -o tsv
 
         if [[ ENDPOINT_EXISTS -ne 1 ]]; then
-            az ml online-endpoint create --name $(endpoint_name)
+            az ml ${{ parameters.endpoint_type }} create --name $(endpoint_name)
         else
             echo "Endpoint exists"
         fi
