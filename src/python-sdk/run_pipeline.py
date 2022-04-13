@@ -16,6 +16,6 @@ ws = Workspace.from_config()
 
 pipeline = PublishedPipeline.get(workspace=ws, id=args.p)
 experiment_name = pipeline.name + '-ci'
-pipeline_run = Experiment(ws, experiment_name).submit(pipeline)
+pipeline_run = Experiment(ws, experiment_name).submit(pipeline, regenerate_outputs=True)
 print(pipeline_run)
 pipeline_run.wait_for_completion()
