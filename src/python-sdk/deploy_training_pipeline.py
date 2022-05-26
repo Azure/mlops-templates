@@ -61,20 +61,20 @@ for arg in shlex.split(config['training_arguments']):
 print(f"Expanded arguments: {arguments}")
 print(training_dataset_consumption)
 
-transformed_data_path = OutputFileDatasetConfig(name="transformed_data", destination=(datastore, "pipeline_artifacts/transformed_data")).as_upload()
+prepared_data_path = OutputFileDatasetConfig(name="prepared_data", destination=(datastore, "pipeline_artifacts/prepared_data")).as_upload()
 trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
 explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
 evaluation_results_path = OutputFileDatasetConfig(name="evaluation_results", destination=(datastore, "pipeline_artifacts/evaluation_results")).as_upload()
 deploy_flag = PipelineData("deploy_flag")
 
 
-arguments = arguments + ['--transformed_data_path', transformed_data_path]
+arguments = arguments + ['--prepared_data_path', prepared_data_path]
 
-transform_step = PythonScriptStep(name="transform-step",
+prepare_step = PythonScriptStep(name="prepare-step",
                         runconfig=runconfig,
                         compute_target=config['training_target'],
                         source_directory="data-science/src/",
-                        script_name="transform.py",
+                        script_name="prep.py",
                         arguments=arguments,
                         inputs=inputs,
                         allow_reuse=False)
@@ -84,7 +84,7 @@ train_step = PythonScriptStep(name="train-step",
                         compute_target=config['training_target'],
                         source_directory="data-science/src/",
                         script_name="train.py",
-                        arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
+                        arguments=['--prepared_data_path', prepared_data_path.as_input("prepared_data"),
                                    '--model_path', trained_model_path],
                         allow_reuse=False)
 
@@ -93,7 +93,7 @@ evaluate_step = PythonScriptStep(name="evaluate-step",
                         compute_target=config['training_target'],
                         source_directory="data-science/src/",
                         script_name="evaluate.py",
-                        arguments=['--transformed_data_path', transformed_data_path.as_input("transformed_data"),
+                        arguments=['--prepared_data_path', prepared_data_path.as_input("prepared_data"),
                                    '--model_name', config['model_name'], 
                                    '--model_path', trained_model_path.as_input("trained_model"),
                                    '--explainer_path', explainer_path,
@@ -114,7 +114,7 @@ register_step = PythonScriptStep(name="register-step",
                         allow_reuse=False)
 
 #register_step.run_after(evaluate_step)
-steps = [transform_step, train_step, evaluate_step, register_step]
+steps = [prepare_step, train_step, evaluate_step, register_step]
 
 print('Creating, validating, and publishing pipeline')
 pipeline = Pipeline(workspace=ws, steps=steps)
