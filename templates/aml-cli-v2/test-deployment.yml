@@ -14,7 +14,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        RESPONSE=$(az ml $(endpoint_type)-endpoint invoke -n $(endpoint_name) --deployment ${{ parameters.deployment_name }} --request-file ${{ parameters.sample_request }})
+        RESPONSE=$(az ml $(endpoint_type)-endpoint invoke -n $(endpoint_name) --request-file ${{ parameters.sample_request }})
         echo $RESPONSE
     condition: and(succeeded(), eq(variables['endpoint_type'], 'online'))
     
@@ -26,7 +26,7 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
       scriptLocation: inlineScript
       inlineScript: |
-        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $(endpoint_name) --deployment-name ${{ parameters.deployment_name }} --input ${{ parameters.sample_request }} --query name -o tsv)
+        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $(endpoint_name) --input ${{ parameters.sample_request }} --query name -o tsv)
 
         az ml job show -n $JOB_NAME --web
         az ml job stream -n $JOB_NAME
