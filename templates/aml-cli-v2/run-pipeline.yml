@@ -8,6 +8,8 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
       scriptLocation: inlineScript
       inlineScript: |
+        pwd
+        ls
         run_id=$(az ml job create -f pipeline.yml --query name -o tsv)
         if [[ -z "$run_id" ]]
         then
