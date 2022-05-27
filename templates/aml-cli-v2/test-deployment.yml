@@ -24,7 +24,7 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
       scriptLocation: inlineScript
       inlineScript: |
-        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $(endpoint_name) --input ${{ parameters.sample_request }} --query name -o tsv)
+        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $(endpoint_name) --input ${{ parameters.sample_request }} --input-type uri_folder)
 
         az ml job show -n $JOB_NAME --web
         az ml job stream -n $JOB_NAME
