@@ -19,7 +19,6 @@ steps:
 
     condition: and(succeeded(), eq('${{ parameters.build_type }}', 'docker'))
 
-steps:
   - task: AzureCLI@2
     displayName: Register Azure ML environment (conda)
     continueOnError: true
