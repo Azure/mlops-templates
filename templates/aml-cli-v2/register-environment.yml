@@ -1,6 +1,10 @@
 parameters:
 - name: build_type
   type: string
+- name: environment_name
+  type: string
+- name: environment_file
+  type: string
   
 steps:
   - task: AzureCLI@2
@@ -25,5 +29,5 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-        
+        az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }}
     condition: and(succeeded(), eq('${{ parameters.build_type }}', 'conda'))
