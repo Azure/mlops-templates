@@ -1,6 +1,6 @@
 parameters:
   - name: deployment_name
-    type: 
+    type: string
   - name: sample_request
     type: string
 
