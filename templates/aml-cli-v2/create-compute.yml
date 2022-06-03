@@ -4,6 +4,8 @@
 parameters:
 - name: cluster_name
   type: string
+- name: size
+  type: string
 - name: min_instances
   type: number
 - name: max_instances
@@ -18,4 +20,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml compute create -n ${{ parameters.cluster_name }} --type amlcompute --min-instances ${{ parameters.min_instances }} --max-instances ${{ parameters.max_instances }}
+        az ml compute create -n ${{ parameters.cluster_name }} --type amlcompute --size ${{ parameters.size }} --min-instances ${{ parameters.min_instances }} --max-instances ${{ parameters.max_instances }}
