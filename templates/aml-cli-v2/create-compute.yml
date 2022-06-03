@@ -4,10 +4,14 @@
 parameters:
 - name: cluster_name
   type: string
+- name: size
+  type: string
 - name: min_instances
   type: number
 - name: max_instances
   type: number
+- name: cluster_tier
+  type: string
 
 steps:
   - task: AzureCLI@2
@@ -18,4 +22,19 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az ml compute create -n ${{ parameters.cluster_name }} --type amlcompute --min-instances ${{ parameters.min_instances }} --max-instances ${{ parameters.max_instances }}
+        compute_name=$(z ml compute show -n ${{ parameters.cluster_name }} --query name -o tsv)
+        if [[ -z "$run_id" ]]
+        then
+          echo "Compute does not exists. Creating the cluster..."
+          az ml compute create --name ${{ parameters.cluster_name }} 
+                                  --type amlcompute 
+                                  --size ${{ parameters.size }} 
+                                  --min-instances ${{ parameters.min_instances }} 
+                                  --max-instances ${{ parameters.max_instances }} 
+                                  --tier ${{ parameters.cluster_tier }} 
+        else
+          echo "Compute exists. Skipping cluster creation."
+          exit 0
+        fi
+
+        
