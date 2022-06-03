@@ -16,7 +16,7 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-
+        az ml environment create --file ${{ parameters.environment_file }}
     condition: and(succeeded(), eq('${{ parameters.build_type }}', 'docker'))
 
   - task: AzureCLI@2
