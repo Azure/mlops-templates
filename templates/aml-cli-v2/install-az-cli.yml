@@ -2,14 +2,7 @@
 # Licensed under the MIT License.
 
 steps:
-  - task: Cache@2
-    displayName: Use cached azure cli
-    inputs:
-      key: 'az | pip'
-      path: $(System.DefaultWorkingDirectory)
-      cacheHitVar: AZ_CLI_CACHE_RESTORED
-
-  - task: AzureCLI@2
+- task: AzureCLI@2
     displayName: Install AZ CLI
     inputs:
       azureSubscription: $(ado_service_connection_aml_ws)
