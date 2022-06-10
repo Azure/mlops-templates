@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 steps:
-- task: AzureCLI@2
+  - task: AzureCLI@2
     displayName: Install AZ CLI
     inputs:
       azureSubscription: $(ado_service_connection_aml_ws)
