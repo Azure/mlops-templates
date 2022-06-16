@@ -25,7 +25,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az ml job create --file ${{ parameters.environment_file }}
-    condition: and(succeeded(), eq('${{ parameters.data_type }}', 'training'))
+    condition: and(succeeded(), eq('${{ parameters.data_type }}', 'training'), eq('${{ parameters.file_type }}', 'uri'))
 
   - task: AzureCLI@2
     displayName: Register scoring dataset
@@ -35,7 +35,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az ml job create --file ${{ parameters.environment_file }}
-    condition: and(succeeded(), eq('${{ parameters.data_type }}', 'scoring'))
+    condition: and(succeeded(), eq('${{ parameters.data_type }}', 'scoring'), eq('${{ parameters.file_type }}', 'uri'))
 
   - task: AzureCLI@2
     displayName: Register MLTable dataset
