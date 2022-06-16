@@ -12,7 +12,7 @@ parameters:
   values:
   - uri
   - mltable
-- dataset_name: training_data
+- name: dataset_name
   type: string
   default: "training_data"
 
