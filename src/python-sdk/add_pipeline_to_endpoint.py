@@ -27,4 +27,4 @@ except Exception:
     pl_endpoint = PipelineEndpoint.publish(workspace=ws,
                                            name=endpoint_name,
                                            pipeline=published_pipeline,
-                                           description='Published by AI Factory')
+                                           description='Published by MLOps V2')
