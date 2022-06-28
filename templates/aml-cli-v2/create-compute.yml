@@ -22,7 +22,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        compute_name=$(z ml compute show -n ${{ parameters.cluster_name }} --query name -o tsv)
+        compute_name=$(az ml compute show -n ${{ parameters.cluster_name }} --query name -o tsv)
         if [[ -z "$compute_name" ]]
         then
           echo "Compute does not exists. Creating the cluster..."
