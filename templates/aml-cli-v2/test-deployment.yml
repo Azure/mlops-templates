@@ -17,7 +17,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        RESPONSE=$(az ml $(endpoint_type)-endpoint invoke -n $(endpoint_name) --deployment-name ${{ parameters.deployment_name }} --request-file ${{ parameters.sample_request }})
+        RESPONSE=$(az ml $(endpoint_type)-endpoint invoke -n $(endpoint_name) --deployment-name ${{ parameters.deployment_name }} --request-file ${{ parameters.sample_request }} --resource-group $(resource-group) --workspace-name $(aml_workspace)) 
         echo $RESPONSE
     condition: and(succeeded(), eq(variables['endpoint_type'], 'online'))
     
@@ -30,11 +30,11 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $(endpoint_name) --deployment-name ${{ parameters.deployment_name }} --input ${{ parameters.sample_request }} --input-type ${{ parameters.request_type }} --query name -o tsv)
-        az ml job show -n $JOB_NAME --web
-        az ml job stream -n $JOB_NAME
+        JOB_NAME=$(az ml $(endpoint_type)-endpoint invoke --name $(endpoint_name) --deployment-name ${{ parameters.deployment_name }} --input ${{ parameters.sample_request }} --input-type ${{ parameters.request_type }} --query name -o tsv --resource-group $(resource-group) --workspace-name $(aml_workspace))
+        az ml job show -n $JOB_NAME --web --resource-group $(resource-group) --workspace-name $(aml_workspace)
+        az ml job stream -n $JOB_NAME --resource-group $(resource-group) --workspace-name $(aml_workspace)
 
-        STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv)
+        STATUS=$(az ml job show -n $JOB_NAME --query status -o tsv --resource-group $(resource-group) --workspace-name $(aml_workspace))
         echo $STATUS
         if [[ $STATUS == "Completed" ]]
         then

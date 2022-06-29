@@ -18,4 +18,4 @@ steps:
       inlineScript: |
         set -o xtrace
         az ml $(endpoint_type)-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
-          -f ${{ parameters.deployment_file }} 
+          -f ${{ parameters.deployment_file }} --resource-group $(resource-group) --workspace-name $(aml_workspace)
