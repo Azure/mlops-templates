@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 python --version
-pip install azureml-sdk==1.36.0
+pip install azureml-sdk==1.43.0
 pip install pytest
 pip install pyyaml
 pip install azureml-dataset-runtime --upgrade
