@@ -1,6 +1,10 @@
 parameters:
   - name: pipeline_file
     type: string
+  - name: experiment_name
+    type: string
+  - name: display_name
+    type: string
     
 steps:
   - task: AzureCLI@2
@@ -12,7 +16,9 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-        run_id=$(az ml job create -f ${{ parameters.pipeline_file }} --query name -o tsv)
+        run_id=$(az ml job create -f ${{ parameters.pipeline_file }} \
+          --set experiment_name=${{ parameters.experiment_name }} \
+          display_name=${{ parameters.display_name }} --query name -o tsv)
         if [[ -z "$run_id" ]]
         then
           echo "Job creation failed"
