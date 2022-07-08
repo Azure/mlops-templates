@@ -1,16 +1,14 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import os
 import re
 import argparse
 import yaml
 import shlex
 
 import azureml.core
-from azureml.core import Workspace, Experiment, Datastore, Dataset, RunConfiguration, Environment
+from azureml.core import Workspace, Datastore, Dataset, RunConfiguration, Environment
 
-from azureml.core.compute import AmlCompute, ComputeTarget
 from azureml.pipeline.core import Pipeline, PipelineData, PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.data.dataset_consumption_config import DatasetConsumptionConfig
@@ -61,10 +59,11 @@ for arg in shlex.split(config['training_arguments']):
 print(f"Expanded arguments: {arguments}")
 print(training_dataset_consumption)
 
-prepared_data_path = OutputFileDatasetConfig(name="prepared_data", destination=(datastore, "pipeline_artifacts/prepared_data")).as_upload()
-trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
-explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
-evaluation_results_path = OutputFileDatasetConfig(name="evaluation_results", destination=(datastore, "pipeline_artifacts/evaluation_results")).as_upload()
+# Set up data connections between steps - {run-id} is automatically replaced with the corresponding ID during execution
+prepared_data_path = OutputFileDatasetConfig(name="prepared_data", destination=(datastore, "pipeline_artifacts/prepared_data/{run-id}/")).as_upload()
+trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model/{run-id}/")).as_upload()
+explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model/{run-id}/")).as_upload()
+evaluation_results_path = OutputFileDatasetConfig(name="evaluation_results", destination=(datastore, "pipeline_artifacts/evaluation_results/{run-id}/")).as_upload()
 deploy_flag = PipelineData("deploy_flag")
 
 
