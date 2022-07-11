@@ -1,0 +1,27 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+steps:
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: '$(ado_service_connection_rg)'
+      scriptType: 'bash'
+      addSpnToEnvironment: true
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+          if [[ ! -z "${servicePrincipalId:-}" ]]; then
+            SUBSCRIPTION_ID=$(az account show --query 'id' --output tsv)
+            TENANT_ID=$(az account show --query 'tenantId' --output tsv)
+            CLIENT_ID=${servicePrincipalId:-}
+            CLIENT_SECRET=${servicePrincipalKey:-}
+          else
+            SUBSCRIPTION_ID=
+            TENANT_ID=
+            CLIENT_ID=
+            CLIENT_SECRET=
+          fi
+          
+          # Define environment variables
+          echo "##vso[task.setvariable variable=TENANT_ID]'$TENANT_ID'"
+          echo "##vso[task.setvariable variable=CLIENT_ID]'$CLIENT_ID'"
+          echo "##vso[task.setvariable variable=CLIENT_SECRET]'$CLIENT_SECRET'"
