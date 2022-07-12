@@ -8,5 +8,5 @@ steps:
       provider: 'azurerm'
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-      commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)"'
+      commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)"' -var "enable_aml_secure_workspace=$(enable_aml_secure_workspace)"' -var "jumphost_username=$(jumphost_username)"' -var "jumphost_password=$(jumphost_password)"'
       environmentServiceNameAzureRM: '$(ado_service_connection_rg)'
