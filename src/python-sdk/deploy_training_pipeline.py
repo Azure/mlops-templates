@@ -1,16 +1,14 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import os
 import re
 import argparse
 import yaml
 import shlex
 
 import azureml.core
-from azureml.core import Workspace, Experiment, Datastore, Dataset, RunConfiguration, Environment
+from azureml.core import Workspace, Datastore, Dataset, RunConfiguration, Environment
 
-from azureml.core.compute import AmlCompute, ComputeTarget
 from azureml.pipeline.core import Pipeline, PipelineData, PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.data.dataset_consumption_config import DatasetConsumptionConfig
