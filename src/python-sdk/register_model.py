@@ -3,8 +3,7 @@
 
 import os
 import argparse
-from azureml.core import Run, Experiment, Model
-from azureml.pipeline.core import PipelineRun
+from azureml.core import Run, Model
 
 # current run is the registration step
 run = Run.get_context()

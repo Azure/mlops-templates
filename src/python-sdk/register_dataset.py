@@ -1,9 +1,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import os
 import argparse
-from azureml.core import Workspace, Datastore, Dataset
+from azureml.core import Workspace, Dataset
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Register dataset")
