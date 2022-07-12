@@ -6,6 +6,14 @@ parameters:
   type: string
 - name: deployment_file
   type: string
+- name: enable_monitoring
+  type: string
+- name: score_path
+  type: string
+  default: ../../../mlops/azureml/deploy/
+- name: score_file
+  type: string
+  default: score.py
 
 steps:
   - task: AzureCLI@2
@@ -17,5 +25,11 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -o xtrace
-        az ml $(endpoint_type)-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
-          -f ${{ parameters.deployment_file }} 
+        if [[ lower(${{ parameters.enable_monitoring }}) == "true" || lower(${{ parameters.enable_monitoring }}) == "yes" || ${{ parameters.enable_monitoring }} == "1" ]];
+          then
+            az ml $(endpoint_type)-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
+              -f ${{ parameters.deployment_file }} --set code_configuration.code=${{ parameters.score_path }}/$(endpoint_type)
+              --set code_configuration.scoring_script=${{ parameters.score_file }}
+        else
+          az ml $(endpoint_type)-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
+            -f ${{ parameters.deployment_file }} 

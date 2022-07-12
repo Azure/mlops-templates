@@ -5,7 +5,13 @@ parameters:
   type: string
 - name: environment_file
   type: string
-  
+- name: enable_monitoring
+  type: string
+  default: 'false'
+- name: monitoring_env_file
+  type: string
+  default: ../../../data-science/environment/train-monitor-conda.yml
+
 steps:
   - task: AzureCLI@2
     displayName: Register Azure ML environment (docker)
@@ -28,5 +34,10 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-        az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }}
+        if [[ lower(${{ parameters.enable_monitoring }}) == "true" || lower(${{ parameters.enable_monitoring }}) == "yes" || ${{ parameters.enable_monitoring }} == "1" ]];
+          then
+            az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }} --set conda_file= $ {{ parameters.monitoring_env_file }}
+          else
+            az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }}
+        fi
     condition: and(succeeded(), eq('${{ parameters.build_type }}', 'conda'))
