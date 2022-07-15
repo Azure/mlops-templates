@@ -1,7 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import os
 import argparse
 from azureml.core import Run, Model
 
@@ -17,7 +16,7 @@ args, _ = parser.parse_known_args()
 
 print(f'Arguments: {args}')
 model_name = args.model_name
-model_path = os.path.join(args.model_path, run.parent.id)
+model_path = args.model_path
 
 with open(args.deploy_flag, 'r') as f:
     deploy_flag = int(f.read())

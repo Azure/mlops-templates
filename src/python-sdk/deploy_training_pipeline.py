@@ -31,50 +31,65 @@ env = Environment.get(workspace=ws, name=config['training_env_name'])
 datastore = Datastore.get_default(ws)
 runconfig = RunConfiguration()
 runconfig.environment = env
-training_dataset_consumption = None
-arguments = []
-inputs = []
 
+## Read datasets
+
+STEPS_KEYS = ['prep', 'train', 'eval']
+steps_inputs = {s: [] for s in STEPS_KEYS}
+steps_arguments = {s: [] for s in STEPS_KEYS}
+for dataset_def in config['training_datasets'].split(' '):
+    print(f"Processing training pipeline argument: {dataset_def}")
+    result = re.search(r"(\S+):(\S+):(\S+):(\S+)", dataset_def)
+    if not result:
+        raise ValueError("Wrong dataset definition. Expected format: <name>:<version>:<mode>:<steps (names separated by +)>")
+
+    dataset_name, dataset_version, dataset_mode = result.group(1, 2, 3)
+    dataset_steps =  result.group(4).split('+')
+    if any(s not in STEPS_KEYS for s in dataset_steps):
+        raise ValueError(f'Wrong step name. Options are: {", ".join(STEPS_KEYS)}')
+
+    dataset_consumption = DatasetConsumptionConfig(
+        name=dataset_name.replace('-', '_'),
+        dataset=Dataset.get_by_name(ws, dataset_name, dataset_version),
+        mode=dataset_mode
+    )
+    for s in dataset_steps:
+        steps_inputs[s].append(dataset_consumption)
+        steps_arguments[s] += [f'--{dataset_name}', dataset_consumption]
+
+    print((
+        f'Will use dataset "{dataset_name}" in version "{dataset_version}"'
+        f' as input ({dataset_mode} mode) in steps: {", ".join(dataset_steps)}'
+    ))
+
+
+## Read arguments
+
+arguments = []
 for arg in shlex.split(config['training_arguments']):
     print(f"Processing training pipeline argument: {arg}")
-    result = re.search(r"azureml:(\S+):(\S+)", str(arg))
-    if result:
-        print("in the if condition")
-        dataset_name = result.group(1)
-        dataset_version = result.group(2)
-        print(f"Will use dataset {dataset_name} in version {dataset_version}")
-        
-        # FIXME: Won't work with multiple input datasets
-        # FIXME: Make download or mount configurable
-        # FIXME: Allow version==latest
-        training_dataset = Dataset.get_by_name(ws, dataset_name, dataset_version)
-        training_dataset_parameter = PipelineParameter(name="training_dataset", default_value=training_dataset)
-        training_dataset_consumption = DatasetConsumptionConfig("training_dataset", training_dataset_parameter).as_download()
-        arguments.append(training_dataset_consumption)
-        inputs.append(training_dataset_consumption)
-        print(training_dataset_consumption)
-    else:
-        print("in the else condition")
-        arguments.append(arg)
+    arguments.append(arg)
 print(f"Expanded arguments: {arguments}")
-print(training_dataset_consumption)
 
-prepared_data_path = OutputFileDatasetConfig(name="prepared_data", destination=(datastore, "pipeline_artifacts/prepared_data")).as_upload()
-trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
-explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model")).as_upload()
-evaluation_results_path = OutputFileDatasetConfig(name="evaluation_results", destination=(datastore, "pipeline_artifacts/evaluation_results")).as_upload()
+
+## Build pipeline
+
+prepared_data_path = OutputFileDatasetConfig(name="prepared_data", destination=(datastore, "pipeline_artifacts/prepared_data/{run-id}/")).as_upload()
+trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model/{run-id}/")).as_upload()
+explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model/{run-id}/")).as_upload()
+evaluation_results_path = OutputFileDatasetConfig(name="evaluation_results", destination=(datastore, "pipeline_artifacts/evaluation_results/{run-id}/")).as_upload()
 deploy_flag = PipelineData("deploy_flag")
 
-
-arguments = arguments + ['--prepared_data_path', prepared_data_path]
 
 prepare_step = PythonScriptStep(name="prepare-step",
                         runconfig=runconfig,
                         compute_target=config['training_target'],
                         source_directory="data-science/src/",
                         script_name="prep.py",
-                        arguments=arguments,
-                        inputs=inputs,
+                        arguments=[
+                            '--prepared_data_path', prepared_data_path
+                        ] + arguments + steps_arguments['prep'],
+                        inputs=steps_inputs['prep'],
                         allow_reuse=False)
 
 train_step = PythonScriptStep(name="train-step",
@@ -82,8 +97,11 @@ train_step = PythonScriptStep(name="train-step",
                         compute_target=config['training_target'],
                         source_directory="data-science/src/",
                         script_name="train.py",
-                        arguments=['--prepared_data_path', prepared_data_path.as_input("prepared_data"),
-                                   '--model_path', trained_model_path],
+                        arguments=[
+                            '--prepared_data_path', prepared_data_path.as_input("prepared_data"),
+                            '--model_path', trained_model_path
+                        ] + arguments + steps_arguments['train'],
+                        inputs=steps_inputs['train'],
                         allow_reuse=False)
 
 evaluate_step = PythonScriptStep(name="evaluate-step",
@@ -91,12 +109,15 @@ evaluate_step = PythonScriptStep(name="evaluate-step",
                         compute_target=config['training_target'],
                         source_directory="data-science/src/",
                         script_name="evaluate.py",
-                        arguments=['--prepared_data_path', prepared_data_path.as_input("prepared_data"),
-                                   '--model_name', config['model_name'], 
-                                   '--model_path', trained_model_path.as_input("trained_model"),
-                                   '--explainer_path', explainer_path,
-                                   '--evaluation_path', evaluation_results_path,
-                                   '--deploy_flag', deploy_flag],
+                        arguments=[
+                            '--prepared_data_path', prepared_data_path.as_input("prepared_data"),
+                            '--model_name', config['model_name'], 
+                            '--model_path', trained_model_path.as_input("trained_model"),
+                            '--explainer_path', explainer_path,
+                            '--evaluation_path', evaluation_results_path,
+                            '--deploy_flag', deploy_flag
+                        ] + arguments + steps_arguments['eval'],
+                        inputs=steps_inputs['eval'],
                         outputs=[deploy_flag],
                         allow_reuse=False)
 
