@@ -9,7 +9,7 @@ import shlex
 import azureml.core
 from azureml.core import Workspace, Datastore, Dataset, RunConfiguration, Environment
 
-from azureml.pipeline.core import Pipeline, PipelineData, PipelineParameter
+from azureml.pipeline.core import Pipeline, PipelineData
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.data.dataset_consumption_config import DatasetConsumptionConfig
 from azureml.data.output_dataset_config import OutputFileDatasetConfig 
@@ -74,6 +74,7 @@ print(f"Expanded arguments: {arguments}")
 
 ## Build pipeline
 
+# Set up data connections between steps - {run-id} is automatically replaced with the corresponding ID during execution
 prepared_data_path = OutputFileDatasetConfig(name="prepared_data", destination=(datastore, "pipeline_artifacts/prepared_data/{run-id}/")).as_upload()
 trained_model_path = OutputFileDatasetConfig(name="trained_model", destination=(datastore, "pipeline_artifacts/trained_model/{run-id}/")).as_upload()
 explainer_path = OutputFileDatasetConfig(name="explainer", destination=(datastore, "pipeline_artifacts/trained_model/{run-id}/")).as_upload()
