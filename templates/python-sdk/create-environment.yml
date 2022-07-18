@@ -4,7 +4,9 @@
 parameters:
 - name: environment_name
   type: string
-- name: environment_conda_yaml
+- name: build_type
+  type: string
+- name: environment_file
   type: string
 
 steps:
@@ -23,4 +25,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/src/python-sdk/register_environnment.py -n ${{ parameters.environment_name }} -f ${{ parameters.environment_conda_yaml }}
+        python templates/src/python-sdk/register_environnment.py \
+          -n ${{ parameters.environment_name }} \
+          -t ${{ parameters.build_type }} \
+          -f ${{ parameters.environment_file }}
