@@ -1,5 +1,5 @@
-name: 'JSON Read Test'
-description: 'Test JSON Read'
+name: 'YAML Read'
+description: 'This is a NodeJS action to read YAML configuation files.'
 inputs:
   config:
     description: 'Config file name'
