@@ -1,0 +1,40 @@
+name: register-dataset
+
+on: 
+  workflow_call:
+    inputs:
+      data_file:
+        required: true
+        type: string
+      resource_group:
+        required: true
+        type: string
+      workspace_name:
+        required: true
+        type: string
+      name: 
+        required: true
+        type: string
+    secrets:
+      creds:
+        required: true
+jobs:
+  register-dataset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.creds}}
+          enable-AzPSSession: true 
+      - name: install-extension
+        run:  az extension add -n ml -y
+      - name: update-extension
+        run: az extension update -n ml
+      - name: create-environment-from-file
+        run: |
+          az ml data create --file ${{ github.workspace }}/files/${{ inputs.data_file }} --resource-group ${{ inputs.resource_group }} \
+          --workspace-name ${{ inputs.workspace_name }} --name ${{ inputs.name }}
+  

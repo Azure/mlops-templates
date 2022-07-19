@@ -1,0 +1,38 @@
+# This is a workflow for Connecting to an AML Workspace
+name: Connect to Workspace
+# Controls when the workflow will run
+on: 
+  workflow_call:
+    inputs:
+      resourceGroup:
+        description: 'Resource Group'     
+        required: true
+        type: string
+      workspace:
+        description: 'Workspace Name'     
+        required: true
+        type: string
+    secrets:
+      creds:
+        required: true
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains a single job called "ConnectToWorkspace"
+  ConnectToWorkspace:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.creds}}
+          enable-AzPSSession: true 
+      - name: install-extension
+        run:  az extension add -n ml -y
+      - name: update-extension
+        run: az extension update -n ml
+      - name: list-models
+        run:  az ml model list --resource-group ${{inputs.resourceGroup}} --workspace-name ${{inputs.workspace}}
+        #run: az configure --defaults group=${{inputs.resourceGroup}} workspace=${{inputs.workspace}}
