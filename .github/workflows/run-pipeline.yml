@@ -35,5 +35,5 @@ jobs:
         run: az extension update -n ml
       - name: create-environment-from-file
         run: |
-          az ml job create --file ${{ github.workspace }}/files/${{ inputs.parameters-file  }} --resource-group ${{ inputs.resource_group }} \
+          az ml job create --file ${{ github.workspace }}/${{ inputs.parameters-file  }} --resource-group ${{ inputs.resource_group }} \
           --workspace-name ${{ inputs.workspace_name }} --query name -o tsv 
