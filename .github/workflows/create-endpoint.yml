@@ -1,0 +1,44 @@
+
+name: create-endpoint
+
+on: 
+  workflow_call:
+    inputs:
+      endpoint_file:
+        required: true
+        type: string
+      resource_group:
+        required: true
+        type: string
+      workspace_name:
+        required: true
+        type: string
+      endpoint_name: 
+        required: true
+        type: string
+      endpoint_type: 
+        required: true
+        type: string
+    secrets:
+      creds:
+        required: true
+jobs:
+  create-endpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.creds}}
+          enable-AzPSSession: true 
+      - name: install-extension
+        run:  az extension add -n ml -y
+      - name: update-extension
+        run: az extension update -n ml
+      - name: create-environment-from-file
+        run: |
+          az ml ${{ inputs.endpoint_type }}-endpoint create --name ${{ inputs.endpoint_name }} \
+          -f ${{ github.workspace }}/files/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} \
+          --workspace-name ${{ inputs.workspace_name }}
