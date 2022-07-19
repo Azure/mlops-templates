@@ -1,0 +1,15 @@
+name: 'JSON Read Test'
+description: 'Test JSON Read'
+inputs:
+  config:
+    description: 'Config file name'
+    required: true
+    default: ''
+outputs:
+  resource_group:
+    description: 'The resource group the AML workspace is in'
+  aml_workspace:
+    description: 'The resource group the AML workspace is in'
+runs:
+  using: 'node16'
+  main: 'index.js'
