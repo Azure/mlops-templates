@@ -35,6 +35,6 @@ jobs:
         run: az extension update -n ml
       - name: create-environment-from-file
         run: |
-          az ml data create --file ${{ github.workspace }}/files/${{ inputs.data_file }} --resource-group ${{ inputs.resource_group }} \
+          az ml data create --file ${{ github.workspace }}/${{ inputs.data_file }} --resource-group ${{ inputs.resource_group }} \
           --workspace-name ${{ inputs.workspace_name }} --name ${{ inputs.name }}
   
