@@ -2,10 +2,8 @@
 # Licensed under the MIT License.
 
 import os
-import re
 import argparse
 import yaml
-import shlex
 
 from azureml.core import Workspace
 from azureml.core.compute import AmlCompute, ComputeTarget
