@@ -12,6 +12,10 @@ on:
       workspace_name:
         required: true
         type: string
+      file_type:
+        required: false
+        type: string
+        default: ''
       name: 
         required: true
         type: string
@@ -33,8 +37,14 @@ jobs:
         run:  az extension add -n ml -y
       - name: update-extension
         run: az extension update -n ml
-      - name: create-environment-from-file
+      - name: create-dataset-from-file
+        if: ${{ inputs.file_type == ''}}
         run: |
           az ml data create --file ${{ github.workspace }}/${{ inputs.data_file }} --resource-group ${{ inputs.resource_group }} \
           --workspace-name ${{ inputs.workspace_name }} --name ${{ inputs.name }}
+      - name: create-dataset-as-job
+        if: ${{ inputs.file_type != ''}}
+        run: |
+          az ml job create --file ${{ github.workspace }}/${{ inputs.data_file }} --resource-group ${{ inputs.resource_group }} \
+          --workspace-name ${{ inputs.workspace_name }}
   
