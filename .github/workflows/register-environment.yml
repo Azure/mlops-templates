@@ -13,7 +13,8 @@ on:
         required: true
         type: string
       conda_file:
-        required: true
+        required: false
+        default: ''
         type: string
     secrets:
       creds:
@@ -35,7 +36,13 @@ jobs:
         run: az extension update -n ml
       - name: list-extentions
         run: az extension list
-      - name: create-environment-from-file
+      - name: create-environment-from-file-with-conda
+        if: ${{ inputs.conda_file != ''}}
         run: |
           az ml environment create --file ${{ github.workspace }}/${{ inputs.environment_file }} --resource-group ${{ inputs.resource_group }} \
-                                  --workspace-name ${{ inputs.workspace_name }} --conda-file ${{ github.workspace }}/${{ inputs.conda_file }}
+                                --workspace-name ${{ inputs.workspace_name }} --conda-file ${{ github.workspace }}/${{ inputs.conda_file }}
+      - name: create-environment-from-file-without-conda
+        if: ${{ inputs.conda_file == ''}}
+        run: |
+          az ml environment create --file ${{ github.workspace }}/${{ inputs.environment_file }} --resource-group ${{ inputs.resource_group }} \
+                                  --workspace-name ${{ inputs.workspace_name }}
