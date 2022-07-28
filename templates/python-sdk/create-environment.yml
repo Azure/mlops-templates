@@ -30,5 +30,5 @@ steps:
         python templates/src/python-sdk/register_environnment.py \
           -n ${{ parameters.environment_name }} \
           -t ${{ parameters.build_type }} \
-          -f ${{ parameters.environment_file }}
+          -f ${{ parameters.environment_file }} \
           -m ${{ parameters.enable_monitoring }}
