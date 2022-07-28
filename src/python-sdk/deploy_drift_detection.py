@@ -12,12 +12,13 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Drift Detection")
-    parser.add_argument("-n", type=str, help="Name of the dataset you want to register")
-    parser.add_argument("-d", type=str, help="Description of the dataset you want to register")
-    parser.add_argument("-t", type=str, help="type of dataset", default='local')    
-    parser.add_argument("-l", type=str, help="local path of the dataset folder", default='data/')
-    parser.add_argument("-p", type=str, help="Path on data store", default='data/')
-    parser.add_argument("-s", type=str, help="Storage url for cloud storage")
+    parser.add_argument("-c", type=str, help="Compute Name", default = 'cpu-cluster')
+    parser.add_argument("-b", type=str, help="Base table name", default='mlmonitoring')
+    parser.add_argument("-t", type=str, help="target table name", default='mlmonitoring')    
+    parser.add_argument("-bf", type=str, help="base starting date", default='12/15/2021')
+    parser.add_argument("-bt", type=str, help="base ending date", default='03/01/2022')
+    parser.add_argument("-tf", type=str, help="target starting date", default='04/01/2022')
+    parser.add_argument("-tt", type=str, help="target ending date", default='5/15/2022')
     return parser.parse_args()
 
 def main():
@@ -41,13 +42,13 @@ def main():
     resource_group = ws.resource_group
     workspace = ws.name
 
-    compute_name = 
-    base_table_name =
-    target_table_name = 
-    base_dt_from = 
-    base_dt_to = 
-    target_dt_from = 
-    target_dt_to= 
+    compute_name = args.c
+    base_table_name = args.b
+    target_table_name = args.t
+    base_dt_from = args.bf
+    base_dt_to = args.bt
+    target_dt_from = args.tf
+    target_dt_to= args.tt
 
     ml_client, job_name = execute(subscription_id=subscription_id,resource_group=resource_group,workspace=workspace, compute_name =compute_name, 
     base_table_name =base_table_name,target_table_name =target_table_name, base_dt_from =base_dt_from, base_dt_to= base_dt_to,target_dt_from=target_dt_from, 

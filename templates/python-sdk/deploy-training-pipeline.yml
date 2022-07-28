@@ -13,4 +13,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e 
-        python templates/src/python-sdk/deploy_training_pipeline.py -f classical/python-sdk/config-aml.yml -m ${{ parameters.enable_monitoring }}
+        python templates/src/python-sdk/deploy_training_pipeline.py -f config-aml.yml -m ${{ parameters.enable_monitoring }}
