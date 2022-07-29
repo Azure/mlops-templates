@@ -18,6 +18,7 @@ print("Azure ML SDK version:", azureml.core.VERSION)
 
 parser = argparse.ArgumentParser("Deploy Training Pipeline")
 parser.add_argument("-f", type=str, help="Controller Config YAML file")
+parser.add_argument("-m", type=str, help="Enable Monitoring", default="false")
 args = parser.parse_args()
 
 with open(args.f, "r") as f:
@@ -89,7 +90,8 @@ prepare_step = PythonScriptStep(name="prepare-step",
                         script_name="prep.py",
                         arguments=[
                             '--prepared_data_path', prepared_data_path
-                        ] + arguments + steps_arguments['prep'],
+                        ] + arguments + steps_arguments['prep'] + ['--enable_monitoring', args.m,
+                                               '--table_name', config["training_table_name"]],
                         inputs=steps_inputs['prep'],
                         allow_reuse=False)
 

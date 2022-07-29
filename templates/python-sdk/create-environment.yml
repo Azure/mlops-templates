@@ -8,6 +8,8 @@ parameters:
   type: string
 - name: environment_file
   type: string
+- name: enable_monitoring
+  type: string
 
 steps:
   - task: UsePythonVersion@0
@@ -28,4 +30,5 @@ steps:
         python templates/src/python-sdk/register_environnment.py \
           -n ${{ parameters.environment_name }} \
           -t ${{ parameters.build_type }} \
-          -f ${{ parameters.environment_file }}
+          -f ${{ parameters.environment_file }} \
+          -m ${{ parameters.enable_monitoring }}

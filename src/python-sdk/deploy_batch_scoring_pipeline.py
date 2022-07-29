@@ -15,6 +15,7 @@ print("Azure ML SDK version:", azureml.core.VERSION)
 
 parser = argparse.ArgumentParser("Deploy Batch Scoring Pipeline")
 parser.add_argument("-f", type=str, help="Controller Config YAML file")
+parser.add_argument("-m", type=str, help="Enable Monitoring", default="false")
 args = parser.parse_args()
 
 with open(args.f, "r") as f:
@@ -52,7 +53,7 @@ parallel_run_config = ParallelRunConfig(
 batch_step = ParallelRunStep(
     name="batch-step",
     parallel_run_config=parallel_run_config,
-    arguments=['--model_name', config['model_name']],
+    arguments=['--model_name', config['model_name'], '--enable_monitoring', args.m, '--table_name', config["scoring_table_name"]],
     inputs=[batch_dataset_consumption],
     side_inputs=[],
     output=output_dataset,
