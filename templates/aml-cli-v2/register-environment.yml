@@ -8,12 +8,6 @@ parameters:
   type: string
 - name: environment_file
   type: string
-- name: enable_monitoring
-  type: string
-  default: 'false'
-- name: monitoring_env_file
-  type: string
-  default: ../../../data-science/environment/train-monitor-conda.yml
 
 steps:
   - task: AzureCLI@2

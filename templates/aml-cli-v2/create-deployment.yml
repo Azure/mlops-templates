@@ -6,14 +6,6 @@ parameters:
   type: string
 - name: deployment_file
   type: string
-- name: enable_monitoring
-  type: string
-- name: score_path
-  type: string
-  default: ../../../mlops/azureml/deploy/
-- name: score_file
-  type: string
-  default: score.py
 
 steps:
   - task: AzureCLI@2
