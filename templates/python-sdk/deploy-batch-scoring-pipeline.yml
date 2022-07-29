@@ -1,5 +1,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
+parameters:
+- name: enable_monitoring
+  type: string
 
 steps:
   - task: AzureCLI@2
@@ -10,4 +13,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        python templates/src/python-sdk/deploy_batch_scoring_pipeline.py -f config-aml.yml
+        python templates/src/python-sdk/deploy_batch_scoring_pipeline.py -f config-aml.yml -m ${{ parameters.enable_monitoring }}

@@ -2,26 +2,79 @@
 # Licensed under the MIT License.
 
 parameters:
-- name: data_type
+- name: data_type  # "training" or "scoring"
   type: string
 
-steps:
-  - task: AzureCLI@2
-    displayName: Register training dataset
-    inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        python templates/src/python-sdk/register_dataset.py -n $(training_dataset_name) -d $(training_dataset_description) -l $(training_dataset_local_path) -p $(training_dataset_path_on_datastore) -t $(training_dataset_type) -s $(training_dataset_storage_url)
-    condition: and(succeeded(), eq('${{ parameters.data_type }}', 'training'))
+# Parameters that can be used for registering additional datasets:
+- name: datasetName
+  type: string
+  default: ''
+- name: datasetDescription
+  type: string
+  default: ''
+- name: datasetLocalPath
+  type: string
+  default: ''
+- name: datasetPathOnDatastore
+  type: string
+  default: ''
+- name: datasetType
+  type: string
+  default: ''
+- name: datasetStorageUrl
+  type: string
+  default: ''
 
-  - task: AzureCLI@2
-    displayName: Register scoring dataset
-    inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        python templates/src/python-sdk/register_dataset.py -n $(scoring_dataset_name) -d $(scoring_dataset_description) -l $(scoring_dataset_local_path) -p $(scoring_dataset_path_on_datastore) -t $(scoring_dataset_type) -s $(scoring_dataset_storage_url)
-    condition: and(succeeded(), eq('${{ parameters.data_type }}', 'scoring'))
+
+steps:
+
+  # Type "training" and no dataset params defined => register training dataset
+  - ${{ if and(eq(parameters.data_type, 'training'), eq(parameters.datasetName, '')) }}:
+    - task: AzureCLI@2
+      displayName: Register training dataset
+      inputs:
+        azureSubscription: $(ado_service_connection_aml_ws)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          python templates/src/python-sdk/register_dataset.py \
+            -n "$(training_dataset_name)" \
+            -d "$(training_dataset_description)" \
+            -l "$(training_dataset_local_path)" \
+            -p "$(training_dataset_path_on_datastore)" \
+            -t "$(training_dataset_type)" \
+            -s "$(training_dataset_storage_url)"
+
+  # Type "scoring" and no dataset params defined => register scoring dataset
+  - ${{ if and(eq(parameters.data_type, 'scoring'), eq(parameters.datasetName, '')) }}:
+    - task: AzureCLI@2
+      displayName: Register scoring dataset
+      inputs:
+        azureSubscription: $(ado_service_connection_aml_ws)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          python templates/src/python-sdk/register_dataset.py \
+            -n "$(scoring_dataset_name)" \
+            -d "$(scoring_dataset_description)" \
+            -l "$(scoring_dataset_local_path)" \
+            -p "$(scoring_dataset_path_on_datastore)" \
+            -t "$(scoring_dataset_type)" \
+            -s "$(scoring_dataset_storage_url)"
+
+  # Dataset params defined => register additional dataset
+  - ${{ if ne(parameters.datasetName, '') }}:
+    - task: AzureCLI@2
+      displayName: Register additional dataset
+      inputs:
+        azureSubscription: $(ado_service_connection_aml_ws)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          python templates/src/python-sdk/register_dataset.py \
+            -n "${{parameters.datasetName}}" \
+            -d "${{parameters.datasetDescription}}" \
+            -l "${{parameters.datasetLocalPath}}" \
+            -p "${{parameters.datasetPathOnDatastore}}" \
+            -t "${{parameters.datasetType}}" \
+            -s "${{parameters.datasetStorageUrl}}"
