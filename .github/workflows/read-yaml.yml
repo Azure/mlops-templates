@@ -23,7 +23,7 @@ jobs:
           - name: Checking out repo
             uses: actions/checkout@v2
           - name: Read test
-            uses: Azure/mlops-templates/read_yaml_action@GHA-testing-jul31
+            uses: Azure/mlops-templates/read_yaml_action@GHA-testng-jul31
             id: read_action_js
             with:
               config: ${{ github.workspace }}/${{ inputs.file_name }}
