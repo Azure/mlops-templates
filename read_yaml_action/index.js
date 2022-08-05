@@ -21,8 +21,8 @@ try {
     const online_endpoint_name = "oep-"+namespace+"-"+postfix+environment
     core.setOutput("resource_group",resource_group);
     core.setOutput("aml_workspace", aml_workspace);
-    core.setOutput("bep", aml_workspace);
-    core.setOutput("oep", aml_workspace);
+    core.setOutput("bep", batch_endpoint_name);
+    core.setOutput("oep", online_endpoint_name);
   });
   
 } catch (error) {
