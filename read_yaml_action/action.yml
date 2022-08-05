@@ -9,7 +9,11 @@ outputs:
   resource_group:
     description: 'The resource group the AML workspace is in'
   aml_workspace:
-    description: 'The resource group the AML workspace is in'
+    description: 'The AML workspace'
+  bep:
+    description: 'The batch endpoint name'
+  oep:
+    description: 'The online endpoint name'
 runs:
   using: 'node16'
   main: 'index.js'
