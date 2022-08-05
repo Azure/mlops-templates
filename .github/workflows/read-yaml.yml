@@ -13,12 +13,20 @@ on:
       aml_workspace:
         description: "The aml_workspace to use"
         value: ${{ jobs.read-yaml.outputs.aml_workspace }}
+      bep:
+        description: "The batch endpoint"
+        value: ${{ jobs.read-yaml.outputs.bep }}
+      eop:
+        description: "The online endpoint"
+        value: ${{ jobs.read-yaml.outputs.oep }}
 jobs:
     read-yaml:
       runs-on: ubuntu-latest
       outputs:
         resource_group: ${{  steps.read_action_js.outputs.resource_group }}
         aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
+        bep: ${{  steps.read_action_js.outputs.bep }}
+        eop: ${{  steps.read_action_js.outputs.oep }}
       steps:
           - name: Checking out repo
             uses: actions/checkout@v2
