@@ -36,4 +36,4 @@ jobs:
             with:
               config: ${{ github.workspace }}/${{ inputs.file_name }}
           - name: Echo step output
-            run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }}"
+            run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }} ${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }} "
