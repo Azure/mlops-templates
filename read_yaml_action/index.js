@@ -17,8 +17,12 @@ try {
     const environment = String(configYaml["variables"]["environment"])
     const resource_group = "rg-"+namespace+"-"+postfix+environment
     const aml_workspace = "mlw-"+namespace+"-"+postfix+environment
+    const batch_endpoint_name = "bep-"+namespace+"-"+postfix+environment
+    const online_endpoint_name = "oep-"+namespace+"-"+postfix+environment
     core.setOutput("resource_group",resource_group);
     core.setOutput("aml_workspace", aml_workspace);
+    core.setOutput("bep", batch_endpoint_name);
+    core.setOutput("oep", online_endpoint_name);
   });
   
 } catch (error) {
