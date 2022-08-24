@@ -38,7 +38,8 @@ try {
 }
 function checkGenerateEntity(entity){
     let result = false;
-    if (entity.includes("$")){
+    let entityStr = String(entity);
+    if (entityStr.includes("$")){
         result = true;
     }
     return result;
