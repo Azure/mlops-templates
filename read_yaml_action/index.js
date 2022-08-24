@@ -37,8 +37,8 @@ try {
   core.setFailed(error.message);
 }
 function checkGenerateEntity(entity){
-    let result = false;
-    let entityStr = String(entity);
+    var result = false;
+    var entityStr = String(entity);
     if (entityStr.includes("$")){
         result = true;
     }
