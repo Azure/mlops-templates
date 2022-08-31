@@ -89,9 +89,10 @@ prepare_step = PythonScriptStep(name="prepare-step",
                         source_directory="data-science/src/",
                         script_name="prep.py",
                         arguments=[
-                            '--prepared_data_path', prepared_data_path
-                        ] + arguments + steps_arguments['prep'] + ['--enable_monitoring', args.m,
-                                               '--table_name', config["training_table_name"]],
+                            '--prepared_data_path', prepared_data_path,
+                            '--enable_monitoring', args.m,
+                            '--table_name', config["training_table_name"]
+                            ] + arguments + steps_arguments['prep'],
                         inputs=steps_inputs['prep'],
                         allow_reuse=False)
 
