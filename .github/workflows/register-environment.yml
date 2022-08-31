@@ -1,0 +1,48 @@
+name: register-environment
+
+on: 
+  workflow_call:
+    inputs:
+      environment_file:
+        required: true
+        type: string
+      resource_group:
+        required: true
+        type: string
+      workspace_name:
+        required: true
+        type: string
+      conda_file:
+        required: false
+        default: ''
+        type: string
+    secrets:
+      creds:
+        required: true
+jobs:
+  register-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.creds}}
+          enable-AzPSSession: true 
+      - name: install-extension
+        run:  az extension add -n ml -y
+      - name: update-extension
+        run: az extension update -n ml
+      - name: list-extentions
+        run: az extension list
+      - name: create-environment-from-file-with-conda
+        if: ${{ inputs.conda_file != ''}}
+        run: |
+          az ml environment create --file ${{ github.workspace }}/${{ inputs.environment_file }} --resource-group ${{ inputs.resource_group }} \
+                                --workspace-name ${{ inputs.workspace_name }} --conda-file ${{ github.workspace }}/${{ inputs.conda_file }}
+      - name: create-environment-from-file-without-conda
+        if: ${{ inputs.conda_file == ''}}
+        run: |
+          az ml environment create --file ${{ github.workspace }}/${{ inputs.environment_file }} --resource-group ${{ inputs.resource_group }} \
+                                  --workspace-name ${{ inputs.workspace_name }}
