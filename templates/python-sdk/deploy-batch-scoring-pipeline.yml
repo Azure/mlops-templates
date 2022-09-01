@@ -5,6 +5,14 @@ parameters:
   type: string
 
 steps:
+  - task: UsePythonVersion@0
+    displayName: 'Setting Python version'
+    inputs:
+      versionSpec: '3.8'
+  - task: Bash@3
+    displayName: 'Install Requirements'
+    inputs:
+      filePath: templates/src/python-sdk/install_requirements_monitoring.sh
   - task: AzureCLI@2
     displayName: Deploy batch scoring pipeline to AML
     inputs:
