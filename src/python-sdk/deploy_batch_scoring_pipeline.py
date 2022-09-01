@@ -18,6 +18,9 @@ parser.add_argument("-f", type=str, help="Controller Config YAML file")
 parser.add_argument("-m", type=str, help="Enable Monitoring", default="false")
 args = parser.parse_args()
 
+print("monitoring enabled:", args.m)
+
+
 with open(args.f, "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
     config = config['variables']
