@@ -21,7 +21,7 @@ def main():
     
     print(args.m)
 
-    if (args.m.lower == 'true' or args.m == '1' or args.m.lower == 'yes'):
+    if (args.m.lower() == 'true' or args.m == '1' or args.m.lower() == 'yes'):
         filename = "".join(condafile.split(".")[:-1])
         print(filename)
         fileext = condafile.split(".")[-1]
