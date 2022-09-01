@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 python --version
-pip install azureml-sdk==1.41.0
+pip install azureml-core==1.41.0
 pip install pandas==1.2.1
 pip install scikit-learn==0.24.1
 pip install azureml-defaults==1.41.0
