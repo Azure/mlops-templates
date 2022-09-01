@@ -19,10 +19,16 @@ def main():
     ws = Workspace.from_config()
     condafile = args.f
     
-    if (args.m.lower == 'true' or args.m == '1' or args.m.lower == 'yes'):
+    print(args.m)
+
+    if (args.m.lower() == 'true' or args.m == '1' or args.m.lower() == 'yes'):
         filename = "".join(condafile.split(".")[:-1])
+        print(filename)
         fileext = condafile.split(".")[-1]
+        print(fileext)
         condafile = filename+"_monitor."+fileext 
+    
+    print(condafile)
     
 
     if args.t == "conda":
