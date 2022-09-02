@@ -6,6 +6,9 @@ parameters:
   type: string
 - name: deployment_file
   type: string
+- name: enable_monitoring
+  type: string
+  default: 'false'
 
 steps:
   - task: AzureCLI@2
@@ -18,4 +21,4 @@ steps:
       inlineScript: |
         set -o xtrace
         az ml $(endpoint_type)-deployment create --name ${{ parameters.deployment_name }} --endpoint $(endpoint_name) \
-          -f ${{ parameters.deployment_file }} 
+          -f ${{ parameters.deployment_file }}
