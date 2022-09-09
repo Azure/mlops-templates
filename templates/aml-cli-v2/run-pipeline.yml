@@ -24,7 +24,6 @@ steps:
       inlineScript: |
         run_id=$(az ml job create -f ${{ parameters.pipeline_file }} \
           --set experiment_name=${{ parameters.experiment_name }} \
-          enable_monitoring=${{ parameters.enable_monitoring }} \
           display_name=${{ parameters.display_name }} --query name -o tsv)
         if [[ -z "$run_id" ]]
         then
