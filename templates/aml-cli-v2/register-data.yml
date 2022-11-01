@@ -1,0 +1,22 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: data_type
+  type: string
+- name: data_name
+  type: string
+- name: data_file
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Register Azure ML data asset
+    continueOnError: true
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      scriptLocation: inlineScript
+      inlineScript: |
+        az ml data create --file ${{ parameters.data_file }} --name ${{ parameters.data_name }} --type ${{ parameters.data_type }}
