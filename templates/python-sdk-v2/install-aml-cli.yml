@@ -1,0 +1,17 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+steps:
+  - task: AzureCLI@2
+    displayName: Install AML CLI
+    inputs:
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      workingDirectory: code/
+      inlineScript: |
+        set -e # fail on error
+        az version
+        az extension add -n azure-cli-ml
+
+        

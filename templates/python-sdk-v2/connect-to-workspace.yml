@@ -1,0 +1,12 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+steps:
+  - task: AzureCLI@2
+    displayName: Connect to AML Workspace
+    inputs:
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az ml folder attach -g $(resource_group) -w $(aml_workspace)

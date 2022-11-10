@@ -1,0 +1,16 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: compute_type
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Get compute
+    inputs:
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        python templates/src/python-sdk/get_compute.py -f config-aml.yml --compute_type ${{ parameters.compute_type }}
