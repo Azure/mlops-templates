@@ -18,5 +18,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        subscription_id="$(az account list --query "[?isDefault].id" -o tsv)"
-        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $(subscription_id)
+        AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
+        echo $AzureMLsubscription
+        echo ${{ parameters.experiment_name }}
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription
