@@ -1,6 +1,15 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+parameters:
+  - name: pipeline_file
+    type: string
+  - name: experiment_name
+    type: string
+  - name: enable_monitoring
+    type: string
+    default: 'false'
+
 steps:
   - task: AzureCLI@2
     displayName: Run pipeline in AML
@@ -9,4 +18,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/src/python-sdk/run_pipeline.py -p $(pipeline_id)
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }}
