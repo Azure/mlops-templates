@@ -18,4 +18,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }}
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --$(ado_service_connection_aml_ws)
