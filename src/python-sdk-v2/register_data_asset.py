@@ -21,7 +21,8 @@ def main():
     args = parse_args()
     print(args)
     
-    ml_client = MLClient.from_config()
+    credential = DefaultAzureCredential()
+    ml_client = MLClient.from_config(credential)
     
     my_data = Data(
         path=args.l,
