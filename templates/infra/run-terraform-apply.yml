@@ -1,14 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# parameters:
-# - name: jumphost_username
-#   type: string
-#   default: "azureuser"
-# - name: jumphost_password
-#   type: string
-#   default: "ThisIsNotVerySecure!"
-
 steps:
   - task: TerraformTaskV2@2
     displayName: 'Terraform apply'
