@@ -19,9 +19,13 @@ steps:
 
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.10'
+    versionSpec: '3.10.4'
     architecture: 'x64'
-      
+
+- script: |
+    pip install azure-ai-ml==1.0.0
+  displayName: 'Install python sdk v2'
+    
 - task: AzureCLI@2
   displayName: Register training data asset
   inputs:
