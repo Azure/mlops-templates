@@ -1,13 +1,13 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-parameters:
-- name: jumphost_username
-  type: string
-  default: "azureuser"
-- name: jumphost_password
-  type: string
-  default: "ThisIsNotVerySecure!"
+# parameters:
+# - name: jumphost_username
+#   type: string
+#   default: "azureuser"
+# - name: jumphost_password
+#   type: string
+#   default: "ThisIsNotVerySecure!"
 
 steps:
   - task: TerraformTaskV2@2
@@ -16,5 +16,5 @@ steps:
       provider: 'azurerm'
       command: 'plan'
       workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-      commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)" -var "enable_aml_secure_workspace=$(enable_aml_secure_workspace)" -var "jumphost_username=${{parameters.jumphost_username}}" -var "jumphost_password=${{parameters.jumphost_password}}" -var "enable_monitoring=$(enable_monitoring)" -var "client_secret=$(CLIENT_SECRET)"'
+      commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)" -var "enable_monitoring=$(enable_monitoring)" -var "client_secret=$(CLIENT_SECRET)"'
       environmentServiceNameAzureRM: '$(ado_service_connection_rg)'
