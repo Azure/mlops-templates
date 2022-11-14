@@ -30,7 +30,7 @@ jobs:
       steps:
           - name: Checking out repo
             uses: actions/checkout@v2
-          - name: Read test
+          - name: Read YAML
             uses: Azure/mlops-templates/read_yaml_action@main
             id: read_action_js
             with:
