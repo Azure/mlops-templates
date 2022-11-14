@@ -17,6 +17,11 @@ parameters:
 
 steps:
 
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10'
+    architecture: 'x64'
+      
 - task: AzureCLI@2
   displayName: Register training data asset
   inputs:
