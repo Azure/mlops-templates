@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 steps:
- - task: TerraformInstaller@0
+ - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
    displayName: 'Terraform install'
    inputs:
      terraformVersion: $(terraform_version)
