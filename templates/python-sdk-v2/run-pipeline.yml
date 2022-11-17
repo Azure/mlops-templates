@@ -25,4 +25,4 @@ steps:
         
         text_to_print = $('text')
         echo text_to_print
-        python ${{ parameters.pipeline_file }} 
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }}
