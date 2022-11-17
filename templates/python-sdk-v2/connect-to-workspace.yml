@@ -12,7 +12,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
+        az configure --defaults group=$(resource_group) workspace=$(aml_workspace) organization= $(System.CollectionUri)
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo $AzureMLsubscription
         python templates/src/python-sdk-v2/generate_config_file.py --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription --config_location ${{ parameters.config_location }}
