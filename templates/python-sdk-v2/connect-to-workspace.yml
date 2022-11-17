@@ -12,10 +12,10 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az configure --defaults group=$(resource_group) workspace=$(aml_workspace) organization= $(System.CollectionUri)
+        az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo $AzureMLsubscription
         echo $(System.CollectionUri)
-        az pipelines variable list --detect true --org $(System.CollectionUri)
-        
-
+        echo $(System.TeamProjectId)
+        az pipelines variable list --detect true --org $(System.CollectionUri) --project $(System.TeamProjectId)
+      
