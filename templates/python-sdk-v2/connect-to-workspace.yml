@@ -1,5 +1,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
+parameters:
+  - name: config_location
+    type: string
 
 steps:
   - task: AzureCLI@2
@@ -10,21 +13,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
+        AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
+        echo $AzureMLsubscription
+        python templates/src/python-sdk-v2/register_environment.py --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription --config_location ${{ parameters.config_location }}
 
-  - task: PowerShell@2
-    inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
-      targetType: 'inline'
-      script: |
-        az login --identity
-        $AzureMLsubscription = (az account list --query "[?isDefault].id" -o tsv)
-        $AzureMLsubscription
-        $json = '{
-        "subscription_id": $(AzureMLsubscription),
-        "workspace_name": $(aml_workspace)
-        "resource_group": $(resource_group)
-        }'
-        $json
-        $json | Out-File config.json
-      workingDirectory: '$(Build.SourcesDirectory)'
-      pwsh: true # For Linux
