@@ -44,7 +44,7 @@ def get_config_parger(parser: argparse.ArgumentParser = None):
     group.add_argument(
         "--experiment_name",
         type=str,
-        required=True,
+        required=False,
         default="nlp_summarization_train",
         help="Experiment name",
     )
@@ -54,7 +54,6 @@ def get_config_parger(parser: argparse.ArgumentParser = None):
         action="store_true",
         help="wait for the job to finish",
     )
-
 
     return parser
 
