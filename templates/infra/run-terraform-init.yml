@@ -9,6 +9,14 @@ steps:
       scriptLocation: 'inlineScript'
       inlineScript: 'export TF_LOG="DEBUG"'
       
+  - task: AzureCLI@2
+    displayName: 'Create Resource Group'
+    inputs:
+      azureSubscription: '$(ado_service_connection_rg)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'ls $(System.DefaultWorkingDirectory)/$(terraform_workingdir); ls -l /opt/hostedtoolcache/terraform/0.14.7/x64/'
+      
   - task: TerraformTaskV2@2
     displayName: 'Terraform init'
     inputs:
