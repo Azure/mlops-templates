@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 steps:
   - task: AzureCLI@2
-    displayName: 'Create Resource Group'
+    displayName: 'tf log'
     inputs:
       azureSubscription: '$(ado_service_connection_rg)'
       scriptType: 'bash'
@@ -10,7 +10,7 @@ steps:
       inlineScript: 'export TF_LOG="DEBUG"; export TF_LOG_PATH="/tmp/terraform.log"; tail -f /tmp/terraform.log'
       
   - task: AzureCLI@2
-    displayName: 'Create Resource Group'
+    displayName: 'ls tf'
     inputs:
       azureSubscription: '$(ado_service_connection_rg)'
       scriptType: 'bash'
