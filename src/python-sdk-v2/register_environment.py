@@ -41,20 +41,6 @@ def get_config_parger(parser: argparse.ArgumentParser = None):
         required=False,
         help="Workspace name",
     )
-    group.add_argument(
-        "--experiment_name",
-        type=str,
-        required=False,
-        default="nlp_summarization_train",
-        help="Experiment name",
-    )
-    parser.add_argument(
-        "--wait",
-        default=False,
-        action="store_true",
-        help="wait for the job to finish",
-    )
-
     return parser
 
 def main():
@@ -62,7 +48,19 @@ def main():
     parser = get_config_parger()
     args, _ = parser.parse_known_args()
     print(args)
+    data = {'subscription_id': args.subscription_id,
+            'workspace_name': args.workspace_name,
+            'resource_group': args.resource_group
 
+    }
+
+    json_string = json.dumps(data)
+    print(json_string)
+
+    drop_location = args.config_location
+    print(drop_location)
+    with open(drop_location+"/config.json", "w") as i :
+        json.dump(json_string, i)
 
 if __name__ == "__main__":
     main()
