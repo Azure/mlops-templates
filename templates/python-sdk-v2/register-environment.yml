@@ -1,0 +1,38 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: build_type
+  type: string
+- name: environment_name
+  type: string
+- name: environment_file
+  type: string
+- name: enable_monitoring
+  type: string
+  default: 'false'
+
+steps:
+  - task: AzureCLI@2
+    displayName: Register Azure ML environment (docker)
+    continueOnError: true
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      scriptLocation: inlineScript
+      inlineScript: |
+        az ml environment create --file ${{ parameters.environment_file }}
+    condition: and(succeeded(), eq('${{ parameters.build_type }}', 'docker'))
+
+  - task: AzureCLI@2
+    displayName: Register Azure ML environment (conda)
+    continueOnError: true
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      scriptLocation: inlineScript
+      inlineScript: |
+        az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }}
+    condition: and(succeeded(), eq('${{ parameters.build_type }}', 'conda'))

@@ -1,0 +1,24 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+  - name: pipeline_file
+    type: string
+  - name: experiment_name
+    type: string
+  - name: enable_monitoring
+    type: string
+    default: 'false'
+
+steps:
+  - task: AzureCLI@2
+    displayName: Run pipeline in AML
+    inputs:
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
+        echo $AzureMLsubscription
+        echo ${{ parameters.experiment_name }}
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription
