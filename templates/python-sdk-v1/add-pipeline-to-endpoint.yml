@@ -10,4 +10,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        python templates/src/python-sdk/add_pipeline_to_endpoint.py -p $(pipeline_id)
+        python templates/src/python-sdk-v1/add_pipeline_to_endpoint.py -p $(pipeline_id)
