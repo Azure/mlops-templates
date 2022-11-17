@@ -15,6 +15,7 @@ steps:
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace) organization= $(System.CollectionUri)
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo $AzureMLsubscription
+        echo $(System.CollectionUri)
         az pipelines variable list --detect true --org $(System.CollectionUri)
         
 
