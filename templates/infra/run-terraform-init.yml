@@ -7,7 +7,7 @@ steps:
       azureSubscription: '$(ado_service_connection_rg)'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
-      inlineScript: 'export TF_LOG="DEBUG"; export TF_LOG_PATH="/tmp/terraform.log"; tail -f /tmp/terraform.log'
+      inlineScript: 'export TF_LOG="DEBUG"; export TF_LOG_PATH="/tmp/terraform.log"'
       
   - task: AzureCLI@2
     displayName: 'ls tf'
@@ -28,3 +28,11 @@ steps:
       backendAzureRmStorageAccountName: '$(terraform_st_storage_account)'
       backendAzureRmContainerName: '$(terraform_st_container_name)'
       backendAzureRmKey: '$(terraform_st_key)'
+      
+  - task: AzureCLI@2
+    displayName: 'tf log print'
+    inputs:
+      azureSubscription: '$(ado_service_connection_rg)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'cat /tmp/terraform.log'
