@@ -22,3 +22,7 @@ steps:
         echo $AzureMLsubscription
         echo ${{ parameters.experiment_name }}
         python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription
+        
+        text_to_print = $('text')
+        echo text_to_print
+        python ${{ parameters.pipeline_file }} 
