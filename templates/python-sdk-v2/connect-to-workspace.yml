@@ -15,5 +15,5 @@ steps:
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo $AzureMLsubscription
-        python templates/src/python-sdk-v2/register_environment.py --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription --config_location ${{ parameters.config_location }}
+        python templates/src/python-sdk-v2/generate_config_file.py --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription --config_location ${{ parameters.config_location }}
 

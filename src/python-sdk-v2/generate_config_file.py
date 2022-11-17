@@ -59,7 +59,8 @@ def main():
 
     drop_location = args.config_location
     print(drop_location)
-    with open(drop_location+"/config.json", "w") as i :
+    
+    with open(drop_location+"/config.json", "wb") as i :
         json.dump(json_string, i)
 
 if __name__ == "__main__":
