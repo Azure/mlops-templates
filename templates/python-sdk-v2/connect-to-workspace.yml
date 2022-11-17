@@ -20,7 +20,7 @@ steps:
         $AzureMLsubscription = (az account list --query "[?isDefault].id" -o tsv)
         $AzureMLsubscription
         $json = '{
-        "subscription_id": $AzureMLsubscription,
+        "subscription_id": $(AzureMLsubscription),
         "workspace_name": $(aml_workspace)
         "resource_group": $(resource_group)
         }'
