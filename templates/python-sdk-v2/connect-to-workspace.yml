@@ -16,5 +16,5 @@ steps:
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo $AzureMLsubscription
         python templates/src/python-sdk-v2/generate_config_file.py --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription --config_location ${{ parameters.config_location }}
-        az pipelines variable create --name AzureMLsubscription --allow-override true --detect true --value $AzureMLsubscription
+        az pipelines variable list --detect true
 
