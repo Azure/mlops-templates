@@ -17,6 +17,6 @@ steps:
         echo $AzureMLsubscription
         echo $(System.CollectionUri)
         echo $(System.TeamProjectId)
-        az devops login --organization $(System.CollectionUri)
+        echo $(System.AccessToken) | az devops login --organization $(System.CollectionUri)
         az pipelines variable list --detect true --org $(System.CollectionUri) --project $(System.TeamProjectId) --pipeline-id $(System.DefinitionId)
       
