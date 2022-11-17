@@ -10,3 +10,18 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $AzureMLsubscription = (az account list --query "[?isDefault].id" -o tsv)
+        $json = '{
+        "subscription_id": $AzureMLsubscription,
+        "workspace_name": $(aml_workspace)
+        "resource_group": $(resource_group)
+        }'
+        $json
+        $json | Out-File config.json
+      workingDirectory: '$(Build.SourcesDirectory)'
+      pwsh: true # For Linux
