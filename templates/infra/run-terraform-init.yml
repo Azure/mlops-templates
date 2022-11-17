@@ -28,6 +28,7 @@ steps:
       backendAzureRmStorageAccountName: '$(terraform_st_storage_account)'
       backendAzureRmContainerName: '$(terraform_st_container_name)'
       backendAzureRmKey: '$(terraform_st_key)'
+    continueOnError: true
       
   - task: AzureCLI@2
     displayName: 'tf log print'
