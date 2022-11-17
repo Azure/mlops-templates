@@ -22,7 +22,7 @@ steps:
     inputs:
       provider: 'azurerm'
       command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
       backendServiceArm: '$(ado_service_connection_rg)'
       backendAzureRmResourceGroupName: '$(terraform_st_resource_group)'
       backendAzureRmStorageAccountName: '$(terraform_st_storage_account)'
