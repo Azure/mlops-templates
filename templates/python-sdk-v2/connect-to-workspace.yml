@@ -17,6 +17,6 @@ steps:
         echo $AzureMLsubscription
         python templates/src/python-sdk-v2/generate_config_file.py --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription --config_location ${{ parameters.config_location }}
         az pipelines variable create --name AzureMLsubscription --value $AzureMLsubscription --allow-override true --detect true 
-        az pipelines variable list --detect
+        az pipelines variable list --detect true
 
 
