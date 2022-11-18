@@ -2,19 +2,9 @@
 # Licensed under the MIT License.
 
 parameters:
-  - name: pipeline_file
-    type: string
   - name: experiment_name
     type: string
-  - name: enable_monitoring
-    type: string
-    default: 'false'
-  - name: config_location
-    type: string
-    default: 'false'
-  - name: env_subscription_id
-    type: string
-    default: 'false'
+
 
 steps:
   - task: AzureCLI@2
@@ -24,12 +14,10 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
+        #AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo "printing subscription id"
-        echo ${{ parameters.env_subscription_id }}
-        echo $(env_subscription_id)
-        echo "printing other variables"
-        echo ${{ parameters.experiment_name }}
-        echo ${{ parameters.config_location }}
-        echo $AzureMLsubscription
-        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription
+        #echo $(env_subscription_id)
+        #echo "printing other variables"
+        #echo ${{ parameters.experiment_name }}
+        #echo $AzureMLsubscription
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $(env_subscription_id)

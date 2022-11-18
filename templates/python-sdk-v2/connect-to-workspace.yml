@@ -1,9 +1,5 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-parameters:
-  - name: config_location
-    type: string
-
 steps:
   - task: AzureCLI@2
     name: registersubsid
