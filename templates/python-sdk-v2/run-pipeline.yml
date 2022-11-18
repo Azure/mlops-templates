@@ -12,7 +12,7 @@ parameters:
   - name: config_location
     type: string
     default: 'false'
-  - name: subscription_id
+  - name: env_subscription_id
     type: string
     default: 'false'
 
@@ -26,8 +26,8 @@ steps:
       inlineScript: |
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo "printing subscription id"
-        echo ${{ parameters.subscription_id }}
-
+        echo ${{ parameters.env_subscription_id }}
+        echo $(env_subscription_id)
         echo "printing other variables"
         echo ${{ parameters.experiment_name }}
         echo ${{ parameters.config_location }}
