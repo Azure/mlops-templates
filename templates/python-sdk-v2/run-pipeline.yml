@@ -6,7 +6,8 @@ parameters:
     type: string
   - name: experiment_name
     type: string
-
+  - name: env_subscription_id
+    type: string
 
 steps:
   - task: AzureCLI@2
@@ -16,11 +17,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        #AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
-        #echo "printing subscription id"
-        #echo ${{ parameters.env_subscription_id }}
-        #echo $(env_subscription_id)
-        #echo "printing other variables"
-        #echo ${{ parameters.experiment_name }}
-        #echo $AzureMLsubscription
-        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $(env_subscription_id)
+        echo "printing subscription id"
+        echo ${{ parameters.env_subscription_id }}
+        echo $(env_subscription_id)
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id ${{parameters.env_subscription_id }}
