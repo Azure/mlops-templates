@@ -5,10 +5,16 @@ parameters:
     type: string
 
 steps:
-  - bash: echo $(System.AccessToken)
+  - bash: |
+      echo $(System.AccessToken)
+      AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
+      echo $AzureMLsubscription
     displayName: Defining AZURE_DEVOPS_EXT_PAT
     env:
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+      subscription_id: $AzureMLsubscription
+      workspace_name: $(aml_workspace)
+      resource_group: $(resource_group)
 
 
   - task: AzureCLI@2
@@ -22,8 +28,5 @@ steps:
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
         echo $AzureMLsubscription
         echo $(System.CollectionUri)
-        echo $(System.TeamProjectId)
-        echo $AZURE_DEVOPS_EXT_PAT
-        az devops login --organization $(System.CollectionUri)
-        az pipelines variable list --detect true --org $(System.CollectionUri) --project $(System.TeamProjectId) --pipeline-id $(System.DefinitionId)
-      
+        echo $(System.TeamProjectId) 
+        echo "finished"
