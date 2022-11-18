@@ -5,6 +5,9 @@ parameters:
     type: string
 
 steps:
+  - bash: az devops 
+    env:
+      AZURE_DEVOPS_EXT_PAT: 
   - task: AzureCLI@2
     displayName: Connect to AML Workspace using CLI v2
     inputs:
@@ -14,8 +17,12 @@ steps:
       inlineScript: |
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
-        export AZURE_DEVOPS_EXT_PAT=$(System.AccessToken)
-        az devops login --org $(System.CollectionUri)
-        az pipelines variable list --detect true --org $(System.CollectionUri) --pipeline-id $(System.DefinitionId) --project $(System.TeamProjectId) 
+
+        echo "##[debug]Creating variable with following value: $AzureMLsubscription" 
+        echo "##vso[task.setvariable variable=env_subscription_id;isOutput=true]$(az account list --query "[?isDefault].id" -o tsv)"
+        
         echo "finished"
+    target:
+      settableVariables:
+      - env_subscription_id
 
