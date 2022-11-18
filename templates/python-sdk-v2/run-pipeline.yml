@@ -25,8 +25,11 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
-        echo $AzureMLsubscription
+        echo "printing subscription id"
+        echo ${{ parameters.subscription_id }}
+
+        echo "printing other variables"
         echo ${{ parameters.experiment_name }}
         echo ${{ parameters.config_location }}
-        echo ${{ parameters.subscription_id }}
+        echo $AzureMLsubscription
         python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription
