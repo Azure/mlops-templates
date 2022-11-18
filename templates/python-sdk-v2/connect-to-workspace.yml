@@ -5,23 +5,6 @@ parameters:
     type: string
 
 steps:
-  - bash: az --version
-    displayName: 'Show Azure CLI version'
-
-  - bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
-    displayName: 'Set default Azure DevOps organization and project'
-
-  - bash: |
-      az pipelines build list 
-      git pr list
-      az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
-      az login
-      AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
-      echo $AzureMLsubscription
-    displayName: 'Show build list and PRs'
-    env:
-      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-
   - task: AzureCLI@2
     displayName: Connect to AML Workspace using CLI v2
     inputs:
@@ -31,10 +14,8 @@ steps:
       inlineScript: |
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
         AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
-        echo $AzureMLsubscription
-        echo $(System.CollectionUri)
-        echo $(System.TeamProjectId) 
+        export AZURE_DEVOPS_EXT_PAT=$(System.AccessToken)
+        az devops login --org $(System.CollectionUri)
+        az pipelines variable list --detect true --org $(System.CollectionUri) --pipeline-id $(System.DefinitionId) --project $(System.TeamProjectId) 
         echo "finished"
-    env:
-      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
 
