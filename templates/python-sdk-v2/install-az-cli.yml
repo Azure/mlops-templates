@@ -21,8 +21,6 @@ steps:
         python -m pip install -U --force-reinstall pip pip install azure-storage-file-datalake==12.9.1
         python -m pip install -U --force-reinstall pip pip install azure-storage-file-share==12.7.0
         az version    
-    condition: eq(variables.AZ_CLI_CACHE_RESTORED, 'false')
-
 
 
 

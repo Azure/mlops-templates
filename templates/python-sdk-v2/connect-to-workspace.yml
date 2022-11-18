@@ -30,3 +30,8 @@ steps:
         echo $(System.CollectionUri)
         echo $(System.TeamProjectId) 
         echo "finished"
+    env: 
+      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+      subscription_id: $AzureMLsubscription
+      workspace_name: $(aml_workspace)
+      resource_group: $(resource_group)
