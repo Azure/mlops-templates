@@ -18,6 +18,6 @@ steps:
         echo "printing subscription id"
         #echo $(env_subscription_id)
         #echo "printing other variables"
-        #echo ${{ parameters.experiment_name }}
+        echo ${{ parameters.experiment_name }}
         #echo $AzureMLsubscription
         python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $(env_subscription_id)
