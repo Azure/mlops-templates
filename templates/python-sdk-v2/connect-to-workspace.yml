@@ -5,9 +5,6 @@ parameters:
     type: string
 
 steps:
-  - bash: az devops 
-    env:
-      AZURE_DEVOPS_EXT_PAT: 
   - task: AzureCLI@2
     displayName: Connect to AML Workspace using CLI v2
     inputs:
