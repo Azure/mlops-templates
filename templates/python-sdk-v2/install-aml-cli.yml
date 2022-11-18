@@ -15,4 +15,3 @@ steps:
         az extension add -n ml -y
         az extension update -n ml
         az extension list
-    condition: eq(variables.AZ_CLI_CACHE_RESTORED, 'false')
