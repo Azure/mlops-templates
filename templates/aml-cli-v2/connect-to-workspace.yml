@@ -16,3 +16,6 @@ steps:
 
         JSON_STRING=$'{\n\t"subscription_id": "%s",\n\t"resource_group": "%s",\n\t"workspace_name": "%s"\n}'
         printf "$JSON_STRING" "$currentId" "$(resource_group)" "$(aml_workspace)" > config.json
+
+        echo "$(pwd)"
+        echo "$(ls)"
