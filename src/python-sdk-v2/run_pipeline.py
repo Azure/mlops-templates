@@ -115,7 +115,7 @@ def main():
 
 
     pipeline_job = taxi_training_pipeline(
-        Input(type=AssetTypes.URI_FILE, path="taxi-data@latest"), "false", "taximonitoring"
+        Input(type=AssetTypes.URI_FILE, path=config['training_dataset_name'] + "@latest"), "false", "taximonitoring"
     )
 
     # set pipeline level compute
