@@ -15,8 +15,6 @@ parameters:
   type: string
   default: ''
 
-#cp config.json templates/src/python-sdk-v2/config.json
-
 steps:
 
 - task: UsePythonVersion@0
@@ -37,13 +35,6 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-
-      echo "Checking Directories for Config.json"
-      echo "$(ls templates/src/python-sdk-v2/)"
-
-      echo "$(pwd)"
-      echo "$(ls templates/src/python-sdk-v2/)"
-
 
       python templates/src/python-sdk-v2/register_data_asset.py \
         -n "${{parameters.dataAssetName}}" \
