@@ -15,6 +15,8 @@ parameters:
   type: string
   default: ''
 
+#cp config.json templates/src/python-sdk-v2/config.json
+
 steps:
 
 - task: UsePythonVersion@0
@@ -38,7 +40,7 @@ steps:
 
       echo "Checking Directories for Config.json"
       echo "$(ls templates/src/python-sdk-v2/)"
-      cp config.json templates/src/python-sdk-v2/config.json
+
       echo "$(pwd)"
       echo "$(ls templates/src/python-sdk-v2/)"
 
