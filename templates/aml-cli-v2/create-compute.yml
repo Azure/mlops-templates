@@ -25,7 +25,7 @@ steps:
         compute_name=$(az ml compute show -n ${{ parameters.cluster_name }} --query name -o tsv)
         if [[ -z "$compute_name" ]]
         then
-          echo "Compute does not exists. Creating the cluster..."
+          echo "Compute does not exist. Creating the cluster..."
           az ml compute create --name ${{ parameters.cluster_name }} \
                                   --type amlcompute \
                                   --size ${{ parameters.size }} \
