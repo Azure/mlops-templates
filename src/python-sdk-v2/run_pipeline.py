@@ -10,6 +10,7 @@ from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
 
 import json
+import yaml
 
 def parse_args():
     parser = argparse.ArgumentParser("Deploy Training Pipeline")
