@@ -69,7 +69,8 @@ def main():
     print('current', os.listdir())
 
     # Create pipeline job
-    parent_dir = "classical/python-sdk-v2/mlops/train"
+    parent_dir = "classical/python-sdk-v2/mlops/azureml/train"
+
 
 
     # 1. Load components
