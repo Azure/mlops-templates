@@ -65,7 +65,7 @@ def main():
         ml_client.compute.begin_create_or_update(my_cluster)
 
 
-    print(os.cwd())
+    print(os.getcwd())
     print('current', os.listdir())
 
     # Create pipeline job
