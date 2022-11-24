@@ -36,7 +36,13 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
 
+      echo "Checking Directories for Config.json"
+      echo "$(ls templates/src/python-sdk-v2/)"
       cp config.json templates/src/python-sdk-v2/config.json
+      echo "$(pwd)"
+      echo "$(ls templates/src/python-sdk-v2/)"
+
+
       python templates/src/python-sdk-v2/register_data_asset.py \
         -n "${{parameters.dataAssetName}}" \
         -d "${{parameters.dataAssetDescription}}" \

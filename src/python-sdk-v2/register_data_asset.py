@@ -23,7 +23,12 @@ def main():
     
     credential = DefaultAzureCredential()
     try:
-        ml_client = MLClient.from_config(credential)
+        ml_client = MLClient.from_config(credential, path='config.json')
+        print("Found the config file config.json")
+        f = open('config.json')
+        print(json.load(f))
+        f.close()
+
     except Exception as ex:
         print(ex)
         # Enter details of your AzureML workspace
