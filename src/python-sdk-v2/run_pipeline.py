@@ -9,6 +9,14 @@ from azure.ai.ml.constants import AssetTypes
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
 
+from azure.ai.ml.entities import AmlCompute
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
+from azure.ai.ml.entities import Environment
+from azure.ai.ml.dsl import pipeline
+from azure.ai.ml import Input, Output, load_component
+from azure.ai.ml.constants import AssetTypes, InputOutputModes
+
 import json
 import yaml
 
