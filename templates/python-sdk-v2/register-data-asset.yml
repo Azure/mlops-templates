@@ -9,7 +9,8 @@ parameters:
   type: string
   default: ''
 - name: dataAssetLocalPath
-  type: uri_folder
+  type: string
+  default: ''
 - name: dataAssetType
   type: string
   default: ''
