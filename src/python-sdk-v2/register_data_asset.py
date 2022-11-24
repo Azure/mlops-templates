@@ -26,20 +26,10 @@ def main():
     credential = DefaultAzureCredential()
     try:
         ml_client = MLClient.from_config(credential, path='config.json')
-        print("Found the config file config.json")
-        f = open('config.json')
-        print(json.load(f))
-        f.close()
 
     except Exception as ex:
         print("HERE IN THE EXCEPTION BLOCK")
         print(ex)
-        # Enter details of your AzureML workspace
-        # NOT GOOD PRACTICE TO HARDCODE, JUST TESTING 
-        # subscription_id = "1717a761-4803-4999-9d6e-3fdc1454c085"
-        # resource_group = "rg-mlopsv2-0518prod"
-        # workspace = "mlw-mlopsv2-0518prod"
-        # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
 
     
     my_data = Data(
