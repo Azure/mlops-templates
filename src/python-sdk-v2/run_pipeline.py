@@ -64,8 +64,14 @@ def main():
 
         ml_client.compute.begin_create_or_update(my_cluster)
 
+
+    print(os.cwd())
+    print('current', os.listdir())
+
     # Create pipeline job
     parent_dir = "../train"
+    print('parent', os.listdir('../'))
+    print('train', os.listdir(parent_dir))
 
     # 1. Load components
     prepare_data = load_component(source=os.path.join(parent_dir , "prep.yml"))
