@@ -19,6 +19,8 @@ from azure.ai.ml.constants import AssetTypes, InputOutputModes
 
 import json
 import yaml
+import os
+
 
 def parse_args():
     parser = argparse.ArgumentParser("Deploy Training Pipeline")
@@ -61,6 +63,65 @@ def main():
         )
 
         ml_client.compute.begin_create_or_update(my_cluster)
+
+    # Create pipeline job
+    parent_dir = "../train"
+
+    # 1. Load components
+    prepare_data = load_component(source=os.path.join(parent_dir , "prep.yml"))
+    train_model = load_component(source=os.path.join(parent_dir, "train.yml"))
+    evaluate_model = load_component(source=os.path.join(parent_dir, "evaluate.yml"))
+    register_model = load_component(source=os.path.join(parent_dir, "register.yml"))
+
+    # 2. Construct pipeline
+    @pipeline()
+    def taxi_training_pipeline(raw_data, enable_monitoring, table_name):
+        
+        prepare = prepare_data(
+            raw_data=raw_data,
+            enable_monitoring=enable_monitoring, 
+            table_name=table_name
+        )
+
+        train = train_model(
+            train_data=prepare.outputs.train_data
+        )
+
+        evaluate = evaluate_model(
+            model_name="taxi-model",
+            model_input=train.outputs.model_output,
+            test_data=prepare.outputs.test_data
+        )
+
+
+        register = register_model(
+            model_name="taxi-model",
+            model_path=train.outputs.model_output,
+            evaluation_output=evaluate.outputs.evaluation_output
+        )
+
+        return {
+            "pipeline_job_train_data": prepare.outputs.train_data,
+            "pipeline_job_test_data": prepare.outputs.test_data,
+            "pipeline_job_trained_model": train.outputs.model_output,
+            "pipeline_job_score_report": evaluate.outputs.evaluation_output,
+        }
+
+
+    pipeline_job = taxi_training_pipeline(
+        Input(type=AssetTypes.URI_FILE, path="taxi-data@latest"), "false", "taximonitoring"
+    )
+
+    # set pipeline level compute
+    pipeline_job.settings.default_compute = "cpu-cluster"
+    # set pipeline level datastore
+    pipeline_job.settings.default_datastore = "workspaceblobstore"
+
+    pipeline_job = ml_client.jobs.create_or_update(
+        pipeline_job, experiment_name="pipeline_samples"
+    )
+
+    print(pipeline_job)
 
 
     
