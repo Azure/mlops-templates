@@ -42,7 +42,7 @@ jobs:
         run: az extension update -n ml
       - name: create-compute
         run: |
-          compute_name=$(az ml compute show -n ${{ parameters.cluster_name }} --query name -o tsv)
+          compute_name=$(az ml compute show -n ${{ inputs.cluster_name }} --query name -o tsv)
           if [[ -z "$compute_name" ]]
           then
             echo "Compute does not exist. Creating the cluster..."
