@@ -21,6 +21,9 @@ on:
       workspace_name:  
         required: true
         type: string
+      cluster_tier: 
+        required: true
+        type: string
     secrets:
       creds:
         required: true
@@ -39,11 +42,22 @@ jobs:
         run: az extension update -n ml
       - name: create-compute
         run: |
-          az ml compute create --name ${{ inputs.cluster_name }} \
-                                  --type AmlCompute \
-                                  --size ${{ inputs.size }} \
-                                  --min-instances ${{ inputs.min_instances }} \
-                                  --max-instances ${{ inputs.max_instances }} \
+          compute_name=$(az ml compute show -n ${{ inputs.cluster_name }}\
                                   --resource-group ${{ inputs.resource_group }} \
-                                  --workspace-name ${{ inputs.workspace_name }}
-  
+                                  --workspace-name ${{ inputs.workspace_name }} \
+                                  --query name -o tsv)
+          if [[ -z "$compute_name" ]]
+          then
+            echo "Compute does not exist. Creating the cluster..."
+            az ml compute create --name ${{ inputs.cluster_name }} \
+                                    --type amlcompute \
+                                    --size ${{ inputs.size }} \
+                                    --min-instances ${{ inputs.min_instances }} \
+                                    --max-instances ${{ inputs.max_instances }} \
+                                    --tier ${{ inputs.cluster_tier }} \
+                                    --resource-group ${{ inputs.resource_group }} \
+                                    --workspace-name ${{ inputs.workspace_name }}
+          else
+            echo "Compute exists. Skipping cluster creation."
+            exit 0
+          fi
