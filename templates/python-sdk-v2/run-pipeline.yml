@@ -16,4 +16,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e 
-        python templates/src/python-sdk-v2/run_pipeline.py -m ${{ parameters.enable_monitoring }} -c $${{ parameters.cluster_name }}
+        python templates/src/python-sdk-v2/run_pipeline.py -c $${{ parameters.cluster_name }} -m ${{ parameters.enable_monitoring }}
