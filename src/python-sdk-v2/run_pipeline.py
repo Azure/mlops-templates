@@ -26,19 +26,15 @@ def parse_args():
     parser = argparse.ArgumentParser("Deploy Training Pipeline")
     parser.add_argument("-c", type=str, help="Compute Cluster Name")
     parser.add_argument("-m", type=str, help="Enable Monitoring", default="false")
+    parser.add_argument("-d", type=str, help="Data Asset Name")
     args = parser.parse_args()
 
-    with open(args.f, "r") as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-        config = config['variables']
-
-    return parser.parse_args(), config
+    return parser.parse_args()
 
 
 def main():
-    args, config = parse_args()
+    args = parse_args()
     print(args)
-    print(config)
     
     credential = DefaultAzureCredential()
     try:
@@ -115,7 +111,7 @@ def main():
 
 
     pipeline_job = taxi_training_pipeline(
-        Input(type=AssetTypes.URI_FOLDER, path=config['training_dataset_name'] + "@latest"), "false", "taximonitoring"
+        Input(type=AssetTypes.URI_FOLDER, path=args.d + "@latest"), "false", "taximonitoring"
     )
 
     # set pipeline level compute
