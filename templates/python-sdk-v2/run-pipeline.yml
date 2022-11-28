@@ -3,6 +3,9 @@
 parameters:
 - name: enable_monitoring
   type: string
+- name: cluster_name
+  type: string
+
 
 steps:
   - task: AzureCLI@2
