@@ -19,7 +19,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e 
-        python templates/src/python-sdk-v2/run_pipeline.py \
+        python data-science/src/run_pipeline.py \
           -c "${{ parameters.cluster_name }}" \
           -m ${{ parameters.enable_monitoring }} \
           -d ${{ parameters.dataAssetName }} \
