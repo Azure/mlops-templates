@@ -48,21 +48,21 @@ def main():
         print("HERE IN THE EXCEPTION BLOCK")
         print(ex)
 
-    try:
-        cpu_compute_target = args.c
-        print(ml_client.compute.get(cpu_compute_target))
-    except:
+    # try:
+    #     cpu_compute_target = args.c
+    #     print(ml_client.compute.get(cpu_compute_target))
+    # except:
                 
-        my_cluster = AmlCompute(
-            name=args.c,
-            type="amlcompute", 
-            size=config['training_target_sku'], 
-            min_instances=int(config['training_target_min_nodes']), 
-            max_instances=int(config['training_target_max_nodes']),
-            location="westeurope", 	
-        )
+    #     my_cluster = AmlCompute(
+    #         name=args.c,
+    #         type="amlcompute", 
+    #         size=config['training_target_sku'], 
+    #         min_instances=int(config['training_target_min_nodes']), 
+    #         max_instances=int(config['training_target_max_nodes']),
+    #         location="westeurope", 	
+    #     )
 
-        ml_client.compute.begin_create_or_update(my_cluster)
+    #     ml_client.compute.begin_create_or_update(my_cluster)
 
 
     print(os.getcwd())
