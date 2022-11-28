@@ -119,7 +119,7 @@ def main():
     )
 
     # set pipeline level compute
-    pipeline_job.settings.default_compute = "cpu-cluster"
+    pipeline_job.settings.default_compute = args.c
     # set pipeline level datastore
     pipeline_job.settings.default_datastore = "workspaceblobstore"
 
