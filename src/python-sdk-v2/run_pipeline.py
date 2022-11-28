@@ -24,7 +24,7 @@ import os
 
 def parse_args():
     parser = argparse.ArgumentParser("Deploy Training Pipeline")
-    parser.add_argument("-f", type=str, help="Controller Config YAML file")
+    parser.add_argument("-c", type=str, help="Compute Cluster Name")
     parser.add_argument("-m", type=str, help="Enable Monitoring", default="false")
     args = parser.parse_args()
 
@@ -49,12 +49,12 @@ def main():
         print(ex)
 
     try:
-        cpu_compute_target = config['training_target']
+        cpu_compute_target = args.c
         print(ml_client.compute.get(cpu_compute_target))
     except:
                 
         my_cluster = AmlCompute(
-            name=config['training_target'],
+            name=args.c,
             type="amlcompute", 
             size=config['training_target_sku'], 
             min_instances=int(config['training_target_min_nodes']), 
