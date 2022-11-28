@@ -65,7 +65,7 @@ def main():
     print('current', os.listdir())
 
     # Create pipeline job
-    parent_dir = "classical/python-sdk-v2/mlops/azureml/train"
+    parent_dir = "mlops/azureml/train"
 
 
 
