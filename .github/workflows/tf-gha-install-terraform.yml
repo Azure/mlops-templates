@@ -65,7 +65,8 @@ jobs:
       #  -backend-config=tenant_id="$ARM_TENANT_ID" 
       # -backend-config=client_id="$ARM_CLIENT_ID" 
       # -backend-config=client_secret="$ARM_CLIENT_SECRET"
-      run: terraform version; echo {{inputs.terraform_st_key}}
+      run: terraform version; echo ${{inputs.terraform_st_key}}; echo ${{inputs.dply_environment}}; echo ${{inputs.terraform_plan_location}}; 
+        echo {{ secrets.CLIENT_ID}}
     - name: Terraform Plan
       #run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" -var="virtual_network_name=${{inputs.terraform_plan_vnet}}"
       run: echo 'test'
