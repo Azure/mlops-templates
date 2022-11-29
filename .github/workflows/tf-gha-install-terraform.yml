@@ -1,0 +1,79 @@
+name: tf-gha-install-terraform.yml
+ 
+on:
+  workflow_call:
+    inputs:
+      TFAction:
+        type: string
+        description: 'Terraform Action- Apply or Destroy'   
+        required: true
+        default: 'apply'
+      dply_environment:
+        type: string
+        required: true 
+      terraform_st_storage_account: 
+        type: string
+        description: 'name of the terraform state storage account to create'
+        required: true
+      terraform_st_resource_group: 
+        type: string
+        description: 'name of the terraform resource group to host the terraform state resources'
+        required: true
+      terraform_st_container_name: 
+        type: string
+        description: 'name of the terraform state container'
+        required: true 
+      terraform_st_key:
+        type: string
+        description: 'name of the terraform state key'
+        required: true
+      terraform_plan_location:
+        type: string
+        description: 'location of Terraform plan'
+        required: true
+      terraform_plan_vnet:
+        type: string
+        description: 'vnet of Terraform plan'
+        required: true
+    secrets:
+      creds:
+        required: true    
+jobs:
+  install-terraform:
+    name: 'Install Terraform'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.dply_environment }}
+    env:
+      ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.TENANT_ID }}     
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - name: Terraform Init
+      #run: terraform init -backend-config=storage_account_name=${{ inputs.terraform_st_storage_account }}  
+      #  -backend-config=container_name=${{ inputs.terraform_st_storage_account }} 
+      #  -backend-config=key=${{ inputs.terraform_st_key }}         
+      #  -backend-config=resource_group_name=${{ inputs.terraform_st_resource_group }}          
+      #  -backend-config=subscription_id="$ARM_SUBSCRIPTION_ID" 
+      #  -backend-config=tenant_id="$ARM_TENANT_ID" 
+      # -backend-config=client_id="$ARM_CLIENT_ID" 
+      # -backend-config=client_secret="$ARM_CLIENT_SECRET"
+      run: terraform version; echo {{inputs.terraform_st_key}}
+    - name: Terraform Plan
+      #run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" -var="virtual_network_name=${{inputs.terraform_plan_vnet}}"
+      run: echo 'test'
+    - name: Terraform Apply
+      if: ${{ inputs.TFAction == 'apply'}}  
+      #run: terraform apply -input=false -auto-approve plan.tfplan
+      run: echo 'I am in apply'
+    - name: Terraform Destroy
+      if: ${{ inputs.TFAction == 'destroy' }} 
+      #run: terraform destroy -input=false -auto-approve
+      run: echo 'I am in destroy'
