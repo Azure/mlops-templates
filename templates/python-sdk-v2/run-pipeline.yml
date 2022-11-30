@@ -6,8 +6,6 @@ parameters:
     type: string
   - name: experiment_name
     type: string
-  - name: env_subscription_id
-    type: string
 
 steps:
   - task: AzureCLI@2
