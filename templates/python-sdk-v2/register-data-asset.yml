@@ -4,16 +4,10 @@
 parameters:
 - name: data_name
   type: string
-  default: ''
-- name: data_description
-  type: string
-  default: ''
 - name: data_path
   type: string
-  default: ''
 - name: data_type
   type: string
-  default: ''
 
 steps:
 
@@ -38,6 +32,5 @@ steps:
 
       python templates/src/python-sdk-v2/register_data_asset.py \
         -n "${{parameters.data_name}}" \
-        -d "${{parameters.data_description}}" \
         -l "${{parameters.data_path}}" \
         -t "${{parameters.data_type}}" 
