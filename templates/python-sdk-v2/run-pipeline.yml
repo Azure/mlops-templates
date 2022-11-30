@@ -1,9 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 parameters:
+- name: pipeline_path
+  type: string
 - name: data_name
   type: string
-  default: ''
 - name: enable_monitoring
   type: string
 - name: cluster_name
@@ -19,7 +20,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e 
-        python data-science/src/run_pipeline.py \
-          -c "${{ parameters.cluster_name }}" \
+        python ${{ parameters.pipeline_path }} \
+          -c ${{ parameters.cluster_name }} \
           -m ${{ parameters.enable_monitoring }} \
           -d ${{ parameters.data_name }} \
