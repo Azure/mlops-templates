@@ -35,6 +35,7 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
+
       python templates/src/python-sdk-v2/register_data_asset.py \
         -n "${{parameters.dataAssetName}}" \
         -d "${{parameters.dataAssetDescription}}" \
