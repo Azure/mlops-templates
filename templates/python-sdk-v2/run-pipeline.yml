@@ -6,9 +6,6 @@ parameters:
     type: string
   - name: experiment_name
     type: string
-  - name: enable_monitoring
-    type: string
-    default: 'false'
 
 steps:
   - task: AzureCLI@2
@@ -18,7 +15,5 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        AzureMLsubscription=$(az account list --query "[?isDefault].id" -o tsv)
-        echo $AzureMLsubscription
-        echo ${{ parameters.experiment_name }}
-        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id $AzureMLsubscription
+        echo "Executing python code with config.json"
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }}
