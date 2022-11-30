@@ -8,9 +8,9 @@ parameters:
   type: string
 - name: environment_file
   type: string
-- name: enable_monitoring
+- name: image
   type: string
-  default: 'false'
+  default: 'mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04'
 
 steps:
   - task: AzureCLI@2
@@ -22,7 +22,9 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-        az ml environment create --file ${{ parameters.environment_file }}
+        az ml environment create --name ${{ parameters.environment_name }} \ 
+                                 --file ${{ parameters.environment_file }} \ 
+                                 --image ${{ parameters.image }} 
     condition: and(succeeded(), eq('${{ parameters.build_type }}', 'docker'))
 
   - task: AzureCLI@2
@@ -34,5 +36,7 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-        az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }}
+        az ml environment create --name ${{ parameters.environment_name }} \ 
+                                 --file ${{ parameters.environment_file }} \ 
+                                 --image ${{ parameters.image }} 
     condition: and(succeeded(), eq('${{ parameters.build_type }}', 'conda'))
