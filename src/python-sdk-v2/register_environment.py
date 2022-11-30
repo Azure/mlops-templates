@@ -62,6 +62,7 @@ def get_config_parger(parser: argparse.ArgumentParser = None):
             os.path.dirname(__file__),
             "..",
             "..",
+            "..",
             "data-science",
             "environments",
             "training",
