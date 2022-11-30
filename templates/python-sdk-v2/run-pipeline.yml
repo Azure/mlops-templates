@@ -17,7 +17,5 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        echo "printing subscription id"
-        echo ${{ parameters.env_subscription_id }}
-        echo $(env_subscription_id)
-        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }} --resource_group $(resource_group) --workspace_name $(aml_workspace) --subscription_id ${{parameters.env_subscription_id }}
+        echo "Executing python code with config.json"
+        python ${{ parameters.pipeline_file }} --experiment_name ${{ parameters.experiment_name }}
