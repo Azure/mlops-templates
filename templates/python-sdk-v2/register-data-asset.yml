@@ -2,16 +2,16 @@
 # Licensed under the MIT License.
 
 parameters:
-- name: dataAssetName
+- name: data_name
   type: string
   default: ''
-- name: dataAssetDescription
+- name: data_description
   type: string
   default: ''
-- name: dataAssetLocalPath
+- name: data_path
   type: string
   default: ''
-- name: dataAssetType
+- name: data_type
   type: string
   default: ''
 
@@ -37,7 +37,7 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/register_data_asset.py \
-        -n "${{parameters.dataAssetName}}" \
-        -d "${{parameters.dataAssetDescription}}" \
-        -l "${{parameters.dataAssetLocalPath}}" \
-        -t "${{parameters.dataAssetType}}" 
+        -n "${{parameters.data_name}}" \
+        -d "${{parameters.data_description}}" \
+        -l "${{parameters.data_path}}" \
+        -t "${{parameters.data_type}}" 
