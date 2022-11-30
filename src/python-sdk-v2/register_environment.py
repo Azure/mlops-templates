@@ -36,7 +36,7 @@ def get_config_parger(parser: argparse.ArgumentParser = None):
     parser.add_argument(
         "--workspace_name",
         type=str,
-        required=True,
+        required=False,
         help="Workspace name",
     )
     parser.add_argument(
@@ -60,7 +60,6 @@ def get_config_parger(parser: argparse.ArgumentParser = None):
         "--environment_context_path",
         default=os.path.join(
             os.path.dirname(__file__),
-            "..",
             "..",
             "..",
             "data-science",
