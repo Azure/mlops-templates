@@ -20,6 +20,12 @@ outputs:
     description: 'Terraform State working directory'
   terraform_st_resource_group:
     description: 'Terraform State Resource Group'
+  terraform_st_storage_account:
+    description: "Terraform State Storage Account"
+  terraform_st_container_name:
+    description: "Terraform State Container name"
+  terraform_st_key:
+    description: 'Terraform State Key'
 runs:
   using: 'node16'
   main: 'index.js'
