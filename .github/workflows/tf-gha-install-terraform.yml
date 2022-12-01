@@ -38,6 +38,8 @@ on:
     secrets:
       creds:
         required: true    
+      clientid:
+        required: true
 jobs:
   install-terraform:
     name: 'Install Terraform'
