@@ -19,6 +19,24 @@ on:
       oep:
         description: "The online endpoint"
         value: ${{ jobs.read-yaml.outputs.oep }}
+      terraform_version:
+        description: 'Terraform version'
+        value: ${{ jobs.read-yaml.outputs.terraform_version }}
+      terraform_workingdir:
+        description: 'Terraform State working directory'
+        value: ${{ jobs.read-yaml.outputs.terraform_workingdir }}
+      terraform_st_resource_group:
+        description: 'Terraform State Resource Group'
+        value: ${{ jobs.read-yaml.outputs.terraform_st_resource_group }}
+      terraform_st_storage_account:
+        description: "Terraform State Storage Account"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_storage_account }}
+      terraform_st_container_name:
+        description: "Terraform State Container name"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_container_name }}
+      terraform_st_key:
+        description: 'Terraform State Key'
+        value: ${{ jobs.read-yaml.outputs.terraform_st_key }}
 jobs:
     read-yaml:
       runs-on: ubuntu-latest
@@ -27,6 +45,12 @@ jobs:
         aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
         bep: ${{  steps.read_action_js.outputs.bep }}
         oep: ${{  steps.read_action_js.outputs.oep }}
+        terraform_version: ${{  steps.read_action_js.outputs.terraform_version }}
+        terraform_workingdir: ${{  steps.read_action_js.outputs.terraform_workingdir }}
+        terraform_st_resource_group: ${{  steps.read_action_js.outputs.terraform_st_resource_group }}
+        terraform_st_storage_account: ${{  steps.read_action_js.outputs.terraform_st_storage_account }}
+        terraform_st_container_name: ${{  steps.read_action_js.outputs.terraform_st_container_name }}
+        terraform_st_key: ${{  steps.read_action_js.outputs.terraform_st_key }}
       steps:
           - name: Checking out repo
             uses: actions/checkout@v2
@@ -36,4 +60,8 @@ jobs:
             with:
               config: ${{ github.workspace }}/${{ inputs.file_name }}
           - name: Echo step output
-            run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }} ${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }} "
+            run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }}";
+              echo "${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }}";
+              echo "${{  steps.read_action_js.outputs.terraform_version }}  ${{  steps.read_action_js.outputs.terraform_workingdir }}";
+              echo "${{  steps.read_action_js.outputs.terraform_st_resource_group }}  ${{  steps.read_action_js.outputs.terraform_st_storage_account }} "
+              echo "${{  steps.read_action_js.outputs.terraform_st_container_name }}  ${{  steps.read_action_js.outputs.terraform_st_key }} "
