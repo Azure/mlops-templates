@@ -8,7 +8,7 @@ parameters:
   type: string
 - name: data_type
   type: string
-- n- name: data_description
+- name: data_description
   type: string
 
 steps:
