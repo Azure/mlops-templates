@@ -44,10 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
     env:
-      ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.TENANT_ID }}     
+      ARM_CLIENT_ID: ${{ secrets.creds.CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.creds.CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.creds.SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.creds.TENANT_ID }}     
     defaults:
       run:
         shell: bash
@@ -66,8 +66,8 @@ jobs:
       # -backend-config=client_id="$ARM_CLIENT_ID" 
       # -backend-config=client_secret="$ARM_CLIENT_SECRET"
       run: terraform version; echo ${{inputs.terraform_st_key}}; echo ${{inputs.dply_environment}}; echo ${{inputs.terraform_plan_location}}; 
-        echo ${{ inputs.terraform_st_storage_account}}
-        echo ${{ secrets.CLIENT_ID}}
+        echo ${{ inputs.terraform_st_storage_account}};
+        echo "Client crdentials:" ${{ secrets.CLIENT_ID}};
     - name: Terraform Plan
       #run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" -var="virtual_network_name=${{inputs.terraform_plan_vnet}}"
       run: echo 'test'
