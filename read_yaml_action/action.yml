@@ -14,6 +14,12 @@ outputs:
     description: 'The batch endpoint name'
   oep:
     description: 'The online endpoint name'
+  terraform_version:
+    description: 'Terraform version'
+  terraform_workingdir:
+    description: 'Terraform State working directory'
+  terraform_st_resource_group:
+    description: 'Terraform State Resource Group'
 runs:
   using: 'node16'
   main: 'index.js'
