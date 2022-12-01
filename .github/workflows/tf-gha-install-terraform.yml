@@ -69,8 +69,8 @@ jobs:
       # -backend-config=client_secret="$ARM_CLIENT_SECRET"
       run: terraform version; echo ${{inputs.terraform_st_key}}; echo ${{inputs.dply_environment}}; echo ${{inputs.terraform_plan_location}}; 
         echo ${{ inputs.terraform_st_storage_account}};
-        echo "Client ID:" ${{ secrets.creds.clientId}};
-        echo "Client Other:" ${{ secrets.creds.clientSecret}};
+        echo "Client ID:" ${{ secrets.creds}};
+        echo "Client Other:" ${{ secrets.creds}};
         echo "ARM_CLIENT_ID:" ${{ env.ARM_CLIENT_ID}};
         echo "ARM_CLIENT_SECRET:" ${{ env.ARM_CLIENT_SECRET}};
         echo "Creds:" "${{ secrets.creds }}" ;
