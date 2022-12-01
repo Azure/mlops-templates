@@ -47,7 +47,6 @@ try {
     core.setOutput("aml_workspace", aml_workspace);
     core.setOutput("bep", batch_endpoint_name);
     core.setOutput("oep", online_endpoint_name);
-    
     core.setOutput("terraform_version", terraform_version);
     core.setOutput("terraform_workingdir", terraform_workingdir);
     core.setOutput("terraform_st_resource_group", terraform_st_resource_group);
