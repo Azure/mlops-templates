@@ -35,10 +35,10 @@ try {
     }
 
     if(checkGenerateEntity(terraform_st_resource_group)){
-      resource_group = "rg-"+namespace+"-"+postfix+environment+"-tf";
+      terraform_st_resource_group = "rg-"+namespace+"-"+postfix+environment+"-tf";
     }
     if(checkGenerateEntity(terraform_st_storage_account)){
-      resource_group = "st"+namespace+"-"+postfix+environment+"tf";
+      terraform_st_storage_account = "st"+namespace+"-"+postfix+environment+"tf";
     }
 
     const batch_endpoint_name = "bep-"+namespace+"-"+postfix+environment;
