@@ -46,16 +46,13 @@ on:
     secrets:
       creds:
         required: true
+      clientid:
+        required: true
 jobs:
   install-terraform:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.creds.clientSecret }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.creds.subscriptionId }}
-      ARM_TENANT_ID: ${{ secrets.creds.tenantId }}     
     defaults:
       run:
         shell: bash
@@ -66,7 +63,7 @@ jobs:
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
       run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; 
-        echo "all env:${{ env.ARM_CLIENT_ID }}::${{ inputs.clientid }}";
+        echo "all env:${{ env.ARM_CLIENT_ID }}::${{ env.ARM_SUBSCRIPTION_ID }}";
         terraform -chdir=${{ inputs.terraform_workingdir }} init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
         -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
@@ -76,6 +73,11 @@ jobs:
         # -backend-config='tenant_id=${{ env.ARM_TENANT_ID }}'
         # -backend-config='client_id=${{ env.ARM_CLIENT_ID }}'
         # -backend-config='client_secret=${{ env.ARM_CLIENT_SECRET }}'
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientid }}
+        ARM_CLIENT_SECRET: ${{ secrets.creds.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.creds.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.creds.tenantId }}     
     - name: Terraform Plan
       # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
       run: echo "plan"
