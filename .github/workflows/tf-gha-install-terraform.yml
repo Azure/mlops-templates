@@ -71,7 +71,7 @@ jobs:
         inlineScript: |
           az account show
           az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
-          az group create --location ${{ inputs.terraform_plan_location }} --name ${{ terraform_st_resource_group }}
+          az group create --location ${{ inputs.terraform_plan_location }} --name ${{ inputs.terraform_st_resource_group }}
           az group list
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
