@@ -71,17 +71,17 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Init working directory
-      run: terraform -chdir=${{ inputs.terraform_workingdir}} apply
+      run: terraform -chdir='${{ inputs.terraform_workingdir}}'' apply
     - name: Terraform Init
       run: terraform init 
-        -backend-config="storage_account_name=${{ inputs.terraform_st_storage_account }}"
-        -backend-config="container_name=${{ inputs.terraform_st_container_name }}"
-        -backend-config="key=${{ inputs.terraform_st_key }}"         
-        -backend-config="resource_group_name=${{ inputs.terraform_st_resource_group }}"       
-        -backend-config="subscription_id=$ARM_SUBSCRIPTION_ID" 
-        -backend-config="tenant_id=$ARM_TENANT_ID" 
-        -backend-config="client_id=$ARM_CLIENT_ID" 
-        -backend-config="client_secret=$ARM_CLIENT_SECRET"
+        -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
+        -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
+        -backend-config='key=${{ inputs.terraform_st_key }}'         
+        -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}'       
+        -backend-config='subscription_id=$ARM_SUBSCRIPTION_ID' 
+        -backend-config='tenant_id=$ARM_TENANT_ID' 
+        -backend-config='client_id=$ARM_CLIENT_ID' 
+        -backend-config='client_secret=$ARM_CLIENT_SECRET'
       # run: echo ${{ inputs.terraform_st_storage_account }} "::" ${{ inputs.terraform_st_key }}      
     - name: Terraform Plan
       run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
