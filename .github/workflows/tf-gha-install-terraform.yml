@@ -70,9 +70,6 @@ jobs:
       uses: actions/checkout@v3
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
-    - name: Init working directory
-      run: ls -l .; ls -l ./; ls -l /home; ls -l ../; 
-        terraform -chdir='${{ inputs.terraform_workingdir }}' apply
     - name: Terraform Init
       run: terraform init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
@@ -89,8 +86,8 @@ jobs:
       # run: echo "plan"
     - name: Terraform Apply
       if: ${{ inputs.TFAction == 'apply'}}  
-      #run: terraform apply -input=false -auto-approve plan.tfplan
-      run: echo 'I am in apply'
+      run: terraform apply -input=false -auto-approve plan.tfplan -chdir=${{inputs.terraform_workingdir }}
+      #run: echo 'I am in apply'
     - name: Terraform Destroy
       if: ${{ inputs.TFAction == 'destroy' }} 
       #run: terraform destroy -input=false -auto-approve
