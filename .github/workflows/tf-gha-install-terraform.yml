@@ -43,25 +43,20 @@ on:
         type: string
         description: 'vnet of Terraform plan'
         required: true
-    # secrets:
-    #   client_id:
-    #     required: true
-    #   client_secret:
-    #     required: true
-    #   subscription_id:
-    #     required: true
-    #   tenant_id:
-    #     required: true
+    secrets:
+      client_id:
+        required: true
+      client_secret:
+        required: true
+      subscription_id:
+        required: true
+      tenant_id:
+        required: true
 jobs:
   install-terraform:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
-    environment: ${{ inputs.dply_environment }}
-    env:
-      ARM_CLIENT_ID: ${{ secrets.client_id }}
-      ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
-      ARM_TENANT_ID: ${{ secrets.tenant_id }}     
+    environment: ${{ inputs.dply_environment }}    
     defaults:
       run:
         shell: bash
@@ -76,10 +71,10 @@ jobs:
         -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
         -backend-config='key=${{ inputs.terraform_st_key }}'         
         -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}'       
-        # -backend-config='subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}' 
-        # -backend-config='tenant_id=${{ env.ARM_TENANT_ID }}'
-        # -backend-config='client_id=${{ env.ARM_CLIENT_ID }}'
-        # -backend-config='client_secret=${{ env.ARM_CLIENT_SECRET }}'
+        -backend-config='subscription_id=${{ secrets.subscription_id }}' 
+        -backend-config='tenant_id=${{ secrets.tenant_id }}'
+        -backend-config='client_id=${{ secrets.client_id }}'
+        -backend-config='client_secret=${{ secrets.client_secret }}'
     - name: Terraform Plan
       # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
       run: echo "plan"
