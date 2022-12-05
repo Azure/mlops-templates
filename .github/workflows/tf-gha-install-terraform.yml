@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
     env:
-      ARM_CLIENT_ID: ${{ secrets.client_id }}
+      #ARM_CLIENT_ID: ${{ secrets.client_id }}
       ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
       ARM_TENANT_ID: ${{ secrets.tenant_id }}     
@@ -74,7 +74,7 @@ jobs:
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
       run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; echo $ARM_SUBSCRIPTION_ID; 
-        echo ${{ inputs.clientid }};
+        echo ${{ env.ARM_CLIENT_ID }};
         terraform -chdir=${{ inputs.terraform_workingdir }} init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
         -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
