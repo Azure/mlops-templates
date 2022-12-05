@@ -44,8 +44,8 @@ on:
         description: 'vnet of Terraform plan'
         required: true
     secrets:
-      # client_id:
-      #   required: true
+      client_id:
+        required: true
       client_secret:
         required: true
       subscription_id:
@@ -57,17 +57,21 @@ jobs:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
-    env:
-      #ARM_CLIENT_ID: ${{ secrets.client_id }}
-      ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
-      ARM_TENANT_ID: ${{ secrets.tenant_id }}     
+    # env:
+    #   ARM_CLIENT_ID: ${{ secrets.client_id }}
+    #   ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
+    #   ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
+    #   ARM_TENANT_ID: ${{ secrets.tenant_id }}     
     defaults:
       run:
         shell: bash
     steps:
     - name: checkout
       uses: actions/checkout@v3
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
