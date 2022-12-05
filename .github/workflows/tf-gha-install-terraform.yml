@@ -11,6 +11,14 @@ on:
       dply_environment:
         type: string
         required: true 
+      terraform_version:
+        description: 'Terraform version'
+        type: string
+        required: true
+      terraform_workingdir:
+        description: 'Terraform State working directory'
+        type: string
+        required: true
       terraform_st_storage_account: 
         type: string
         description: 'name of the terraform state storage account to create'
@@ -63,18 +71,20 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
-      # run: terraform init -backend-config=storage_account_name=${{ inputs.terraform_st_storage_account }}  
-      #   -backend-config=container_name=${{ inputs.terraform_st_storage_account }} 
-      #   -backend-config=key=${{ inputs.terraform_st_key }}         
-      #   -backend-config=resource_group_name=${{ inputs.terraform_st_resource_group }}          
-      #   -backend-config=subscription_id="$ARM_SUBSCRIPTION_ID" 
-      #   -backend-config=tenant_id="$ARM_TENANT_ID" 
-      #   -backend-config=client_id="$ARM_CLIENT_ID" 
-      #   -backend-config=client_secret="$ARM_CLIENT_SECRET"
-      run: echo ${{ inputs.terraform_st_storage_account }} "::" ${{ inputs.terraform_st_key }}      
+      run: terraform init 
+        -backend-config="storage_account_name=${{ inputs.terraform_st_storage_account }}"
+        -backend-config="container_name=${{ inputs.terraform_st_container_name }}"
+        -backend-config="key=${{ inputs.terraform_st_key }}"         
+        -backend-config="resource_group_name=${{ inputs.terraform_st_resource_group }}"       
+        -backend-config="subscription_id=$ARM_SUBSCRIPTION_ID" 
+        -backend-config="tenant_id=$ARM_TENANT_ID" 
+        -backend-config="client_id=$ARM_CLIENT_ID" 
+        -backend-config="client_secret=$ARM_CLIENT_SECRET"
+        ./${{ inputs.terraform_workingdir}}
+      # run: echo ${{ inputs.terraform_st_storage_account }} "::" ${{ inputs.terraform_st_key }}      
     - name: Terraform Plan
-      # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" -var="virtual_network_name=${{inputs.terraform_plan_vnet}}"
-      run: echo "plan"
+      run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
+      # run: echo "plan"
     - name: Terraform Apply
       if: ${{ inputs.TFAction == 'apply'}}  
       #run: terraform apply -input=false -auto-approve plan.tfplan
