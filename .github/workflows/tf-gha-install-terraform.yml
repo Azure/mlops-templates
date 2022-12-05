@@ -43,8 +43,6 @@ on:
         type: string
         description: 'vnet of Terraform plan'
         required: true
-      clientid:
-        type: string
     secrets:
       creds:
         required: true
