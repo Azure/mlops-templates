@@ -67,7 +67,7 @@ jobs:
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
       env: 
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        AZURE_CREDENTIALS: ${{ secrets.azure_creds }}
     - name: create-tfstate--resource-group
       uses: azure/CLI@v1
       with:
