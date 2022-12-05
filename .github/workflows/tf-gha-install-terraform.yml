@@ -44,13 +44,7 @@ on:
         description: 'vnet of Terraform plan'
         required: true
     secrets:
-      client_id:
-        required: true
-      client_secret:
-        required: true
-      subscription_id:
-        required: true
-      tenant_id:
+      creds:
         required: true
 jobs:
   install-terraform:
@@ -71,7 +65,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+        creds: ${{ secrets.creds  }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
