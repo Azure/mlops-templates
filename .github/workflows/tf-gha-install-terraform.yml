@@ -66,17 +66,17 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
-        environment: 'public'
+        # environment: 'TBD' - default to azurecloud
       env: 
         AZURE_CREDENTIALS: ${{ secrets.azure_creds }}
     - name: create-tfstate-resource-group
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
+        #az group create --location ${{ inputs.terraform_plan_location }} --name ${{ inputs.terraform_st_resource_group }}  
         inlineScript: |
-          az account show
           az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
-          az group create --location ${{ inputs.terraform_plan_location }} --name ${{ inputs.terraform_st_resource_group }}
+          az account show
           az group list
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
