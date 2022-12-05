@@ -44,10 +44,14 @@ on:
         description: 'vnet of Terraform plan'
         required: true
     secrets:
-      creds:
+      clientId:
         required: true
-      clientid:
+      clientSecret:
         required: true
+      tenantId:
+        required: true
+      subscriptionId:
+        required: true        
 jobs:
   install-terraform:
     name: 'Install Terraform'
@@ -74,10 +78,10 @@ jobs:
         # -backend-config='client_id=${{ env.ARM_CLIENT_ID }}'
         # -backend-config='client_secret=${{ env.ARM_CLIENT_SECRET }}'
       env:
-        ARM_CLIENT_ID: ${{ secrets.clientid }}
-        ARM_CLIENT_SECRET: ${{ secrets.creds.clientSecret }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.creds.subscriptionId }}
-        ARM_TENANT_ID: ${{ secrets.creds.tenantId }}     
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     
     - name: Terraform Plan
       # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
       run: echo "plan"
