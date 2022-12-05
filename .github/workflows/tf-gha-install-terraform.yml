@@ -71,7 +71,8 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Init working directory
-      run: ls -l gha-iac-test; terraform -chdir='./${{ inputs.terraform_workingdir }}' apply
+      run: ls -l .; ls -l ./; ls -l /home; ls -l ../; 
+        terraform -chdir='./${{ inputs.terraform_workingdir }}' apply
     - name: Terraform Init
       run: terraform init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
