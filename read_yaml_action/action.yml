@@ -6,6 +6,8 @@ inputs:
     required: true
     default: ''
 outputs:
+  location:
+    description: 'The location of the AML workspace'
   resource_group:
     description: 'The resource group the AML workspace is in'
   aml_workspace:
@@ -18,6 +20,8 @@ outputs:
     description: 'Terraform version'
   terraform_workingdir:
     description: 'Terraform State working directory'
+  terraform_st_location:
+    description: 'Terraform State Location'
   terraform_st_resource_group:
     description: 'Terraform State Resource Group'
   terraform_st_storage_account:
