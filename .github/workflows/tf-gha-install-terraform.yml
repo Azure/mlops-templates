@@ -76,11 +76,7 @@ jobs:
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
         -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
         -backend-config='key=${{ inputs.terraform_st_key }}'         
-        -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}'       
-        -backend-config='subscription_id=${{ env.ARMSUBSCRIPTIONID}}' 
-        -backend-config='tenant_id=${{ env.ARMTENANTID}}'
-        -backend-config='client_id=${{ env.ARMCLIENTID }}'
-        -backend-config='client_secret=${{ env.ARMCLIENTSECRET }}'
+        -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}' 
     - name: Terraform Plan
       # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
       run: echo "plan"
