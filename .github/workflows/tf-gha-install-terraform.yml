@@ -80,13 +80,14 @@ jobs:
         -backend-config='tenant_id=$ARM_TENANT_ID' 
         -backend-config='client_id=$ARM_CLIENT_ID' 
         -backend-config='client_secret=$ARM_CLIENT_SECRET'
+        -chdir=${{inputs.terraform_workingdir }}
       # run: echo ${{ inputs.terraform_st_storage_account }} "::" ${{ inputs.terraform_st_key }}      
     - name: Terraform Plan
       run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
       # run: echo "plan"
     - name: Terraform Apply
       if: ${{ inputs.TFAction == 'apply'}}  
-      run: terraform apply -input=false -auto-approve plan.tfplan -chdir=${{inputs.terraform_workingdir }}
+      run: terraform apply -input=false -auto-approve plan.tfplan 
       #run: echo 'I am in apply'
     - name: Terraform Destroy
       if: ${{ inputs.TFAction == 'destroy' }} 
