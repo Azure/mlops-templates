@@ -53,6 +53,43 @@ on:
       subscriptionId:
         required: true        
 jobs:
+  create-storageaccount-for-tfstate:
+    name: Create Storage for Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: create-tfstate--resource-group
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az account show
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          az group create --location ${{ inputs.terraform_plan_location }} --name ${{ terraform_st_resource_group }}
+          az group list
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}
+    - name: create-tfstate-storage-account
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az account show
+    - name: create-storage-container
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az account show
   install-terraform:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
@@ -64,7 +101,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v2 
     - name: Terraform Init
       run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; 
         echo "all env:${{ env.ARM_CLIENT_ID }}::${{ env.ARM_SUBSCRIPTION_ID }}";
