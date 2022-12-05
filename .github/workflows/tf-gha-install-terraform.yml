@@ -62,13 +62,14 @@ jobs:
       run:
         shell: bash
     steps:
-    - name: Azure Login
+    - name: azure-login
       uses: azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
+        environment: 'public'
       env: 
         AZURE_CREDENTIALS: ${{ secrets.azure_creds }}
-    - name: create-tfstate--resource-group
+    - name: create-tfstate-resource-group
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
