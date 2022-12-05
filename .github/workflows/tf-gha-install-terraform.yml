@@ -44,6 +44,8 @@ on:
         description: 'vnet of Terraform plan'
         required: true
     secrets:
+      azure_creds:
+        required: true
       clientId:
         required: true
       clientSecret:
