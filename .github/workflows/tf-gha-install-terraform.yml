@@ -60,7 +60,7 @@ jobs:
     env:
       ARM_CLIENT_ID: ${{ secrets.client_id }}
       ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.creds.subscription_id }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
       ARM_TENANT_ID: ${{ secrets.creds.tenant_id }}     
     defaults:
       run:
@@ -71,7 +71,8 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
-      run: echo ${{ env.ARM_SUBSCRIPTION_ID }};
+      run: echo '${{ ARM_SUBSCRIPTION_ID }}'; echo ${{env.$ARM_SUBSCRIPTION_ID }}; 
+        echo '$ARM_CLIENT_ID'; echo ${{ secrets.subscription_id}}; echo ${{ secrets.creds.tenant_id }}  
       # run: terraform -chdir=${{ inputs.terraform_workingdir }} init 
       #   -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
       #   -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
