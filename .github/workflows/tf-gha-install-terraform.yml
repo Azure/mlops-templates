@@ -51,11 +51,11 @@ jobs:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
-    # env:
-    #   ARM_CLIENT_ID: ${{ secrets.client_id }}
-    #   ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
-    #   ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
-    #   ARM_TENANT_ID: ${{ secrets.tenant_id }}     
+    env:
+      ARM_CLIENT_ID: ${{ secrets.creds.clientId }}
+      ARM_CLIENT_SECRET: ${{ secrets.creds.clientSecret }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.creds.subscriptionId }}
+      ARM_TENANT_ID: ${{ secrets.creds.tenantId }}     
     defaults:
       run:
         shell: bash
