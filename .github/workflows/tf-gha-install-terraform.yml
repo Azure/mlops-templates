@@ -57,6 +57,11 @@ jobs:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
+    env:
+      ARM_CLIENT_ID: ${{ secrets.client_id }}
+      ARM_CLIENT_SECRET: ${{ secrets.client_secret }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.subscription_id }}
+      ARM_TENANT_ID: ${{ secrets.tenant_id }}     
     defaults:
       run:
         shell: bash
@@ -65,19 +70,18 @@ jobs:
       uses: actions/checkout@v3
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
-    - name: Export Azure Login Credentials
-      run: |
-          echo "ARM_CLIENT_ID=${{ secrets.client_id }}" >> $GITHUB_ENV
-          echo "ARM_CLIENT_SECRET=${{ secrets.client_secret }}" >> $GITHUB_ENV
-          echo "ARM_SUBSCRIPTION_ID=${{ secrets.subscription_id }}" >> $GITHUB_ENV
-          echo "ARM_TENANT_ID=${{ secrets.tenant_id }}" >> $GITHUB_ENV;
-          echo $ARM_CLIENT_ID
     - name: Terraform Init
-      run: terraform -chdir=${{ inputs.terraform_workingdir }} init 
+      run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; echo $ARM_SUBSCRIPTION_ID; 
+        echo ${{ secrets.subscription_id }};
+        terraform -chdir=${{ inputs.terraform_workingdir }} init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
         -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
         -backend-config='key=${{ inputs.terraform_st_key }}'         
-        -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}';
+        -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}';      
+        # -backend-config='subscription_id=${{ env.ARM_SUBSCRIPTION_ID }}' 
+        # -backend-config='tenant_id=${{ env.ARM_TENANT_ID }}'
+        # -backend-config='client_id=${{ env.ARM_CLIENT_ID }}'
+        # -backend-config='client_secret=${{ env.ARM_CLIENT_SECRET }}'
     - name: Terraform Plan
       # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{inputs.terraform_st_resource_group}}" -var="storage_account_name=${{inputs.terraform_st_storage_account}}" -var="storage_account_tier=Standard" 
       run: echo "plan"
