@@ -7,6 +7,9 @@ on:
         required: true
         type: string
     outputs:
+      location:
+        description: "The resource group to use"
+        value: ${{ jobs.read-yaml.outputs.location }}
       resource_group:
         description: "The resource group to use"
         value: ${{ jobs.read-yaml.outputs.resource_group }}
@@ -25,6 +28,9 @@ on:
       terraform_workingdir:
         description: 'Terraform State working directory'
         value: ${{ jobs.read-yaml.outputs.terraform_workingdir }}
+      terraform_st_location:
+        description: 'Terraform State location'
+        value: ${{ jobs.read-yaml.outputs.terraform_st_location }}
       terraform_st_resource_group:
         description: 'Terraform State Resource Group'
         value: ${{ jobs.read-yaml.outputs.terraform_st_resource_group }}
@@ -41,12 +47,14 @@ jobs:
     read-yaml:
       runs-on: ubuntu-latest
       outputs:
+        location: ${{  steps.read_action_js.outputs.location }}
         resource_group: ${{  steps.read_action_js.outputs.resource_group }}
         aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
         bep: ${{  steps.read_action_js.outputs.bep }}
         oep: ${{  steps.read_action_js.outputs.oep }}
         terraform_version: ${{  steps.read_action_js.outputs.terraform_version }}
         terraform_workingdir: ${{  steps.read_action_js.outputs.terraform_workingdir }}
+        terraform_st_location: ${{  steps.read_action_js.outputs.terraform_st_location }}
         terraform_st_resource_group: ${{  steps.read_action_js.outputs.terraform_st_resource_group }}
         terraform_st_storage_account: ${{  steps.read_action_js.outputs.terraform_st_storage_account }}
         terraform_st_container_name: ${{  steps.read_action_js.outputs.terraform_st_container_name }}

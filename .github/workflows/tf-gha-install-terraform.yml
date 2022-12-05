@@ -19,6 +19,10 @@ on:
         description: 'Terraform State working directory'
         type: string
         required: true
+      terraform_st_location:
+        description: 'Terraform version'
+        type: string
+        required: true
       terraform_st_storage_account: 
         type: string
         description: 'name of the terraform state storage account to create'
@@ -73,11 +77,12 @@ jobs:
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
-        #az group create --location ${{ inputs.terraform_plan_location }} --name ${{ inputs.terraform_st_resource_group }}  
+        #
         inlineScript: |
           az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
           az account show
-          echo "${{ inputs.terraform_plan_location }} :: ${{ inputs.terraform_st_resource_group }}"
+          echo "${{ inputs.terraform_st_location }} :: ${{ inputs.terraform_st_resource_group }}"
+          az group create --location ${{ inputs.terraform_st_location }} --name ${{ inputs.terraform_st_resource_group }}  
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
