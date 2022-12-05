@@ -43,15 +43,15 @@ on:
         type: string
         description: 'vnet of Terraform plan'
         required: true
-    secrets:
-      client_id:
-        required: true
-      client_secret:
-        required: true
-      subscription_id:
-        required: true
-      tenant_id:
-        required: true
+    # secrets:
+    #   client_id:
+    #     required: true
+    #   client_secret:
+    #     required: true
+    #   subscription_id:
+    #     required: true
+    #   tenant_id:
+    #     required: true
 jobs:
   install-terraform:
     name: 'Install Terraform'
