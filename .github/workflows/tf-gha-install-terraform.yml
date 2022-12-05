@@ -71,7 +71,7 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
-      run: echo ${{ env.$ARM_SUBSCRIPTION_ID }};
+      run: echo ${{ env.ARM_SUBSCRIPTION_ID }};
       # run: terraform -chdir=${{ inputs.terraform_workingdir }} init 
       #   -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
       #   -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
