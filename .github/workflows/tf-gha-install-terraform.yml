@@ -77,7 +77,6 @@ jobs:
         inlineScript: |
           az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
           az account show
-          az group list
           echo "${{ inputs.terraform_plan_location }} :: ${{ inputs.terraform_st_resource_group }}"
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
