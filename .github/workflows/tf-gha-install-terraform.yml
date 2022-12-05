@@ -62,15 +62,11 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v3
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.creds  }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
     - name: Terraform Init
-      run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; echo $ARM_SUBSCRIPTION_ID; 
-        echo "all env:${{ env.ARM_CLIENT_ID }}::${{ env.ARM_SUBSCRIPTION_ID }}";
+      run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; 
+        echo "all env:${{ env.ARM_CLIENT_ID }}::${{ secrets.creds.clientId }}";
         terraform -chdir=${{ inputs.terraform_workingdir }} init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
         -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
