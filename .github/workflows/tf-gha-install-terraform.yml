@@ -57,11 +57,6 @@ jobs:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
-    env:
-      ARMCLIENTID: ${{ secrets.client_id }}
-      ARMCLIENTSECRET: ${{ secrets.client_secret }}
-      ARMSUBSCRIPTIONID: ${{ secrets.subscription_id }}
-      ARMTENANTID: ${{ secrets.tenant_id }}     
     defaults:
       run:
         shell: bash
@@ -70,6 +65,12 @@ jobs:
       uses: actions/checkout@v3
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
+    - name: Export Azure Login Credentials
+      run: |
+          echo "ARM_CLIENT_ID=${{ secrets.client_id }}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=${{ secrets.client_secret }}" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${{ secrets.subscription_id }}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${{ secrets.tenant_id }}" >> $GITHUB_ENV
     - name: Terraform Init
       run: terraform -chdir=${{ inputs.terraform_workingdir }} init 
         -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
