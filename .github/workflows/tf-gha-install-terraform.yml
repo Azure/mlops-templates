@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.dply_environment }}
     env:
-      ARM_CLIENT_ID: ${{ secrets.creds.clientId }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.creds.clientSecret }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.creds.subscriptionId }}
       ARM_TENANT_ID: ${{ secrets.creds.tenantId }}     
