@@ -59,7 +59,7 @@ on:
       subscriptionId:
         required: true        
 jobs:
-  create-storageaccount-for-tfstate:
+  create-rg-for-tfstate:
     name: Create Storage for Terraform
     runs-on: ubuntu-latest
     defaults:
@@ -80,26 +80,40 @@ jobs:
         #
         inlineScript: |
           az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
-          az account show
-          echo "${{ inputs.terraform_st_location }} :: ${{ inputs.terraform_st_resource_group }}"
           az group create --location ${{ inputs.terraform_st_location }} --name ${{ inputs.terraform_st_resource_group }}  
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
         ARM_TENANT_ID: ${{ secrets.tenantId }}
-    - name: create-tfstate-storage-account
+  create-tfstate-storage-account:
+    name: Create TFState Storage Account 
+    needs: create-rg-for-tfstate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: azure-login
+      uses: azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        # environment: 'TBD' - default to azurecloud
+      env: 
+        AZURE_CREDENTIALS: ${{ secrets.azure_creds }}
+    - name: create-tfstate-resource-group
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
+        #
         inlineScript: |
-          az account show
-    - name: create-storage-container
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          az account show
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          az storage account create -n ${{ inputs.terraform_st_storage_account }} -g ${{ inputs.terraform_st_resource_group }} -l ${{ inputs.terraform_st_location }} --sku Standard_LRS
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}
   install-terraform:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
