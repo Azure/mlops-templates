@@ -172,7 +172,10 @@ jobs:
         -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" -var "enable_monitoring=${{ inputs.enable_monitoring }}" 
         #-var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
       env:
-        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}     
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     
     - name: Terraform Apply
       if: ${{ inputs.TFAction == 'apply'}}  
       run: terraform apply -input=false -auto-approve plan.tfplan 
