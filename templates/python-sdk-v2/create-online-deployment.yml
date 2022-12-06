@@ -9,7 +9,6 @@ parameters:
 - name: model_name
   type: string
 - name: traffic
-  type: int
 
 steps:
     
