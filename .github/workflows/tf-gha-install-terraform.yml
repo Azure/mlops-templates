@@ -59,8 +59,8 @@ on:
       subscriptionId:
         required: true        
 jobs:
-  create-rg-for-tfstate:
-    name: Create Storage for Terraform
+  create-tfstate-resources:
+    name: Create Resources for Terraform State
     runs-on: ubuntu-latest
     defaults:
       run:
