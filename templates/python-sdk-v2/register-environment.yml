@@ -4,13 +4,10 @@
 parameters:
 - name: environment_name
   type: string
-  default: ''
 - name: environment_description
   type: string
-  default: ''
 - name: environment_file
   type: string
-  default: ''
 
 steps:
 
