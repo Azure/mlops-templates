@@ -86,21 +86,6 @@ jobs:
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
         ARM_TENANT_ID: ${{ secrets.tenantId }}
-  create-tfstate-storage-account:
-    name: Create TFState Storage Account 
-    needs: create-rg-for-tfstate
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-    - name: azure-login
-      uses: azure/login@v1
-      with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
-        # environment: 'TBD' - default to azurecloud
-      env: 
-        AZURE_CREDENTIALS: ${{ secrets.azure_creds }}
     - name: create-tfstate-storage-account
       uses: azure/CLI@v1
       with:
@@ -113,7 +98,20 @@ jobs:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
-        ARM_TENANT_ID: ${{ secrets.tenantId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}    
+    - name: create-tfstate-storage-container
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        #
+        inlineScript: |
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          az storage container create --account-name ${{ inputs.terraform_st_storage_account }} --name ${{ inputs.terraform_st_container_name }}
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}    
   install-terraform:
     name: 'Install Terraform'
     runs-on: ubuntu-latest
