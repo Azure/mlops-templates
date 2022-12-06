@@ -169,7 +169,7 @@ jobs:
     - name: Terraform Plan
       # run: terraform plan -out=plan.tfplan -input=false -var="location=${{inputs.terraform_plan_location}} " -var="resource_group_name=${{ inputs.terraform_st_resource_group }}" -var="storage_account_name=${{ inputs.terraform_st_storage_account }}" -var="storage_account_tier=Standard" 
       run: terraform plan -var "location=${{ inputs.terraform_plan_location }}" -var "prefix=${{ inputs.namespace }}" -var "postfix=${{ inputs.postfix }}" -var "environment=${{ inputs.environment }}" 
-        -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" -var "enable_monitoring=${{ inputs.enable_monitoring }}" -var "client_secret=${{ env.ARM_CLIENT_SECRET }}'
+        -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" -var "enable_monitoring=${{ inputs.enable_monitoring }}" -var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
       env:
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}     
     - name: Terraform Apply

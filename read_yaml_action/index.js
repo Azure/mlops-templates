@@ -17,8 +17,8 @@ try {
     const namespace = String(configYaml["variables"]["namespace"]);
     const postfix = String(configYaml["variables"]["postfix"]);
     const environment = String(configYaml["variables"]["environment"]);
-    var enable_monitoring = Boolean(configYaml["variables"]["enable_monitoring"]);
     var enable_aml_computecluster = Boolean(configYaml["variables"]["enable_aml_computecluster"]);
+    var enable_monitoring = Boolean(configYaml["variables"]["enable_monitoring"]);
     var resource_group = String(configYaml["variables"]["resource_group"]);
     var location = String(configYaml["variables"]["location"]);
     var aml_workspace = String(configYaml["variables"]["aml_workspace"]);
