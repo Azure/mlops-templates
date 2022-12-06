@@ -11,6 +11,30 @@ on:
       dply_environment:
         type: string
         required: true 
+      location:
+        description: 'Location'
+        type: string
+        required: true
+      namespace:
+        description: 'Namespace'
+        type: string
+        required: true
+      postfix:
+        description: 'postfix'
+        type: string
+        required: true
+      environment:
+        description: 'Enviroment of the AML workspace'
+        type: string
+        required: true
+      enable_aml_computecluster:
+        description: 'Boolean to decide whether to deploy an AML compute cluster or not'
+        type: boolean
+        required: true
+      enable_monitoring:
+        description: 'Boolean to decide whether to enable monitoring'
+        type: boolean
+        required: true
       terraform_version:
         description: 'Terraform version'
         type: string
