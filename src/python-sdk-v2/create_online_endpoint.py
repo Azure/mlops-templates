@@ -39,8 +39,6 @@ def main():
     endpoint_job = ml_client.online_endpoints.begin_create_or_update(
         online_endpoint,   
     )
-    
-    ml_client.jobs.stream(endpoint_job.name)
 
 if __name__ == "__main__":
     main()
