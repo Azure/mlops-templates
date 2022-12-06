@@ -7,7 +7,8 @@ parameters:
   type: string
 - name: enable_monitoring
   type: string
-
+- name: pipeline_path
+  type: string
 
 steps:
   - task: AzureCLI@2
@@ -18,7 +19,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e 
-        python data-science/src/run_pipeline.py \
+        python ${{ parameters.pipeline_path }} \
           -c "${{ parameters.cluster_name }}" \
           -d ${{ parameters.data_name }} \
           -m ${{ parameters.enable_monitoring }} \
