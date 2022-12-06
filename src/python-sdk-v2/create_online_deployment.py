@@ -41,7 +41,7 @@ def main():
         instance_count=1,
     )
 
-    deployment_job = online_deployment ml_client.online_deployments.begin_create_or_update(
+    deployment_job = ml_client.online_deployments.begin_create_or_update(
         deployment=online_deployment
     )
     deployment_job.wait()
