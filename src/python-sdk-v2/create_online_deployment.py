@@ -41,18 +41,18 @@ def main():
         instance_count=1,
     )
 
-    ml_client.online_deployments.begin_create_or_update(
+    deployment_job = online_deployment ml_client.online_deployments.begin_create_or_update(
         deployment=online_deployment
     )
+    deployment_job.wait()
 
     # allocate traffic
     online_endpoint = ManagedOnlineEndpoint(
         name=args.ne
     )
     online_endpoint.traffic = {args.nd: args.t}
-    ml_client.begin_create_or_update(online_endpoint)
-
-
+    endpoint_update_job = ml_client.begin_create_or_update(online_endpoint)
+    endpoint_update_job.wait()
 
 if __name__ == "__main__":
     main()
