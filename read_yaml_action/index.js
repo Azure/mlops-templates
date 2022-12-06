@@ -17,6 +17,8 @@ try {
     const namespace = String(configYaml["variables"]["namespace"]);
     const postfix = String(configYaml["variables"]["postfix"]);
     const environment = String(configYaml["variables"]["environment"]);
+    var enable_monitoring = Boolean(configYaml["variables"]["enable_monitoring"]);
+    var enable_aml_computecluster = Boolean(configYaml["variables"]["enable_aml_computecluster"]);
     var resource_group = String(configYaml["variables"]["resource_group"]);
     var location = String(configYaml["variables"]["location"]);
     var aml_workspace = String(configYaml["variables"]["aml_workspace"]);
@@ -49,6 +51,11 @@ try {
     const batch_endpoint_name = "bep-"+namespace+"-"+postfix+environment;
     const online_endpoint_name = "oep-"+namespace+"-"+postfix+environment;
     core.setOutput("location",location);
+    core.setOutput("namespace",namespace);
+    core.setOutput("postfix",postfix);
+    core.setOutput("environment",environment);
+    core.setOutput("enable_monitoring",enable_monitoring);
+    core.setOutput("enable_aml_computecluster",enable_aml_computecluster);
     core.setOutput("resource_group",resource_group);
     core.setOutput("aml_workspace", aml_workspace);
     core.setOutput("bep", batch_endpoint_name);

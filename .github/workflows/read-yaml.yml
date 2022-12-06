@@ -10,6 +10,21 @@ on:
       location:
         description: "The resource group to use"
         value: ${{ jobs.read-yaml.outputs.location }}
+      namespace:
+        description: 'Namespace of the resources'
+        value: ${{ jobs.read-yaml.outputs.namespace }}
+      postfix:
+        description: 'Postfix for the resource names'
+        value: ${{ jobs.read-yaml.outputs.postfix }}
+      environment:
+        description: 'Environment'
+        value: ${{ jobs.read-yaml.outputs.environment }}
+      enable_aml_computecluster:
+        description: "Boolean to decide whether to deploy an AML compute cluster or not"
+        value: ${{ jobs.read-yaml.outputs.enable_aml_computecluster }}
+      enable_monitoring:
+        description: "Boolean to decide whether to enable monitoring"
+        value: ${{ jobs.read-yaml.outputs.enable_monitoring }}
       resource_group:
         description: "The resource group to use"
         value: ${{ jobs.read-yaml.outputs.resource_group }}
@@ -48,6 +63,11 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         location: ${{  steps.read_action_js.outputs.location }}
+        namespace: ${{  steps.read_action_js.outputs.namespace }}
+        postfix: ${{  steps.read_action_js.outputs.postfix }}
+        environment: ${{  steps.read_action_js.outputs.environment }}
+        enable_aml_computecluster: ${{  steps.read_action_js.outputs.enable_aml_computecluster }}
+        enable_monitoring: ${{  steps.read_action_js.outputs.enable_monitoring }}
         resource_group: ${{  steps.read_action_js.outputs.resource_group }}
         aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
         bep: ${{  steps.read_action_js.outputs.bep }}

@@ -8,6 +8,16 @@ inputs:
 outputs:
   location:
     description: 'The location of the AML workspace'
+  namespace:
+    description: 'Namespace for the resources'
+  postfix:
+    description: 'Postfix for the resource names'
+  environment:
+    description: 'Enviroment of the AML workspace'
+  enable_aml_computecluster:
+    description: 'Boolean to decide whether to deploy an AML compute cluster or not'
+  enable_monitoring:
+    description: 'Boolean to decide whether to enable monitoring'
   resource_group:
     description: 'The resource group the AML workspace is in'
   aml_workspace:
