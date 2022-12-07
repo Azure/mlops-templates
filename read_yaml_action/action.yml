@@ -6,6 +6,18 @@ inputs:
     required: true
     default: ''
 outputs:
+  location:
+    description: 'The location of the AML workspace'
+  namespace:
+    description: 'Namespace for the resources'
+  postfix:
+    description: 'Postfix for the resource names'
+  environment:
+    description: 'Enviroment of the AML workspace'
+  enable_aml_computecluster:
+    description: 'Boolean to decide whether to deploy an AML compute cluster or not'
+  enable_monitoring:
+    description: 'Boolean to decide whether to enable monitoring'
   resource_group:
     description: 'The resource group the AML workspace is in'
   aml_workspace:
@@ -14,6 +26,20 @@ outputs:
     description: 'The batch endpoint name'
   oep:
     description: 'The online endpoint name'
+  terraform_version:
+    description: 'Terraform version'
+  terraform_workingdir:
+    description: 'Terraform State working directory'
+  terraform_st_location:
+    description: 'Terraform State Location'
+  terraform_st_resource_group:
+    description: 'Terraform State Resource Group'
+  terraform_st_storage_account:
+    description: "Terraform State Storage Account"
+  terraform_st_container_name:
+    description: "Terraform State Container name"
+  terraform_st_key:
+    description: 'Terraform State Key'
 runs:
   using: 'node16'
   main: 'index.js'

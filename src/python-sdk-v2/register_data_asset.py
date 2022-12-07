@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument("-n", type=str, help="Name of the dataset you want to register")
     parser.add_argument("-d", type=str, help="Description of the dataset you want to register")
     parser.add_argument("-t", type=str, help="type of dataset", default='uri_file')    
-    parser.add_argument("-l", type=str, help="local path of the dataset folder", default='data/')
+    parser.add_argument("-l", type=str, help="path of the data asset", default='data/')
     return parser.parse_args()
 
 def main():

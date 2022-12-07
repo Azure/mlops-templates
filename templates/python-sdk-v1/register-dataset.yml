@@ -37,7 +37,7 @@ steps:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
-          python templates/src/python-sdk/register_dataset.py \
+          python templates/src/python-sdk-v1/register_dataset.py \
             -n "$(training_dataset_name)" \
             -d "$(training_dataset_description)" \
             -l "$(training_dataset_local_path)" \
@@ -54,7 +54,7 @@ steps:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
-          python templates/src/python-sdk/register_dataset.py \
+          python templates/src/python-sdk-v1/register_dataset.py \
             -n "$(scoring_dataset_name)" \
             -d "$(scoring_dataset_description)" \
             -l "$(scoring_dataset_local_path)" \
@@ -71,7 +71,7 @@ steps:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
-          python templates/src/python-sdk/register_dataset.py \
+          python templates/src/python-sdk-v1/register_dataset.py \
             -n "${{parameters.datasetName}}" \
             -d "${{parameters.datasetDescription}}" \
             -l "${{parameters.datasetLocalPath}}" \

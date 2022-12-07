@@ -4,11 +4,11 @@
 parameters:
 - name: data_name
   type: string
-- name: data_description
-  type: string
 - name: data_path
   type: string
 - name: data_type
+  type: string
+- name: data_description
   type: string
 
 steps:
@@ -23,6 +23,6 @@ steps:
 
       python templates/src/python-sdk-v2/register_data_asset.py \
         -n "${{parameters.data_name}}" \
-        -d "${{parameters.data_description}}" \
         -l "${{parameters.data_path}}" \
-        -t "${{parameters.data_type}}" 
+        -t "${{parameters.data_type}}" \
+        -d "${{parameters.data_description}}"

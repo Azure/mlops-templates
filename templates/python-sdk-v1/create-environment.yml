@@ -19,7 +19,7 @@ steps:
   - task: Bash@3
     displayName: 'Install Requirements'
     inputs:
-      filePath: templates/src/python-sdk/install_requirements.sh
+      filePath: templates/src/python-sdk-v1/install_requirements.sh
   - task: AzureCLI@2
     displayName: Register environment
     inputs:
@@ -27,7 +27,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/src/python-sdk/register_environnment.py \
+        python templates/src/python-sdk-v1/register_environnment.py \
           -n ${{ parameters.environment_name }} \
           -t ${{ parameters.build_type }} \
           -f ${{ parameters.environment_file }} \
