@@ -1,15 +1,14 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 parameters:
-- name: pipeline_path
+- name: cluster_name
   type: string
 - name: data_name
   type: string
 - name: enable_monitoring
   type: string
-- name: cluster_name
+- name: pipeline_path
   type: string
-
 
 steps:
   - task: AzureCLI@2
@@ -21,6 +20,6 @@ steps:
       inlineScript: |
         set -e 
         python ${{ parameters.pipeline_path }} \
-          -c ${{ parameters.cluster_name }} \
-          -m ${{ parameters.enable_monitoring }} \
+          -c "${{ parameters.cluster_name }}" \
           -d ${{ parameters.data_name }} \
+          -m ${{ parameters.enable_monitoring }} \
