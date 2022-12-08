@@ -2,13 +2,16 @@
 # Licensed under the MIT License.
 
 parameters:
-- name: endpoint_name
-  type: string
 - name: deployment_name
+  type: string
+- name: deployment_description
+  type: string
+- name: endpoint_name
   type: string
 - name: model_path
   type: string
-- name: traffic_allocation
+- name: compute
+  type: string
 
 
 steps:
@@ -21,10 +24,9 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
 
-      python templates/src/python-sdk-v2/create_online_deployment.py \
-        --endpoint_name "${{parameters.endpoint_name}}" \
+      python templates/src/python-sdk-v2/create_batch_deployment.py \
         --deployment_name "${{parameters.deployment_name}}" \
+        --description "${{parameters.deployment_description}}" \
+        --endpoint_name "${{parameters.endpoint_name}}" \
         --model_path "${{parameters.model_path}}" \
-        --traffic_allocation "${{parameters.traffic_allocation}}" \
-
-
+        --compute "${{parameters.compute}}" \

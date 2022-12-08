@@ -6,6 +6,8 @@ parameters:
   type: string
 - name: sample_request
   type: string
+- name: request_type
+  type: string
 
 steps:
     
@@ -17,7 +19,9 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
 
-      python templates/src/python-sdk-v2/test_online_endpoint.py \
+      python templates/src/python-sdk-v2/test_batch_endpoint.py \
         --endpoint_name "${{parameters.endpoint_name}}" \
-        --request_file "${{parameters.sample_request}}" \
+        --request_batch_file "${{parameters.sample_request}}" \
+        --request_type "${{parameters.request_type}}" \
+
 

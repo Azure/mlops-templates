@@ -22,7 +22,7 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/register_data_asset.py \
-        -n "${{parameters.data_name}}" \
-        -l "${{parameters.data_path}}" \
-        -t "${{parameters.data_type}}" \
-        -d "${{parameters.data_description}}"
+        --data_name "${{parameters.data_name}}" \
+        --description "${{parameters.data_description}}" \
+        --data_path "${{parameters.data_path}}" \
+        --data_type "${{parameters.data_type}}" 

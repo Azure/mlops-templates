@@ -23,14 +23,14 @@ steps:
   displayName: 'Install python sdk v2 and azure-identity'
     
 - task: AzureCLI@2
-  displayName: Creating online endpoint
+  displayName: Creating batch endpoint
   inputs:
     azureSubscription: $(ado_service_connection_aml_ws)
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
 
-      python templates/src/python-sdk-v2/create_online_endpoint.py \
+      python templates/src/python-sdk-v2/create_batch_endpoint.py \
         --endpoint_name "${{parameters.endpoint_name}}" \
         --description "${{parameters.endpoint_description}}" \
         --auth_mode "${{parameters.auth_mode}}" \
