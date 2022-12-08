@@ -2,26 +2,18 @@
 # Licensed under the MIT License.
 
 parameters:
-- name: environment_name
-  type: string
-- name: environment_description
-  type: string
-- name: environment_file
-  type: string
+  - name: environment_name
+    type: string
+  - name: environment_description
+    type: string
+    default: ""
+  - name: environment_path
+    type: string
+  - name: build_type
+    type: string
 
 steps:
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.10.4'
-    architecture: 'x64'
-
-- script: |
-    pip install azure-ai-ml==1.0.0
-    pip install azure-identity
-    pip install azure-core
-  displayName: 'Install python sdk v2 and azure-identity'
-    
 - task: AzureCLI@2
   displayName: Register training environment
   inputs:
@@ -29,8 +21,8 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-
       python templates/src/python-sdk-v2/register_environment.py \
         -n "${{parameters.environment_name}}" \
         -d "${{parameters.environment_description}}" \
-        -l "${{parameters.environment_file}}" \
+        -p "${{parameters.environment_path}}" \
+        -b "${{parameters.build_type}}"

@@ -1,0 +1,33 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: cluster_name
+  type: string
+- name: size
+  type: string
+- name: min_instances
+  type: number
+- name: max_instances
+  type: number
+- name: cluster_tier
+  type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: Create compute cluster
+    continueOnError: true
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        compute_name=$(az ml compute show -n ${{ parameters.cluster_name }} --query name -o tsv)
+        if [[ -z "$compute_name" ]]
+        then
+          echo "Compute does not exists. Creating the cluster..."
+          python templates/src/python-sdk-v2/create_compute.py --cluster_name ${{ parameters.cluster_name }} --size ${{ parameters.size }} --min_instances ${{ parameters.min_instances }} --max_instances ${{ parameters.max_instances }} --cluster_tier ${{ parameters.cluster_tier }}
+        else
+          echo "Compute exists. Skipping cluster creation."
+          exit 0
+        fi
