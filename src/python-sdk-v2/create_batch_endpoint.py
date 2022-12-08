@@ -37,7 +37,7 @@ def main():
         auth_mode=args.auth_mode
     )
     
-    endpoint_job = ml_client.begin_create_or_update(batch_endpoint)
+    endpoint_job = ml_client.batch_endpoints.begin_create_or_update(batch_endpoint)
     endpoint_job.wait()
 
 

@@ -3,8 +3,7 @@
 
 import argparse
 
-from azure.ai.ml.entities import ManagedOnlineEndpoint
-from azure.ai.ml.entities import ManagedOnlineDeployment
+from azure.ai.ml.entities import BatchEndpoint, BatchDeployment
 from azure.ai.ml.constants import BatchDeploymentOutputAction
 
 from azure.identity import DefaultAzureCredential
