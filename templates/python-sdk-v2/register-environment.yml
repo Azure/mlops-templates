@@ -2,18 +2,24 @@
 # Licensed under the MIT License.
 
 parameters:
-  - name: build_type
-    type: string
   - name: environment_name
     type: string
+  - name: environment_description
+    type: string
+  - name: environment_path
+    type: string
+  - name: build_type
+    type: string
 
-steps:
-  - task: AzureCLI@2
-    displayName: Register Environment
-    inputs:
-      azureSubscription: $(ado_service_connection_aml_ws)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        echo "Executing python code with config.json"
-        python templates/src/python-sdk-v2/register_environment.py --environment_name ${{ parameters.environment_name }} --build_type ${{ parameters.build_type }}
+- task: AzureCLI@2
+  displayName: Register training environment
+  inputs:
+    azureSubscription: $(ado_service_connection_aml_ws)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      python templates/src/python-sdk-v2/register_environment.py \
+        -n "${{parameters.environment_name}}" \
+        -d "${{parameters.environment_description}}" \
+        -p "${{parameters.environment_path}}" \
+        -b "${{parameters.build_type}}"
