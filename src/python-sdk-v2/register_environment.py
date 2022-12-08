@@ -33,7 +33,7 @@ def main():
     build_type = args.b
     if build_type == 'docker':
         print("Using docker build contect")
-        custom_env = Environment(
+        my_environment = Environment(
             name=args.n,
             build=BuildContext(path=args.p),
             description=args.d
