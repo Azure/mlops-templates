@@ -13,10 +13,10 @@ import json
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Register dataset")
-    parser.add_argument("-n", type=str, help="Name of the dataset you want to register")
-    parser.add_argument("-d", type=str, help="Description of the dataset you want to register")
-    parser.add_argument("-t", type=str, help="type of dataset", default='uri_file')    
-    parser.add_argument("-l", type=str, help="local path of the dataset folder", default='data/')
+    parser.add_argument("--data_name", type=str, help="Name of the data asset to register")
+    parser.add_argument("--description", type=str, help="Description of the data asset to register")
+    parser.add_argument("--data_type", type=str, help="type of data asset", default='uri_file')    
+    parser.add_argument("--data_path", type=str, help="path of the data")
     return parser.parse_args()
 
 def main():
@@ -32,14 +32,14 @@ def main():
         print(ex)
 
     
-    my_data = Data(
-        path=args.l,
-        type=args.t,
-        description=args.d,
-        name=args.n
+    data = Data(
+        path=args.data_path,
+        type=args.data_type,
+        description=args.description,
+        name=args.data_name
     )
     
-    ml_client.data.create_or_update(my_data)    
+    ml_client.data.create_or_update(data)    
 
 if __name__ == "__main__":
     main()
