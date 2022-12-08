@@ -15,4 +15,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         set -e
-        python templates/src/python-sdk/deploy_drift_detection.py
+        python templates/src/python-sdk-v1/deploy_drift_detection.py

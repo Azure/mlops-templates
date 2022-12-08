@@ -13,4 +13,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        python templates/src/python-sdk/get_compute.py -f config-aml.yml --compute_type ${{ parameters.compute_type }}
+        python templates/src/python-sdk-v1/get_compute.py -f config-aml.yml --compute_type ${{ parameters.compute_type }}

@@ -3,8 +3,8 @@
 
 import argparse
 
-from azure.ai.ml.entities import Data
-from azure.ai.ml.constants import AssetTypes
+from azure.ai.ml.entities import ManagedOnlineEndpoint
+from azure.ai.ml.entities import ManagedOnlineDeployment
 
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
@@ -13,10 +13,8 @@ import json
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Register dataset")
-    parser.add_argument("-n", type=str, help="Name of the dataset you want to register")
-    parser.add_argument("-d", type=str, help="Description of the dataset you want to register")
-    parser.add_argument("-t", type=str, help="type of dataset", default='uri_file')    
-    parser.add_argument("-l", type=str, help="path of the data asset", default='data/')
+    parser.add_argument("-n", type=str, help="Name of the online endpoint")
+    parser.add_argument("-l", type=str, help="Path of the request json file")
     return parser.parse_args()
 
 def main():
@@ -31,15 +29,11 @@ def main():
         print("HERE IN THE EXCEPTION BLOCK")
         print(ex)
 
-    
-    my_data = Data(
-        path=args.l,
-        type=args.t,
-        description=args.d,
-        name=args.n
+    # invoke and test endpoint
+    ml_client.online_endpoints.invoke(
+        endpoint_name=args.n,
+        request_file=args.l,
     )
-    
-    ml_client.data.create_or_update(my_data)    
 
 if __name__ == "__main__":
     main()
