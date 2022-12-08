@@ -11,10 +11,11 @@ from azure.ai.ml import MLClient
 import json
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Register dataset")
-    parser.add_argument("-n", type=str, help="Name of the environment you want to register")
-    parser.add_argument("-d", type=str, help="Description of the environment")
-    parser.add_argument("-l", type=str, help="local path of environment file")
+    parser = argparse.ArgumentParser(description="Register Environment")
+    parser.add_argument("--environment_name", type=str, help="Name of the environment you want to register")
+    parser.add_argument("--description", type=str, help="Description of the environment")
+    parser.add_argument("--conda_file", type=str, help="local path of conda file")
+    parser.add_argument("--base_image", type=str, help="base image path", default="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04")
     return parser.parse_args()
 
 def main():
@@ -30,14 +31,14 @@ def main():
         print(ex)
 
 
-    my_environment = Environment(
-        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-        conda_file=args.l,
-        name=args.n,
-        description=args.d,
+    environment = Environment(
+        image=args.base_image,
+        conda_file=args.conda_file,
+        name=args.environment_name,
+        description=args.description,
     )
 
-    ml_client.environments.create_or_update(my_environment)    
+    ml_client.environments.create_or_update(environment)    
 
 if __name__ == "__main__":
     main()

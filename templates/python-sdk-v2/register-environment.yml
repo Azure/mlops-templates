@@ -6,9 +6,11 @@ parameters:
   type: string
 - name: environment_description
   type: string
-- name: environment_file
+- name: conda_file
   type: string
-
+- name: base_image
+  type: string
+  
 steps:
 
 - task: UsePythonVersion@0
@@ -31,6 +33,7 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/register_environment.py \
-        -n "${{parameters.environment_name}}" \
-        -d "${{parameters.environment_description}}" \
-        -l "${{parameters.environment_file}}" \
+        --environment_name "${{parameters.environment_name}}" \
+        --description "${{parameters.environment_description}}" \
+        --conda_file "${{parameters.conda_file}}" \
+        --base_image "${{parameters.base_image}}" \
