@@ -4,11 +4,11 @@
 parameters:
 - name: data_name
   type: string
-- name: data_description
-  type: string
 - name: data_path
   type: string
 - name: data_type
+  type: string
+- name: data_description
   type: string
 
 steps:

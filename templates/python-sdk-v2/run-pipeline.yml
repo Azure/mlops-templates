@@ -3,11 +3,16 @@
 parameters:
 - name: cluster_name
   type: string
+  default: ""
 - name: data_name
   type: string
+  default: ""
 - name: enable_monitoring
   type: string
+  default: "false"
 - name: pipeline_path
+  type: string
+- name: experiment_name
   type: string
 
 steps:
@@ -23,3 +28,4 @@ steps:
           -c "${{ parameters.cluster_name }}" \
           -d ${{ parameters.data_name }} \
           -m ${{ parameters.enable_monitoring }} \
+          -n ${{ parameters.experiment_name }}
