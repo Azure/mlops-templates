@@ -12,6 +12,8 @@ parameters:
   - name: build_type
     type: string
 
+steps:
+
 - task: AzureCLI@2
   displayName: Register training environment
   inputs:
