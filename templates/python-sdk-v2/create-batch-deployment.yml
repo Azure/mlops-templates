@@ -2,22 +2,17 @@
 # Licensed under the MIT License.
 
 parameters:
-- name: endpoint_name
-  type: string
 - name: deployment_name
+  type: string
+- name: deployment_description
+  type: string
+- name: endpoint_name
   type: string
 - name: model_path
   type: string
 - name: compute
   type: string
-- name: instance_count
-  type: string
-- name: max_concurrency_per_instance
-  type: string
-- name: mini_batch_size
-  type: string
-- name: output_file_name
-  type: string
+
 
 steps:
     
@@ -30,14 +25,8 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/create_batch_deployment.py \
-        --endpoint_name "${{parameters.endpoint_name}}" \
         --deployment_name "${{parameters.deployment_name}}" \
+        --description "${{parameters.deployment_description}}" \
+        --endpoint_name "${{parameters.endpoint_name}}" \
         --model_path "${{parameters.model_path}}" \
         --compute "${{parameters.compute}}" \
-        --instance_count "${{parameters.instance_count}}" \
-        --max_concurrency_per_instance "${{parameters.max_concurrency_per_instance}}" \
-        --mini_batch_size "${{parameters.mini_batch_size}}" \
-        --output_file_name "${{parameters.output_file_name}}" \
-
-
-

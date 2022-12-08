@@ -8,8 +8,6 @@ parameters:
   type: string
 - name: conda_file
   type: string
-- name: base_image
-  type: string
   
 steps:
 
@@ -36,4 +34,3 @@ steps:
         --environment_name "${{parameters.environment_name}}" \
         --description "${{parameters.environment_description}}" \
         --conda_file "${{parameters.conda_file}}" \
-        --base_image "${{parameters.base_image}}" \

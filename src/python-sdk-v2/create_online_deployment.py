@@ -16,8 +16,8 @@ def parse_args():
     parser.add_argument("--deployment_name", type=str, help="Name of online deployment")
     parser.add_argument("--endpoint_name", type=str, help="Name of the online endpoint")
     parser.add_argument("--model_path", type=str, help="Path to model or AML model")
-    parser.add_argument("--instance_type", type=str, help="Instance type")
-    parser.add_argument("--instance_count", type=str, help="Instance count")
+    parser.add_argument("--instance_type", type=str, help="Instance type", default="Standard_DS2_v2")
+    parser.add_argument("--instance_count", type=int, help="Instance count", default=1)
     parser.add_argument("--traffic_allocation", type=str, help="Deployment traffic allocation percentage")
 
     return parser.parse_args()

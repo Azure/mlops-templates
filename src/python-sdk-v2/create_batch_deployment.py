@@ -19,9 +19,9 @@ def parse_args():
     parser.add_argument("--endpoint_name", type=str, help="Name of the online endpoint")
     parser.add_argument("--model_path", type=str, help="Path to model or AML model")
     parser.add_argument("--compute", type=str, help="Name of the compute cluster")
-    parser.add_argument("--instance_count", type=str, help="Number of instances to provision for job", default="2")
-    parser.add_argument("--max_concurrency_per_instance", type=str, help="Maximum number of cuncurrent jobs per instance", default="4")
-    parser.add_argument("--mini_batch_size", type=str, help="The number of examples to score per job", default="32")
+    parser.add_argument("--instance_count", type=int, help="Number of instances to provision for job", default=2)
+    parser.add_argument("--max_concurrency_per_instance", type=int, help="Maximum number of cuncurrent jobs per instance", default=4)
+    parser.add_argument("--mini_batch_size", type=int, help="The number of examples to score per job", default=32)
     parser.add_argument("--output_file_name", type=str, help="Output file name", default="predictions.csv")
 
     return parser.parse_args()

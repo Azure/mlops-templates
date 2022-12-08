@@ -8,10 +8,6 @@ parameters:
   type: string
 - name: model_path
   type: string
-- name: instance_type
-  type: string
-- name: instance_count
-  type: string
 - name: traffic_allocation
 
 
@@ -29,8 +25,6 @@ steps:
         --endpoint_name "${{parameters.endpoint_name}}" \
         --deployment_name "${{parameters.deployment_name}}" \
         --model_path "${{parameters.model_path}}" \
-        --instance_type "${{parameters.instance_type}}" \
-        --instance_count "${{parameters.instance_count}}" \
         --traffic_allocation "${{parameters.traffic_allocation}}" \
 
 
