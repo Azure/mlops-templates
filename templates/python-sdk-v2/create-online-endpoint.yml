@@ -6,7 +6,7 @@ parameters:
   type: string
 - name: endpoint_description
   type: string
-- name: endpoint_auth
+- name: auth_mode
   type: string
 
 steps:
@@ -31,6 +31,6 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/create_online_endpoint.py \
-        -n "${{parameters.endpoint_name}}" \
-        -d "${{parameters.endpoint_description}}" \
-        -a "${{parameters.endpoint_auth}}" \
+        --endpoint_name "${{parameters.endpoint_name}}" \
+        --description "${{parameters.endpoint_description}}" \
+        --auth_mode "${{parameters.auth_mode}}" \

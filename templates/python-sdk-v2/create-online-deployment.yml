@@ -6,9 +6,14 @@ parameters:
   type: string
 - name: deployment_name
   type: string
-- name: model_name
+- name: model_path
   type: string
-- name: traffic
+- name: instance_type
+  type: string
+- name: instance_count
+  type: string
+- name: traffic_allocation
+
 
 steps:
     
@@ -21,8 +26,11 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/create_online_deployment.py \
-        -ne "${{parameters.endpoint_name}}" \
-        -nd "${{parameters.deployment_name}}" \
-        -nm "${{parameters.model_name}}" \
-        -t "${{parameters.traffic}}" \
+        --endpoint_name "${{parameters.endpoint_name}}" \
+        --deployment_name "${{parameters.deployment_name}}" \
+        --model_path "${{parameters.model_path}}" \
+        --instance_type "${{parameters.instance_type}}" \
+        --instance_count "${{parameters.instance_count}}" \
+        --traffic_allocation "${{parameters.traffic_allocation}}" \
+
 

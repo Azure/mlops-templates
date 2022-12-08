@@ -12,11 +12,13 @@ from azure.ai.ml import MLClient
 import json
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Register dataset")
-    parser.add_argument("-nd", type=str, help="Name of online deployment")
-    parser.add_argument("-ne", type=str, help="Name of the online endpoint")
-    parser.add_argument("-nm", type=str, help="Name and version of model in AML model registry format model_name:version or model_name@latest")
-    parser.add_argument("-t", type=str, help="Deployment traffic percentage")
+    parser = argparse.ArgumentParser(description="Create online deployment")
+    parser.add_argument("--deployment_name", type=str, help="Name of online deployment")
+    parser.add_argument("--endpoint_name", type=str, help="Name of the online endpoint")
+    parser.add_argument("--model_path", type=str, help="Path to model or AML model")
+    parser.add_argument("--instance_type", type=str, help="Instance type")
+    parser.add_argument("--instance_count", type=str, help="Instance count")
+    parser.add_argument("--traffic_allocation", type=str, help="Deployment traffic allocation percentage")
 
     return parser.parse_args()
 
@@ -34,11 +36,11 @@ def main():
 
     # Create online deployment
     online_deployment = ManagedOnlineDeployment(
-        name=args.nd,
-        endpoint_name=args.ne,
-        model=args.nm,
-        instance_type="Standard_DS2_v2",
-        instance_count=1,
+        name=args.deployment_name,
+        endpoint_name=args.endpoint_name,
+        model=args.model_path,
+        instance_type=args.instance_type,
+        instance_count=args.instance_count,
     )
 
     deployment_job = ml_client.online_deployments.begin_create_or_update(
@@ -48,9 +50,9 @@ def main():
 
     # allocate traffic
     online_endpoint = ManagedOnlineEndpoint(
-        name=args.ne
+        name=args.endpoint_name
     )
-    online_endpoint.traffic = {args.nd: args.t}
+    online_endpoint.traffic = {args.deployment_name: args.traffic_allocation}
     endpoint_update_job = ml_client.begin_create_or_update(online_endpoint)
     endpoint_update_job.wait()
 

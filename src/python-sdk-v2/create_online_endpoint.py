@@ -11,10 +11,10 @@ from azure.ai.ml import MLClient
 import json
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Register dataset")
-    parser.add_argument("-n", type=str, help="Name of online endpoint")
-    parser.add_argument("-d", type=str, help="Description of the online endpoint")
-    parser.add_argument("-a", type=str, help="authentication mode", default="aml_token")
+    parser = argparse.ArgumentParser(description="Create online endpoint")
+    parser.add_argument("--endpoint_name", type=str, help="Name of online endpoint")
+    parser.add_argument("--description", type=str, help="Description of the online endpoint")
+    parser.add_argument("--auth_mode", type=str, help="endpoint authentication mode", default="aml_token")
     return parser.parse_args()
 
 def main():
@@ -31,9 +31,9 @@ def main():
 
     # create an online endpoint
     online_endpoint = ManagedOnlineEndpoint(
-        name=args.n, 
-        description=args.d,
-        auth_mode=args.a,
+        name=args.endpoint_name, 
+        description=args.description,
+        auth_mode=args.auth_mode,
     )
     
     endpoint_job = ml_client.online_endpoints.begin_create_or_update(

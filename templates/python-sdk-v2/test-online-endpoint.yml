@@ -18,6 +18,6 @@ steps:
     inlineScript: |
 
       python templates/src/python-sdk-v2/test_online_endpoint.py \
-        -n "${{parameters.endpoint_name}}" \
-        -l "${{parameters.sample_request}}" \
+        --endpoint_name "${{parameters.endpoint_name}}" \
+        --request_file "${{parameters.sample_request}}" \
 
