@@ -22,7 +22,7 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       python templates/src/python-sdk-v2/register_environment.py \
-        -n "${{parameters.environment_name}}" \
-        -d "${{parameters.environment_description}}" \
-        -p "${{parameters.environment_path}}" \
-        -b "${{parameters.build_type}}"
+        --environment_name "${{parameters.environment_name}}" \
+        --description "${{parameters.environment_description}}" \
+        --env_path "${{parameters.environment_path}}" \
+        --build_type "${{parameters.build_type}}"
