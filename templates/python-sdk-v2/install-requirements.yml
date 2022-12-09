@@ -1,0 +1,15 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10.4'
+    architecture: 'x64'
+
+- script: |
+    pip install azure-ai-ml==1.0.0
+    pip install azure-identity
+    pip install azure-core
+  displayName: 'Install python sdk v2 and azure-identity'

@@ -10,3 +10,8 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az configure --defaults group=$(resource_group) workspace=$(aml_workspace)
+        currentId=$(az account show -o tsv --query id | tr -d '"\r')
+        echo "##vso[task.setvariable variable=subscription_id;]$currentId"
+        JSON_STRING=$'{\n\t"subscription_id": "%s",\n\t"resource_group": "%s",\n\t"workspace_name": "%s"\n}'
+        printf "$JSON_STRING" "$currentId" "$(resource_group)" "$(aml_workspace)"
+        printf "$JSON_STRING" "$currentId" "$(resource_group)" "$(aml_workspace)" > config.json

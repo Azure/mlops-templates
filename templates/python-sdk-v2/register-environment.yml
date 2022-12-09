@@ -1,0 +1,28 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+  - name: environment_name
+    type: string
+  - name: environment_description
+    type: string
+    default: ""
+  - name: environment_path
+    type: string
+  - name: build_type
+    type: string
+
+steps:
+
+- task: AzureCLI@2
+  displayName: Register training environment
+  inputs:
+    azureSubscription: $(ado_service_connection_aml_ws)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      python templates/src/python-sdk-v2/register_environment.py \
+        --environment_name "${{parameters.environment_name}}" \
+        --description "${{parameters.environment_description}}" \
+        --env_path "${{parameters.environment_path}}" \
+        --build_type "${{parameters.build_type}}"
