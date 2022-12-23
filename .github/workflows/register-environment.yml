@@ -16,6 +16,10 @@ on:
         required: false
         default: ''
         type: string
+      dockerfile-location:
+        required: false
+        default: ''
+        type: string
     secrets:
       creds:
         required: true
@@ -46,3 +50,8 @@ jobs:
         run: |
           az ml environment create --file ${{ github.workspace }}/${{ inputs.environment_file }} --resource-group ${{ inputs.resource_group }} \
                                   --workspace-name ${{ inputs.workspace_name }}
+      - name: create-environment-from-image
+        if: ${{ inputs.dockerfile-location != ''}}
+        run: |
+          az ml environment create --file ${{ github.workspace }}/${{ inputs.environment_file }} --resource-group ${{ inputs.resource_group }} \
+                                  --workspace-name ${{ inputs.workspace_name }} --build-context ${{ github.workspace }}/${{ inputs.dockerfile-location }}
