@@ -14,6 +14,8 @@ try {
     console.log(data);
     const SCHEMA = yaml.FAILSAFE_SCHEMA;
     const configYaml = yaml.load(data, { schema: SCHEMA }); 
+        
+    // TODO Verify if variables do not exist or are empty
     const namespace = String(configYaml["variables"]["namespace"]);
     const postfix = String(configYaml["variables"]["postfix"]);
     const environment = String(configYaml["variables"]["environment"]);

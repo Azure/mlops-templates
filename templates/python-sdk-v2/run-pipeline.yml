@@ -1,19 +1,23 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 parameters:
-- name: cluster_name
+- name: experiment_name
   type: string
-  default: ""
 - name: data_name
   type: string
-  default: ""
+- name: environment_name
+  type: string
+- name: compute_name
+  type: string
 - name: enable_monitoring
   type: string
   default: "false"
+- name: table_name
+  type: string
+  default: "taximonitoring"
 - name: pipeline_path
   type: string
-- name: experiment_name
-  type: string
+
 
 steps:
   - task: AzureCLI@2
@@ -25,7 +29,9 @@ steps:
       inlineScript: |
         set -e 
         python ${{ parameters.pipeline_path }} \
-          -c "${{ parameters.cluster_name }}" \
-          -d ${{ parameters.data_name }} \
-          -m ${{ parameters.enable_monitoring }} \
-          -n ${{ parameters.experiment_name }}
+          --experiment_name ${{ parameters.experiment_name }} \
+          --data_name ${{ parameters.data_name }} \
+          --environment_name ${{ parameters.environment_name }} \
+          --compute_name "${{ parameters.compute_name }}" \
+          --enable_monitoring ${{ parameters.enable_monitoring }} \
+          --table_name ${{ parameters.table_name }} 
