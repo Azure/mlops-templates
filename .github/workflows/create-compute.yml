@@ -22,7 +22,7 @@ on:
         required: true
         type: string
       cluster_tier: 
-        required: true
+        required: false
         type: string
     secrets:
       creds:
@@ -40,24 +40,26 @@ jobs:
         run:  az extension add -n ml -y
       - name: update-extension
         run: az extension update -n ml
-      - name: create-compute
+      - name: create-compute-default-tier
+        if: ${{ inputs.cluster_tier == ''}}
         run: |
-          compute_name=$(az ml compute show -n ${{ inputs.cluster_name }}\
+          az ml compute create --name ${{ inputs.cluster_name }} \
+                                  --type AmlCompute \
+                                  --tier "dedicated" \
+                                  --size ${{ inputs.size }} \
+                                  --min-instances ${{ inputs.min_instances }} \
+                                  --max-instances ${{ inputs.max_instances }} \
                                   --resource-group ${{ inputs.resource_group }} \
-                                  --workspace-name ${{ inputs.workspace_name }} \
-                                  --query name -o tsv)
-          if [[ -z "$compute_name" ]]
-          then
-            echo "Compute does not exist. Creating the cluster..."
-            az ml compute create --name ${{ inputs.cluster_name }} \
-                                    --type amlcompute \
-                                    --size ${{ inputs.size }} \
-                                    --min-instances ${{ inputs.min_instances }} \
-                                    --max-instances ${{ inputs.max_instances }} \
-                                    --tier ${{ inputs.cluster_tier }} \
-                                    --resource-group ${{ inputs.resource_group }} \
-                                    --workspace-name ${{ inputs.workspace_name }}
-          else
-            echo "Compute exists. Skipping cluster creation."
-            exit 0
-          fi
+                                  --workspace-name ${{ inputs.workspace_name }}
+      - name: create-compute-using-tier
+        if: ${{ inputs.cluster_tier != ''}}
+        run: |
+          az ml compute create --name ${{ inputs.cluster_name }} \
+                                  --type AmlCompute \
+                                  --tier ${{ inputs.cluster_tier }} \
+                                  --size ${{ inputs.size }} \
+                                  --min-instances ${{ inputs.min_instances }} \
+                                  --max-instances ${{ inputs.max_instances }} \
+                                  --resource-group ${{ inputs.resource_group }} \
+                                  --workspace-name ${{ inputs.workspace_name }}
+

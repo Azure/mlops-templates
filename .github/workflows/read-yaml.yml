@@ -1,12 +1,30 @@
 name: read-yaml
 
-on: 
+on:
   workflow_call:
     inputs:
       file_name:
         required: true
         type: string
     outputs:
+      location:
+        description: "The resource group to use"
+        value: ${{ jobs.read-yaml.outputs.location }}
+      namespace:
+        description: "Namespace of the resources"
+        value: ${{ jobs.read-yaml.outputs.namespace }}
+      postfix:
+        description: "Postfix for the resource names"
+        value: ${{ jobs.read-yaml.outputs.postfix }}
+      environment:
+        description: "Environment"
+        value: ${{ jobs.read-yaml.outputs.environment }}
+      enable_aml_computecluster:
+        description: "Boolean to decide whether to deploy an AML compute cluster or not"
+        value: ${{ jobs.read-yaml.outputs.enable_aml_computecluster }}
+      enable_monitoring:
+        description: "Boolean to decide whether to enable monitoring"
+        value: ${{ jobs.read-yaml.outputs.enable_monitoring }}
       resource_group:
         description: "The resource group to use"
         value: ${{ jobs.read-yaml.outputs.resource_group }}
@@ -19,21 +37,55 @@ on:
       oep:
         description: "The online endpoint"
         value: ${{ jobs.read-yaml.outputs.oep }}
+      terraform_version:
+        description: "Terraform version"
+        value: ${{ jobs.read-yaml.outputs.terraform_version }}
+      terraform_workingdir:
+        description: "Terraform State working directory"
+        value: ${{ jobs.read-yaml.outputs.terraform_workingdir }}
+      terraform_st_location:
+        description: "Terraform State location"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_location }}
+      terraform_st_resource_group:
+        description: "Terraform State Resource Group"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_resource_group }}
+      terraform_st_storage_account:
+        description: "Terraform State Storage Account"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_storage_account }}
+      terraform_st_container_name:
+        description: "Terraform State Container name"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_container_name }}
+      terraform_st_key:
+        description: "Terraform State Key"
+        value: ${{ jobs.read-yaml.outputs.terraform_st_key }}
 jobs:
-    read-yaml:
-      runs-on: ubuntu-latest
-      outputs:
-        resource_group: ${{  steps.read_action_js.outputs.resource_group }}
-        aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
-        bep: ${{  steps.read_action_js.outputs.bep }}
-        oep: ${{  steps.read_action_js.outputs.oep }}
-      steps:
-          - name: Checking out repo
-            uses: actions/checkout@v2
-          - name: Read YAML
-            uses: Azure/mlops-templates/read_yaml_action@main
-            id: read_action_js
-            with:
-              config: ${{ github.workspace }}/${{ inputs.file_name }}
-          - name: Echo step output
-            run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }} ${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }} "
+  read-yaml:
+    runs-on: ubuntu-latest
+    outputs:
+      location: ${{  steps.read_action_js.outputs.location }}
+      namespace: ${{  steps.read_action_js.outputs.namespace }}
+      postfix: ${{  steps.read_action_js.outputs.postfix }}
+      environment: ${{  steps.read_action_js.outputs.environment }}
+      enable_aml_computecluster: ${{  steps.read_action_js.outputs.enable_aml_computecluster }}
+      enable_monitoring: ${{  steps.read_action_js.outputs.enable_monitoring }}
+      resource_group: ${{  steps.read_action_js.outputs.resource_group }}
+      aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
+      bep: ${{  steps.read_action_js.outputs.bep }}
+      oep: ${{  steps.read_action_js.outputs.oep }}
+      terraform_version: ${{  steps.read_action_js.outputs.terraform_version }}
+      terraform_workingdir: ${{  steps.read_action_js.outputs.terraform_workingdir }}
+      terraform_st_location: ${{  steps.read_action_js.outputs.terraform_st_location }}
+      terraform_st_resource_group: ${{  steps.read_action_js.outputs.terraform_st_resource_group }}
+      terraform_st_storage_account: ${{  steps.read_action_js.outputs.terraform_st_storage_account }}
+      terraform_st_container_name: ${{  steps.read_action_js.outputs.terraform_st_container_name }}
+      terraform_st_key: ${{  steps.read_action_js.outputs.terraform_st_key }}
+    steps:
+      - name: Checking out repo
+        uses: actions/checkout@v2
+      - name: Read test
+        uses: Azure/mlops-templates/read_yaml_action@main
+        id: read_action_js
+        with:
+          config: ${{ github.workspace }}/${{ inputs.file_name }}
+      - name: Echo step output
+        run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }}"; echo "${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }}"; echo "${{  steps.read_action_js.outputs.terraform_version }}  ${{  steps.read_action_js.outputs.terraform_workingdir }}"; echo "${{  steps.read_action_js.outputs.terraform_st_resource_group }}  ${{  steps.read_action_js.outputs.terraform_st_storage_account }} " echo "${{  steps.read_action_js.outputs.terraform_st_container_name }}  ${{  steps.read_action_js.outputs.terraform_st_key }} "

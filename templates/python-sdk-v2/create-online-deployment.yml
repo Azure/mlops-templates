@@ -1,0 +1,30 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: endpoint_name
+  type: string
+- name: deployment_name
+  type: string
+- name: model_path
+  type: string
+- name: traffic_allocation
+
+
+steps:
+    
+- task: AzureCLI@2
+  displayName: Creating online deployment
+  inputs:
+    azureSubscription: $(ado_service_connection_aml_ws)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+
+      python templates/src/python-sdk-v2/create_online_deployment.py \
+        --endpoint_name "${{parameters.endpoint_name}}" \
+        --deployment_name "${{parameters.deployment_name}}" \
+        --model_path "${{parameters.model_path}}" \
+        --traffic_allocation "${{parameters.traffic_allocation}}" \
+
+

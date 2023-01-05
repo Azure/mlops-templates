@@ -3,7 +3,7 @@
 
 steps:
   - task: AzureCLI@2
-    displayName: Install AZ CLI
+    displayName: Install AZ ML dependencies
     inputs:
       azureSubscription: $(ado_service_connection_aml_ws)
       scriptType: bash
@@ -12,6 +12,17 @@ steps:
       inlineScript: |
         set -e # fail on error
         python -m pip install -U --force-reinstall pip pip install azure-cli==2.35
-        az version
-    condition: eq(variables.AZ_CLI_CACHE_RESTORED, 'false')
-    
+        python -m pip install -U --force-reinstall pip pip install azure-ai-ml==1.1.0
+        python -m pip install -U --force-reinstall pip pip install azure-common==1.1.28
+        python -m pip install -U --force-reinstall pip pip install azure-core==1.26.1
+        python -m pip install -U --force-reinstall pip pip install azure-identity==1.10.0
+        python -m pip install -U --force-reinstall pip pip install azure-mgmt-core==1.3.0 
+        python -m pip install -U --force-reinstall pip pip install azure-storage-blob==12.14.1
+        python -m pip install -U --force-reinstall pip pip install azure-storage-file-datalake==12.9.1
+        python -m pip install -U --force-reinstall pip pip install azure-storage-file-share==12.7.0
+        az version    
+
+
+
+
+

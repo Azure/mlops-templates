@@ -1,0 +1,27 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: endpoint_name
+  type: string
+- name: sample_request
+  type: string
+- name: request_type
+  type: string
+
+steps:
+    
+- task: AzureCLI@2
+  displayName: Testing online endpoint
+  inputs:
+    azureSubscription: $(ado_service_connection_aml_ws)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+
+      python templates/src/python-sdk-v2/test_batch_endpoint.py \
+        --endpoint_name "${{parameters.endpoint_name}}" \
+        --request_batch_file "${{parameters.sample_request}}" \
+        --request_type "${{parameters.request_type}}" \
+
+

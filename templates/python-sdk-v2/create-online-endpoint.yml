@@ -1,0 +1,25 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: endpoint_name
+  type: string
+- name: endpoint_description
+  type: string
+- name: auth_mode
+  type: string
+
+steps:
+
+- task: AzureCLI@2
+  displayName: Creating online endpoint
+  inputs:
+    azureSubscription: $(ado_service_connection_aml_ws)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+
+      python templates/src/python-sdk-v2/create_online_endpoint.py \
+        --endpoint_name "${{parameters.endpoint_name}}" \
+        --description "${{parameters.endpoint_description}}" \
+        --auth_mode "${{parameters.auth_mode}}" \

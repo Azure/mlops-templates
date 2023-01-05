@@ -1,0 +1,195 @@
+name: tf-gha-install-terraform.yml
+ 
+on:
+  workflow_call:
+    inputs:
+      TFAction:
+        type: string
+        description: 'Terraform Action- Apply or Destroy'   
+        required: true
+        default: 'apply'
+      dply_environment:
+        type: string
+        required: true 
+      location:
+        description: 'Location'
+        type: string
+        required: true
+      namespace:
+        description: 'Namespace'
+        type: string
+        required: true
+      postfix:
+        description: 'postfix'
+        type: string
+        required: true
+      environment:
+        description: 'Enviroment of the AML workspace'
+        type: string
+        required: true
+      enable_aml_computecluster:
+        description: 'Boolean to decide whether to deploy an AML compute cluster or not'
+        type: boolean
+        required: true
+      enable_monitoring:
+        description: 'Boolean to decide whether to enable monitoring'
+        type: boolean
+        required: true
+      terraform_version:
+        description: 'Terraform version'
+        type: string
+        required: true
+      terraform_workingdir:
+        description: 'Terraform State working directory'
+        type: string
+        required: true
+      terraform_st_location:
+        description: 'Terraform version'
+        type: string
+        required: true
+      terraform_st_storage_account: 
+        type: string
+        description: 'name of the terraform state storage account to create'
+        required: true
+      terraform_st_resource_group: 
+        type: string
+        description: 'name of the terraform resource group to host the terraform state resources'
+        required: true
+      terraform_st_container_name: 
+        type: string
+        description: 'name of the terraform state container'
+        required: true 
+      terraform_st_key:
+        type: string
+        description: 'name of the terraform state key'
+        required: true
+      terraform_plan_location:
+        type: string
+        description: 'location of Terraform plan'
+        required: true
+      terraform_plan_vnet:
+        type: string
+        description: 'vnet of Terraform plan'
+        required: true
+    secrets:
+      azure_creds:
+        required: true
+      clientId:
+        required: true
+      clientSecret:
+        required: true
+      tenantId:
+        required: true
+      subscriptionId:
+        required: true        
+jobs:
+  create-tfstate-resources:
+    name: Create Resources for Terraform State
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: azure-login
+      uses: azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        # environment: 'TBD' - default to azurecloud
+      env: 
+        AZURE_CREDENTIALS: ${{ secrets.azure_creds }}
+    - name: create-tfstate-resource-group
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        #
+        inlineScript: |
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          az group create --location ${{ inputs.terraform_st_location }} --name ${{ inputs.terraform_st_resource_group }}  
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}
+    - name: create-tfstate-storage-account
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        #
+        inlineScript: |
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          az storage account create -n ${{ inputs.terraform_st_storage_account }} -g ${{ inputs.terraform_st_resource_group }} -l ${{ inputs.terraform_st_location }} --sku Standard_LRS 
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}    
+    - name: create-tfstate-storage-container
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        #
+        inlineScript: |
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          az storage container create --account-name ${{ inputs.terraform_st_storage_account }} --name ${{ inputs.terraform_st_container_name }}
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}    
+  install-terraform:
+    name: 'Install Terraform'
+    runs-on: ubuntu-latest
+    needs: create-tfstate-resources
+    environment: ${{ inputs.dply_environment }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2 
+    - name: Terraform Init
+      run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; 
+        echo "all env:${{ env.ARM_CLIENT_ID }}::${{ env.ARM_SUBSCRIPTION_ID }}";
+        terraform -chdir=${{ inputs.terraform_workingdir }} init 
+        -backend-config='storage_account_name=${{ inputs.terraform_st_storage_account }}'
+        -backend-config='container_name=${{ inputs.terraform_st_container_name }}'
+        -backend-config='key=${{ inputs.terraform_st_key }}'         
+        -backend-config='resource_group_name=${{ inputs.terraform_st_resource_group }}';      
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     
+    - name: Terraform Validate
+      run: terraform -chdir=${{ inputs.terraform_workingdir }} validate
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     
+    - name: Terraform Plan
+      run: terraform -chdir=${{ inputs.terraform_workingdir }} plan -out=plan.tfplan -input=false -var "location=${{ inputs.terraform_plan_location }}" -var "prefix=${{ inputs.namespace }}" -var "postfix=${{ inputs.postfix }}" -var "environment=${{ inputs.environment }}" 
+        -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" -var "enable_monitoring=${{ inputs.enable_monitoring }}" -var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     
+    - name: Terraform Apply
+      if: ${{ inputs.TFAction == 'apply'}}  
+      run: terraform -chdir=${{ inputs.terraform_workingdir }} apply -input=false -auto-approve plan.tfplan 
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     
+    - name: Terraform Destroy
+      if: ${{ inputs.TFAction == 'destroy' }} 
+      run: terraform -chdir=${{ inputs.terraform_workingdir }} destroy -input=false -auto-approve
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}     

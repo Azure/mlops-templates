@@ -1,0 +1,28 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: data_name
+  type: string
+- name: data_path
+  type: string
+- name: data_type
+  type: string
+- name: data_description
+  type: string
+
+steps:
+    
+- task: AzureCLI@2
+  displayName: Register training data asset
+  inputs:
+    azureSubscription: $(ado_service_connection_aml_ws)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+
+      python templates/src/python-sdk-v2/register_data_asset.py \
+        --data_name "${{parameters.data_name}}" \
+        --description "${{parameters.data_description}}" \
+        --data_path "${{parameters.data_path}}" \
+        --data_type "${{parameters.data_type}}" 

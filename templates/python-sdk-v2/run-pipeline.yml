@@ -1,0 +1,37 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+parameters:
+- name: experiment_name
+  type: string
+- name: data_name
+  type: string
+- name: environment_name
+  type: string
+- name: compute_name
+  type: string
+- name: enable_monitoring
+  type: string
+  default: "false"
+- name: table_name
+  type: string
+  default: "taximonitoring"
+- name: pipeline_path
+  type: string
+
+
+steps:
+  - task: AzureCLI@2
+    displayName: Run pipeline SDKv2 
+    inputs:
+      azureSubscription: $(ado_service_connection_aml_ws)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -e 
+        python ${{ parameters.pipeline_path }} \
+          --experiment_name ${{ parameters.experiment_name }} \
+          --data_name ${{ parameters.data_name }} \
+          --environment_name ${{ parameters.environment_name }} \
+          --compute_name "${{ parameters.compute_name }}" \
+          --enable_monitoring ${{ parameters.enable_monitoring }} \
+          --table_name ${{ parameters.table_name }} 
