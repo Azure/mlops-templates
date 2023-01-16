@@ -1,0 +1,11 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# required to create the userroles table in SQL for feature store, should be pushed to the app for creation
+# for now as the app does not create this, remove later: https://github.com/feathr-ai/feathr/tree/2cf23a510ff1ed523026b81eabde60b35456b8af/registry/access_control#initialize-userroles-records
+steps:
+  - task: CmdLine@2
+    displayName: "MSSQL CLI install"
+    inputs:
+      script: |
+        pip install mssql-cli

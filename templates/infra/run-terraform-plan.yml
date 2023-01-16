@@ -3,10 +3,10 @@
 
 steps:
   - task: TerraformTaskV2@2
-    displayName: 'Terraform plan'
+    displayName: "Terraform plan"
     inputs:
-      provider: 'azurerm'
-      command: 'plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/$(terraform_workingdir)'
-      commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)" -var "enable_monitoring=$(enable_monitoring)" -var "client_secret=$(CLIENT_SECRET)"'
-      environmentServiceNameAzureRM: '$(ado_service_connection_rg)'
+      provider: "azurerm"
+      command: "plan"
+      workingDirectory: "$(System.DefaultWorkingDirectory)/$(terraform_workingdir)"
+      commandOptions: '-var "location=$(location)" -var "prefix=$(namespace)" -var "postfix=$(postfix)" -var "environment=$(environment)" -var "enable_aml_computecluster=$(enable_aml_computecluster)" -var "enable_monitoring=$(enable_monitoring)" -var "client_secret=$(CLIENT_SECRET)" -var "enable_feature_store=$(enable_feature_store)" -var "sql_admin_user=$(sql_admin_user)" -var "sql_admin_password=$(sql_admin_password)" -var "fs_onlinestore_conn_name=$(fs_onlinestore_conn_name)" -var "feathr_app_image=$(feathr_app_image)" -var "feathr_app_image_tag=$(feathr_app_image_tag)" -var "react_enable_rbac=$(react_enable_rbac)" -var "aad_client_id=$(aad_client_id)" -var "spark_version=$(spark_version)" -var "priviledged_object_id=$(priviledged_object_id)"'
+      environmentServiceNameAzureRM: "$(ado_service_connection_rg)"
