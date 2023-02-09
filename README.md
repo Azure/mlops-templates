@@ -1,14 +1,6 @@
-# Project
+# Azure MLOps (v2) Solution Accelerator
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
-
-As the maintainer of this project, please make a few updates:
-
-- Improving this README.MD file to provide a greater experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+Welcome to the MLOps (v2) solution accelerator repository! This project is intended to serve as the starting point for MLOps implementation in Azure. The main repository fromj where you can start can be found in this [main README file](https://github.com/Azure/mlops-v2/blob/main/README.md)
 
 ## Contributing
 
