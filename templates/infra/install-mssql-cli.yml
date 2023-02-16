@@ -5,7 +5,7 @@
 # for now as the app does not create this, remove later: https://github.com/feathr-ai/feathr/tree/2cf23a510ff1ed523026b81eabde60b35456b8af/registry/access_control#initialize-userroles-records
 steps:
   - task: CmdLine@2
-    displayName: "MSSQL CLI install"
+    displayName: "MSSQL CLI install (Feathr)"
     inputs:
       script: |
         pip install mssql-cli
