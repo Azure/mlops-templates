@@ -41,6 +41,14 @@ steps:
         run_id=$(az ml job create -f ${{ parameters.pipeline_file }} \
           --set experiment_name=${{ parameters.experiment_name }} \
           --set inputs.enable_monitoring=${{ parameters.enable_monitoring }} \
+          --set azure_client_id=${{ parameters.azure_client_id }} \
+          --set azure_tenant_id=${{ parameters.azure_tenant_id }} \
+          --set key_vault_name=${{ parameters.key_vault_name }} \
+          --set synapse_workspace_url=${{ parameters.synapse_workspace_url }} \
+          --set adls_account=${{ parameters.adls_account }} \
+          --set adls_fs_name=${{ parameters.adls_fs_name }} \
+          --set redis_name=${{ parameters.redis_name }} \
+          --set webapp_name=${{ parameters.webapp_name }} \
           display_name=${{ parameters.display_name }} --query name -o tsv)
         if [[ -z "$run_id" ]]
         then
