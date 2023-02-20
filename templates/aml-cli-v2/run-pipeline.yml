@@ -37,8 +37,6 @@ steps:
         run_id=$(az ml job create -f ${{ parameters.pipeline_file }} \
           --set experiment_name=${{ parameters.experiment_name }} \
           inputs.enable_monitoring=${{ parameters.enable_monitoring }} \
-          inputs.azure_client_id=${{ parameters.azure_client_id }} \
-          inputs.azure_tenant_id=${{ parameters.azure_tenant_id }} \
           inputs.key_vault_name=${{ parameters.key_vault_name }} \
           inputs.synapse_workspace_url=${{ parameters.synapse_workspace_url }} \
           inputs.adls_account=${{ parameters.adls_account }} \
