@@ -15,6 +15,7 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
+      echo "Creating service principal ${{ parameters.sp_name }}"
       read -d "" clientId clientSecret tenantId <<< $(az ad sp create-for-rbac --name ${{ parameters.sp_name }} --role "Contributor" --scopes /subscriptions/$(subscription_id) --query "[appId, password, tenant]" -o tsv)
       spId=$(az ad sp list --display-name ${{ parameters.sp_name }} --query [].id -o tsv)
       az synapse role assignment create --workspace-name $(synapse_workspace_name) --role "Synapse Contributor" --assignee ${spId} --scope workspaces/$(synapse_workspace_name)
