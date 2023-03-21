@@ -17,5 +17,4 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-        echo "Subscription ID: $(subscription_id)"
         az ml environment create --name ${{ parameters.environment_name }} --file ${{ parameters.environment_file }}
