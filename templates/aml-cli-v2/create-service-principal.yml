@@ -15,12 +15,11 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
       inlineScript: |
-      echo "Creating service principal ${{ parameters.sp_name }}"
-      read -d "" clientId clientSecret tenantId <<< $(az ad sp create-for-rbac --name ${{ parameters.sp_name }} --role "Contributor" --scopes /subscriptions/$(subscription_id) --query "[appId, password, tenant]" -o tsv)
-      spId=$(az ad sp list --display-name ${{ parameters.sp_name }} --query [].id -o tsv)
-      az synapse role assignment create --workspace-name $(synapse_workspace_name) --role "Synapse Contributor" --assignee ${spId} --scope workspaces/$(synapse_workspace_name)
-      echo "##vso[task.setvariable variable=service_principal_id;]$spId"
-      echo "##vso[task.setvariable variable=service_principal_secret;]$clientSecret"
-      echo "##vso[task.setvariable variable=tenant_id;]$tenantId"
-      JSON_STRING=$'{\n\t"service_principal_id": "%s",\n\t"resource_group": "%s",\n\t"tenant_id": "%s"\n}'
-      printf "$JSON_STRING" "$spId" "$(resource_group)" "$tenantId"
+        read -d "" clientId clientSecret tenantId <<< $(az ad sp create-for-rbac --name ${{ parameters.sp_name }} --role "Contributor" --scopes /subscriptions/$(subscription_id) --query "[appId, password, tenant]" -o tsv)
+        spId=$(az ad sp list --display-name ${{ parameters.sp_name }} --query [].id -o tsv)
+        az synapse role assignment create --workspace-name $(synapse_workspace_name) --role "Synapse Contributor" --assignee ${spId} --scope workspaces/$(synapse_workspace_name)
+        echo "##vso[task.setvariable variable=service_principal_id;]$spId"
+        echo "##vso[task.setvariable variable=service_principal_secret;]$clientSecret"
+        echo "##vso[task.setvariable variable=tenant_id;]$tenantId"
+        JSON_STRING=$'{\n\t"service_principal_id": "%s",\n\t"resource_group": "%s",\n\t"tenant_id": "%s"\n}'
+        printf "$JSON_STRING" "$spId" "$(resource_group)" "$tenantId"
