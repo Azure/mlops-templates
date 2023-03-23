@@ -39,6 +39,9 @@ steps:
       scriptType: bash
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
+#          inputs.sp_client_id=${{ parameters.sp_client_id }} \
+#          inputs.sp_client_secret=${{ parameters.sp_client_secret }} \
+#          inputs.tenant_id=${{ parameters.tenant_id }} \
       inlineScript: |
         run_id=$(az ml job create -f ${{ parameters.pipeline_file }} \
           --set experiment_name=${{ parameters.experiment_name }} \
@@ -49,9 +52,6 @@ steps:
           inputs.adls_fs_name=${{ parameters.adls_fs_name }} \
           inputs.redis_name=${{ parameters.redis_name }} \
           inputs.webapp_name=${{ parameters.webapp_name }} \
-#          inputs.sp_client_id=${{ parameters.sp_client_id }} \
-#          inputs.sp_client_secret=${{ parameters.sp_client_secret }} \
-#          inputs.tenant_id=${{ parameters.tenant_id }} \
           display_name=${{ parameters.display_name }} --query name -o tsv)
         if [[ -z "$run_id" ]]
         then
