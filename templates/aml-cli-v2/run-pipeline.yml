@@ -23,12 +23,6 @@ parameters:
     type: string
   - name: webapp_name
     type: string
-  # - name: sp_client_id
-  #   type: string
-  # - name: sp_client_secret
-  #   type: string
-  # - name: tenant_id
-  #   type: string
     
 steps:
   - task: AzureCLI@2
@@ -39,9 +33,6 @@ steps:
       scriptType: bash
       workingDirectory: $(System.DefaultWorkingDirectory)
       scriptLocation: inlineScript
-#          inputs.sp_client_id=${{ parameters.sp_client_id }} \
-#          inputs.sp_client_secret=${{ parameters.sp_client_secret }} \
-#          inputs.tenant_id=${{ parameters.tenant_id }} \
       inlineScript: |
         run_id=$(az ml job create -f ${{ parameters.pipeline_file }} \
           --set experiment_name=${{ parameters.experiment_name }} \
