@@ -1,6 +1,6 @@
 name: create-deployment
 
-on: 
+on:
   workflow_call:
     inputs:
       endpoint_file:
@@ -12,13 +12,13 @@ on:
       workspace_name:
         required: true
         type: string
-      endpoint_name: 
+      endpoint_name:
         required: true
         type: string
-      endpoint_type: 
+      endpoint_type:
         required: true
         type: string
-      deployment_name: 
+      deployment_name:
         required: true
         type: string
     secrets:
@@ -29,14 +29,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-      - name: 'Az CLI login'
+        uses: actions/checkout@v3
+      - name: "Az CLI login"
         uses: azure/login@v1
         with:
           creds: ${{secrets.creds}}
-          enable-AzPSSession: true 
+          enable-AzPSSession: true
       - name: install-extension
-        run:  az extension add -n ml -y
+        run: az extension add -n ml -y
       - name: update-extension
         run: az extension update -n ml
       - name: create-batch-deployment
@@ -44,5 +44,3 @@ jobs:
           az ml ${{ inputs.endpoint_type }}-deployment create --name ${{ inputs.deployment_name }} --endpoint ${{ inputs.endpoint_name }} \
           -f ${{ github.workspace }}/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} \
           --workspace-name ${{ inputs.workspace_name }}
-          
-          

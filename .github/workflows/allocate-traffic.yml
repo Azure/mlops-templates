@@ -1,6 +1,6 @@
 name: allocate-traffic
 
-on: 
+on:
   workflow_call:
     inputs:
       endpoint_name:
@@ -12,7 +12,7 @@ on:
       workspace_name:
         required: true
         type: string
-      traffic_allocation: 
+      traffic_allocation:
         required: true
         type: string
     secrets:
@@ -23,14 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-      - name: 'Az CLI login'
+        uses: actions/checkout@v3
+      - name: "Az CLI login"
         uses: azure/login@v1
         with:
           creds: ${{secrets.creds}}
-          enable-AzPSSession: true 
+          enable-AzPSSession: true
       - name: install-extension
-        run:  az extension add -n ml -y
+        run: az extension add -n ml -y
       - name: update-extension
         run: az extension update -n ml
       - name: allocate-traffic
