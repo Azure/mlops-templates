@@ -35,15 +35,14 @@ jobs:
         run: az extension update -n ml
       - name: run-ml-pipeline
         run: |
-          run_id=$(az ml job create --file ${{ github.workspace }}/${{ inputs.parameters-file  }} --resource-group ${{ inputs.resource_group }} \
-          --workspace-name ${{ inputs.workspace_name }} --query name -o tsv)
+          run_id=$(az ml job create --file ${{ github.workspace }}/${{ inputs.parameters-file  }} --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} --query name -o tsv)
           if [[ -z "$run_id" ]]
           then
             echo "Job creation failed"
             exit 3
           fi
-          az ml job show -n $run_id --web
-          status=$(az ml job show -n $run_id --query status -o tsv)
+          az ml job show -n $run_id --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} --web 
+          status=$(az ml job show -n $run_id --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} --query status -o tsv)
           if [[ -z "$status" ]]
           then
             echo "Status query failed"
@@ -53,7 +52,7 @@ jobs:
           while [[ ${running[*]} =~ $status ]]
           do
             sleep 15 
-            status=$(az ml job show -n $run_id --query status -o tsv)
+            status=$(az ml job show -n $run_id --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} --query status -o tsv)
             echo $status
           done
           if [[ "$status" != "Completed" ]]  
