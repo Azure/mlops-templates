@@ -190,22 +190,25 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
         ARM_TENANT_ID: ${{ secrets.tenantId }}     
     - name: Terraform Plan
-      run: terraform -chdir=${{ inputs.terraform_workingdir }} plan -out=plan.tfplan -input=false -var "location=${{ inputs.terraform_plan_location }}" \
-            -var "environment=${{ inputs.environment }}" \
-            -var "resource_group=${{ inputs.resource_group }}" \
-            -var "aml_workspace=${{ inputs.aml_workspace }}" \
-            -var "application_insights=${{ inputs.application_insights }}" \
-            -var "key_vault=${{ inputs.key_vault }}" \
-            -var "storage_account=${{ inputs.storage_account }}" \
-            -var "container_registry=${{ inputs.container_registry }}" \
-            -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" \
-            -var "enable_monitoring=${{ inputs.enable_monitoring }}" \
-            -var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
+      run: |
+          terraform -chdir=${{ inputs.terraform_workingdir }} plan -out=plan.tfplan -input=false \
+          -var "location=${{ inputs.terraform_plan_location }}" \
+          -var "environment=${{ inputs.environment }}" \
+          -var "resource_group=${{ inputs.resource_group }}" \
+          -var "aml_workspace=${{ inputs.aml_workspace }}" \
+          -var "application_insights=${{ inputs.application_insights }}" \
+          -var "key_vault=${{ inputs.key_vault }}" \
+          -var "storage_account=${{ inputs.storage_account }}" \
+          -var "container_registry=${{ inputs.container_registry }}" \
+          -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" \
+          -var "enable_monitoring=${{ inputs.enable_monitoring }}" \
+          -var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
-        ARM_TENANT_ID: ${{ secrets.tenantId }}     
+        ARM_TENANT_ID: ${{ secrets.tenantId }}
+          
     - name: Terraform Apply
       if: ${{ inputs.TFAction == 'apply'}}  
       run: terraform -chdir=${{ inputs.terraform_workingdir }} apply -input=false -auto-approve plan.tfplan 
