@@ -31,6 +31,18 @@ on:
       aml_workspace:
         description: "The aml_workspace to use"
         value: ${{ jobs.read-yaml.outputs.aml_workspace }}
+      application_insights:
+        description: "The name of the Application Insights to use"
+        value: ${{ jobs.read-yaml.outputs.application_insights }}
+      key_vault:
+        description: "The name of the Application Insights to use"
+        value: ${{ jobs.read-yaml.outputs.key_vault }}
+      storage_account:
+        description: "The name of the Application Insights to use"
+        value: ${{ jobs.read-yaml.outputs.storage_account }}
+      container_registry:
+        description: "The name of the Application Insights to use"
+        value: ${{ jobs.read-yaml.outputs.container_registry }}   
       bep:
         description: "The batch endpoint"
         value: ${{ jobs.read-yaml.outputs.bep }}
@@ -64,12 +76,15 @@ jobs:
     outputs:
       location: ${{  steps.read_action_js.outputs.location }}
       namespace: ${{  steps.read_action_js.outputs.namespace }}
-      postfix: ${{  steps.read_action_js.outputs.postfix }}
       environment: ${{  steps.read_action_js.outputs.environment }}
-      enable_aml_computecluster: ${{  steps.read_action_js.outputs.enable_aml_computecluster }}
-      enable_monitoring: ${{  steps.read_action_js.outputs.enable_monitoring }}
       resource_group: ${{  steps.read_action_js.outputs.resource_group }}
       aml_workspace: ${{  steps.read_action_js.outputs.aml_workspace }}
+      application_insights: ${{  steps.read_action_js.outputs.application_insights }}
+      key_vault: ${{  steps.read_action_js.outputs.key_vault }}
+      storage_account: ${{  steps.read_action_js.outputs.storage_account }}
+      container_registry: ${{  steps.read_action_js.outputs.container_registry }}
+      enable_aml_computecluster: ${{  steps.read_action_js.outputs.enable_aml_computecluster }}
+      enable_monitoring: ${{  steps.read_action_js.outputs.enable_monitoring }}
       bep: ${{  steps.read_action_js.outputs.bep }}
       oep: ${{  steps.read_action_js.outputs.oep }}
       terraform_version: ${{  steps.read_action_js.outputs.terraform_version }}
