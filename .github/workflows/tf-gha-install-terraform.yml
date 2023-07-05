@@ -196,8 +196,6 @@ jobs:
     - name: Terraform Plan
       run: terraform -chdir=${{ inputs.terraform_workingdir }} plan -out=plan.tfplan -input=false \
               -var "location=${{ inputs.terraform_plan_location }}" \
-              -var "prefix=${{ inputs.namespace }}" \
-              -var "postfix=${{ inputs.postfix }}" \
               -var "environment=${{ inputs.environment }}" \
               -var "resource_group"=${{ inputs.resource_group }}" \
               -var "aml_workspace"=${{ inputs.aml_workspace }}" \
