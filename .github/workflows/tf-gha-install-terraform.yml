@@ -27,6 +27,30 @@ on:
         description: 'Enviroment of the AML workspace'
         type: string
         required: true
+      resource_group:
+        description: 'Resource Group'
+        type: string
+        required: true
+      aml_workspace:
+        description: 'AML Workspace'
+        type: string
+        required: true
+      application_insights:
+        description: 'Application Insights'
+        type: string
+        required: true
+      key_vault:
+        description: 'Key Vault'
+        type: string
+        required: true
+      storage_account:
+        description: 'Storage Account'
+        type: string
+        required: true
+      container_registry:
+        description: 'Container Registry'
+        type: string
+        required: true
       enable_aml_computecluster:
         description: 'Boolean to decide whether to deploy an AML compute cluster or not'
         type: boolean
@@ -170,8 +194,20 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
         ARM_TENANT_ID: ${{ secrets.tenantId }}     
     - name: Terraform Plan
-      run: terraform -chdir=${{ inputs.terraform_workingdir }} plan -out=plan.tfplan -input=false -var "location=${{ inputs.terraform_plan_location }}" -var "prefix=${{ inputs.namespace }}" -var "postfix=${{ inputs.postfix }}" -var "environment=${{ inputs.environment }}" 
-        -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" -var "enable_monitoring=${{ inputs.enable_monitoring }}" -var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
+      run: terraform -chdir=${{ inputs.terraform_workingdir }} plan -out=plan.tfplan -input=false \
+              -var "location=${{ inputs.terraform_plan_location }}" \
+              -var "prefix=${{ inputs.namespace }}" \
+              -var "postfix=${{ inputs.postfix }}" \
+              -var "environment=${{ inputs.environment }}" \
+              -var "resource_group"=${{ inputs.resource_group }}" \
+              -var "aml_workspace"=${{ inputs.aml_workspace }}" \
+              -var "application_insights"=${{ inputs.application_insights }}" \
+              -var "key_vault"=${{ inputs.key_vault }}" \
+              -var "storage_account"=${{ inputs.storage_account }}" \
+              -var "container_registry"=${{ inputs.container_registry }}" \
+              -var "enable_aml_computecluster=${{ inputs.enable_aml_computecluster }}" \
+              -var "enable_monitoring=${{ inputs.enable_monitoring }}" \
+              -var "client_secret=${{ env.ARM_CLIENT_SECRET }}"
       env:
         ARM_CLIENT_ID: ${{ secrets.clientId }}
         ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
