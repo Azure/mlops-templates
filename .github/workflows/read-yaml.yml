@@ -13,9 +13,6 @@ on:
       namespace:
         description: "Namespace of the resources"
         value: ${{ jobs.read-yaml.outputs.namespace }}
-      postfix:
-        description: "Postfix for the resource names"
-        value: ${{ jobs.read-yaml.outputs.postfix }}
       environment:
         description: "Environment"
         value: ${{ jobs.read-yaml.outputs.environment }}
@@ -104,3 +101,5 @@ jobs:
           config: ${{ github.workspace }}/${{ inputs.file_name }}
       - name: Echo step output
         run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }}"; echo "${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }}"; echo "${{  steps.read_action_js.outputs.terraform_version }}  ${{  steps.read_action_js.outputs.terraform_workingdir }}"; echo "${{  steps.read_action_js.outputs.terraform_st_resource_group }}  ${{  steps.read_action_js.outputs.terraform_st_storage_account }} " echo "${{  steps.read_action_js.outputs.terraform_st_container_name }}  ${{  steps.read_action_js.outputs.terraform_st_key }} "
+      - name: Echo Parameters
+        run: echo "${{  steps.read_action_js.outputs.application_insights }} ${{  steps.read_action_js.outputs.key_vault }}"; echo "${{  steps.read_action_js.outputs.storage_account }}  ${{  steps.read_action_js.outputs.container_registry }}"
