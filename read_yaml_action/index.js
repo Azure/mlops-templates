@@ -17,13 +17,16 @@ try {
         
     // TODO Verify if variables do not exist or are empty
     const namespace = String(configYaml["variables"]["namespace"]);
-    const postfix = String(configYaml["variables"]["postfix"]);
     const environment = String(configYaml["variables"]["environment"]);
     var enable_aml_computecluster = Boolean(configYaml["variables"]["enable_aml_computecluster"]);
     var enable_monitoring = Boolean(configYaml["variables"]["enable_monitoring"]);
     var resource_group = String(configYaml["variables"]["resource_group"]);
     var location = String(configYaml["variables"]["location"]);
     var aml_workspace = String(configYaml["variables"]["aml_workspace"]);
+    var application_insights = String(configYaml["variables"]["application_insights"]);
+    var key_vault = String(configYaml["variables"]["key_vault"]);
+    var storage_account = String(configYaml["variables"]["storage_account"]);
+    var container_registry = String(configYaml["variables"]["container_registry"]);
 
     var terraform_version = String(configYaml["variables"]["terraform_version"]);
     var terraform_workingdir = String(configYaml["variables"]["terraform_workingdir"]);
@@ -48,12 +51,15 @@ try {
     const online_endpoint_name = "oep-"+namespace+"-"+postfix+environment;
     core.setOutput("location",location);
     core.setOutput("namespace",namespace);
-    core.setOutput("postfix",postfix);
     core.setOutput("environment",environment);
     core.setOutput("enable_monitoring",enable_monitoring);
     core.setOutput("enable_aml_computecluster",enable_aml_computecluster);
     core.setOutput("resource_group",resource_group);
     core.setOutput("aml_workspace", aml_workspace);
+    core.setOutput("application_insights", application_insights);
+    core.setOutput("key_vault", key_vault);
+    core.setOutput("storage_account", storage_account);
+    core.setOutput("container_registry", container_registry);
     core.setOutput("bep", batch_endpoint_name);
     core.setOutput("oep", online_endpoint_name);
     core.setOutput("terraform_version", terraform_version);
