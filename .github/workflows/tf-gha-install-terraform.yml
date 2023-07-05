@@ -168,8 +168,28 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2 
+      uses: hashicorp/setup-terraform@v2
+    - name: Check and Import Resource Group
+      id: check_rg
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.50.0
+        inlineScript: |
+          az account set -s ${{ env.ARM_SUBSCRIPTION_ID  }}
+          EXISTS=$(az group exists -n ${{ inputs.resource_group }})
+          if $EXISTS; then
+            echo "::set-output name=exists::true"
+            terraform import azurerm_resource_group.example /subscriptions/${{ secrets.subscriptionId }}/resourceGroups/${{ inputs.resource_group }}
+          else
+            echo "::set-output name=exists::false"
+          fi
+      env:
+        ARM_CLIENT_ID: ${{ secrets.clientId }}
+        ARM_CLIENT_SECRET: ${{ secrets.clientSecret }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.subscriptionId }}
+        ARM_TENANT_ID: ${{ secrets.tenantId }}
     - name: Terraform Init
+      if: steps.check_rg.outputs.exists == 'false'
       run: echo ${{ env.ARM_SUBSCRIPTION_ID }}; 
         echo "all env:${{ env.ARM_CLIENT_ID }}::${{ env.ARM_SUBSCRIPTION_ID }}";
         terraform -chdir=${{ inputs.terraform_workingdir }} init 
