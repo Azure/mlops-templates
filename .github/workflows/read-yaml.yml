@@ -83,7 +83,7 @@ jobs:
       - name: Checking out repo
         uses: actions/checkout@v3
       - name: Read test
-        uses: read_yaml_action
+        uses: tommy-zhang-shell/mlops-templates/read_yaml_action@main
         id: read_action_js
         with:
           config: ${{ github.workspace }}/${{ inputs.file_name }}
