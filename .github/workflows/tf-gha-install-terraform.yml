@@ -19,10 +19,6 @@ on:
         description: 'Namespace'
         type: string
         required: true
-      postfix:
-        description: 'postfix'
-        type: string
-        required: true
       environment:
         description: 'Enviroment of the AML workspace'
         type: string
