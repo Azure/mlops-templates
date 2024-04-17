@@ -1,0 +1,36 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+parameters:
+- name: instance_name
+  type: string
+- name: size
+  type: string
+- name: location
+  type: string
+- name: description
+  type: string
+- name: identity_type
+  type: string
+- name: user_assigned_identity
+  type: string
+  default: ' '
+
+steps:
+  - task: AzureCLI@2
+    displayName: Create compute instance
+    continueOnError: true
+    inputs: 
+      azureSubscription: $(ado_service_connection_rg) #needs to have access at the RG level 
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        compute_name=$(az ml compute show -n ${{ parameters.instance_name }} --query name -o tsv)
+        if [[ -z "$compute_name" ]]
+        then
+          echo "Compute does not exists. Creating the compute instance..."
+          python templates/src/python-sdk-v2/create_compute_instance.py --instance_name ${{ parameters.instance_name }} --size ${{ parameters.size }} --location ${{ parameters.location }} --description ${{ parameters.description }} --identity_type ${{ parameters.identity_type }} --user_assigned_identity ${{ parameters.user_assigned_identity }}
+        else
+          echo "Compute exists. Skipping cluster creation."
+          exit 0
+        fi
