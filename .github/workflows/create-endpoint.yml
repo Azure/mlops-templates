@@ -3,9 +3,6 @@ name: create-endpoint
 on:
   workflow_call:
     inputs:
-      endpoint_file:
-        required: true
-        type: string
       resource_group:
         required: true
         type: string
@@ -16,6 +13,9 @@ on:
         required: true
         type: string
       endpoint_type:
+        required: true
+        type: string
+      endpoint_auth_mode:
         required: true
         type: string
     secrets:
@@ -38,6 +38,6 @@ jobs:
         run: az extension update -n ml
       - name: create-environment-from-file
         run: |
-          az ml ${{ inputs.endpoint_type }}-endpoint create --name ${{ inputs.endpoint_name }} \
-          -f ${{ github.workspace }}/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} \
+          az ml ${{ inputs.endpoint_type }}-endpoint create -n ${{ inputs.endpoint_name }} \
+          --auth_mode ${{ inputs.endpoint_auth_mode }} --resource-group ${{ inputs.resource_group }} \
           --workspace-name ${{ inputs.workspace_name }}
