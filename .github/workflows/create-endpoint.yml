@@ -38,7 +38,7 @@ jobs:
         run: az extension update -n ml
       - name: create-environment-from-file
         run: |
-          EP=$(az ml ${{ inputs.endpoint_type }}-endpoint list --query "[?name==${{ inputs.endpoint_name }}]"  -o tsv --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }})
+          EP=$(az ml ${{ inputs.endpoint_type }}-endpoint list --query "[?name=='${{ inputs.endpoint_name }}']"  -o tsv --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }})
           if [[ EP -ne 1 ]]; then
           echo "Endpoint not exists"
           az ml ${{ inputs.endpoint_type }}-endpoint create --name ${{ inputs.endpoint_name }} -f ${{ github.workspace }}/${{ inputs.endpoint_file }} --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} 
