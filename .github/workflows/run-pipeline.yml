@@ -22,7 +22,7 @@ jobs:
   run-pipeline:
     runs-on: ubuntu-latest
     outputs:
-      run_id: ${{ steps.run_pipeline.outputs.run_id }}  # Define the output
+      run_id: ${{ steps.run-ml-pipeline.outputs.run_id }}  # Define the output
     steps:
       - name: checkout
         uses: actions/checkout@v3
