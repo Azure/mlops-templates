@@ -41,6 +41,7 @@ jobs:
             echo "Job creation failed"
             exit 3
           fi
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"  # Save run_id as an output
           az ml job show -n $run_id --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} --web 
           status=$(az ml job show -n $run_id --resource-group ${{ inputs.resource_group }} --workspace-name ${{ inputs.workspace_name }} --query status -o tsv)
           if [[ -z "$status" ]]
