@@ -1,4 +1,4 @@
-name: register-dataset
+name: register-custom-model
 
 on:
   workflow_call:
