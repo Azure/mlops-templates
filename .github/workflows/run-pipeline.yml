@@ -18,6 +18,11 @@ on:
     secrets:
       creds:
         required: true
+    outputs:  # <-- Define workflow-level outputs here
+      run_id:
+        description: "The run ID of the ML job"
+        value: ${{ jobs.run-pipeline.outputs.run_id }}
+        
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
