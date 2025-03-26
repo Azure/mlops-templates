@@ -58,6 +58,9 @@ on:
       terraform_st_key:
         description: "Terraform State Key"
         value: ${{ jobs.read-yaml.outputs.terraform_st_key }}
+      azure_creds_secret:
+        description: "Azure Credentials Secret Name"
+        value: ${{ jobs.read-yaml.outputs.azure_creds_secret }}
 jobs:
   read-yaml:
     runs-on: ubuntu-latest
@@ -79,6 +82,7 @@ jobs:
       terraform_st_storage_account: ${{  steps.read_action_js.outputs.terraform_st_storage_account }}
       terraform_st_container_name: ${{  steps.read_action_js.outputs.terraform_st_container_name }}
       terraform_st_key: ${{  steps.read_action_js.outputs.terraform_st_key }}
+      azure_creds_secret: ${{ steps.read_action_js.outputs.azure_creds_secret }}
     steps:
       - name: Checking out repo
         uses: actions/checkout@v3
@@ -88,4 +92,4 @@ jobs:
         with:
           config: ${{ github.workspace }}/${{ inputs.file_name }}
       - name: Echo step output
-        run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }}"; echo "${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }}"; echo "${{  steps.read_action_js.outputs.terraform_version }}  ${{  steps.read_action_js.outputs.terraform_workingdir }}"; echo "${{  steps.read_action_js.outputs.terraform_st_resource_group }}  ${{  steps.read_action_js.outputs.terraform_st_storage_account }} " echo "${{  steps.read_action_js.outputs.terraform_st_container_name }}  ${{  steps.read_action_js.outputs.terraform_st_key }} "
+        run: echo "${{  steps.read_action_js.outputs.resource_group }} ${{  steps.read_action_js.outputs.aml_workspace }}"; echo "${{  steps.read_action_js.outputs.bep }}  ${{  steps.read_action_js.outputs.oep }}"; echo "${{  steps.read_action_js.outputs.terraform_version }}  ${{  steps.read_action_js.outputs.terraform_workingdir }}"; echo "${{  steps.read_action_js.outputs.terraform_st_resource_group }}  ${{  steps.read_action_js.outputs.terraform_st_storage_account }} "; echo "${{  steps.read_action_js.outputs.terraform_st_container_name }}  ${{  steps.read_action_js.outputs.terraform_st_key }} "; echo "${{ steps.read_action_js.outputs.azure_creds_secret }}"
