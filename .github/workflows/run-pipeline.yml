@@ -27,18 +27,23 @@ jobs:
       - name: "Az CLI login"
         uses: azure/login@v1
         with:
-          # Note:
-          # Either method of Azure authentication can be used based on your setup:
-          # 1. Using 'creds': This method requires a single secret (e.g., secrets.creds) containing a JSON string 
-          #    with the clientId, clientSecret, subscriptionId, and tenantId.
-          # 2. Using 'client-id', 'tenant-id', and 'subscription-id': This method requires individual secrets for 
-          #    each credential (e.g., AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID).
-          # Both methods are valid, and the choice depends on how your secrets are configured in your repository.
-          #creds: ${{secrets.creds}}
-          #enable-AzPSSession: true 
+          # Azure login can use either Service Principal or OIDC authentication:
+          # 1. Service Principal: Uses client ID, tenant ID, client secret/certificate
+          #    Example: creds: ${{secrets.creds}}
+          #
+          # 2. OIDC (OpenID Connect): More secure, uses federated identity credentials
+          #    Example:
+          #    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          #    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          #    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          #    enable-oidc: true
+          #
+          # Choose the appropriate method based on your security requirements
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          # Uncomment next line to use OIDC
+          # enable-oidc: true
       - name: install-extension
         run: az extension add -n ml -y
       - name: update-extension
