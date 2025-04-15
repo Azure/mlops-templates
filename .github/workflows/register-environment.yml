@@ -1,6 +1,6 @@
 name: register-environment
 
-on: 
+on:
   workflow_call:
     inputs:
       environment_file:
@@ -14,11 +14,11 @@ on:
         type: string
       conda_file:
         required: false
-        default: ''
+        default: ""
         type: string
       dockerfile-location:
         required: false
-        default: ''
+        default: ""
         type: string
     secrets:
       creds:
@@ -28,8 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-      - name: 'Az CLI login'
+        uses: actions/checkout@v3
+      - name: "Az CLI login"
         uses: azure/login@v1
         with:
           # Note:
@@ -45,7 +45,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: install-extension
-        run:  az extension add -n ml -y
+        run: az extension add -n ml -y
       - name: update-extension
         run: az extension update -n ml
       - name: list-extentions

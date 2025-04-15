@@ -1,7 +1,6 @@
-
 name: create-endpoint
 
-on: 
+on:
   workflow_call:
     inputs:
       endpoint_file:
@@ -13,10 +12,10 @@ on:
       workspace_name:
         required: true
         type: string
-      endpoint_name: 
+      endpoint_name:
         required: true
         type: string
-      endpoint_type: 
+      endpoint_type:
         required: true
         type: string
     secrets:
@@ -27,14 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-      - name: 'Az CLI login'
+        uses: actions/checkout@v3
+      - name: "Az CLI login"
         uses: azure/login@v1
         with:
           creds: ${{secrets.creds}}
-          enable-AzPSSession: true 
+          enable-AzPSSession: true
       - name: install-extension
-        run:  az extension add -n ml -y
+        run: az extension add -n ml -y
       - name: update-extension
         run: az extension update -n ml
       - name: create-environment-from-file
