@@ -34,11 +34,18 @@ jobs:
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
+          # Note:
+          # Either method of Azure authentication can be used based on your setup:
+          # 1. Using 'creds': This method requires a single secret (e.g., secrets.creds) containing a JSON string 
+          #    with the clientId, clientSecret, subscriptionId, and tenantId.
+          # 2. Using 'client-id', 'tenant-id', and 'subscription-id': This method requires individual secrets for 
+          #    each credential (e.g., AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID).
+          # Both methods are valid, and the choice depends on how your secrets are configured in your repository.
           #creds: ${{secrets.creds}}
+          #enable-AzPSSession: true 
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          #enable-AzPSSession: true 
       - name: install-extension
         run:  az extension add -n ml -y
       - name: update-extension
