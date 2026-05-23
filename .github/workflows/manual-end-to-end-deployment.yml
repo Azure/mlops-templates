@@ -1,0 +1,36 @@
+name: manual-end-to-end-deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      resource_group:
+        description: 'The resource group of the Azure Machine Learning workspace'
+        required: true
+        type: string
+      workspace_name:
+        description: 'The name of the Azure Machine Learning workspace'
+        required: true
+        type: string
+      endpoint_name:
+        description: 'The name of the endpoint'
+        required: true
+        type: string
+      endpoint_type:
+        description: 'The type of the endpoint [batch, online]'
+        required: true
+        type: string
+      endpoint_auth_mode:
+        description: 'The authentication mode of the endpoint [aad_token, aml_token, key]'
+        required: true
+        type: string
+jobs:
+  call-create-endpoint:
+    uses: ./.github/workflows/create-endpoint.yml
+    with:
+      resource_group: ${{ github.event.inputs.resource_group }}
+      workspace_name: ${{ github.event.inputs.workspace_name }}
+      endpoint_name: ${{ github.event.inputs.endpoint_name }}
+      endpoint_type: ${{ github.event.inputs.endpoint_type }}
+      endpoint_auth_mode: ${{ github.event.inputs.endpoint_file }}
+    secrets:
+      creds: ${{ secrets.AZURE_CREDENTIALS }}
