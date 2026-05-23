@@ -3,6 +3,6 @@
     "@actions/core": "^1.10.0",
     "@actions/github": "^6.0.0",
     "fs": "^0.0.1-security",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.1"
   }
 }
