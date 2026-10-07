@@ -81,11 +81,11 @@ jobs:
       terraform_st_key: ${{  steps.read_action_js.outputs.terraform_st_key }}
     steps:
       - name: Checking out calling repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: ${{ github.repository }}
       - name: Read test
-        uses: Azure/mlops-templates/read_yaml_action@main
+        uses: Azure/mlops-templates/read_yaml_action@664496b08fee4ea143563161597d19d24f160947 # v1.1.0
         id: read_action_js
         with:
           config: ${{ github.workspace }}/${{ inputs.file_name }}
